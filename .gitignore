@@ -11,7 +11,7 @@ bkp/
 
 
 # Arquivos Compactados (Seus backups manuais)
-*.rar
+
 *.zip
 *.7z
 
