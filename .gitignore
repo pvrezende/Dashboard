@@ -8,7 +8,7 @@ node_modules/
 # Backups e Dados
 *.sql
 bkp/
-uploads/
+
 
 # Arquivos Compactados (Seus backups manuais)
 *.rar
