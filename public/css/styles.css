@@ -1,0 +1,636 @@
+/* styles.css - VERSÃO GLOBAL ATUALIZADA E CORRIGIDA */
+
+/* --- Variáveis de Cores e Estilos Globais --- */
+:root {
+    --main-bg-color: #f8f9fa;
+    --card-bg-color: #ffffff;
+    --text-color: #343a40;
+    --text-muted-color: #6c757d;
+    --primary-color: #007bff;
+    --primary-hover-color: #0056b3;
+    --secondary-color: #6c757d;
+    --secondary-hover-color: #5a6268;
+    --success-color: #28a745;
+    --success-hover-color: #218838;
+    --danger-color: #dc3545;
+    --danger-hover-color: #c82333;
+    --info-color: #17a2b8;
+    --info-hover-color: #138496;
+    --warning-color: #ffc107;
+    --warning-hover-color: #e0a800;
+    --process-color: #fd7e14;
+    --divider-color: #e9ecef;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-small: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --kpi-icon-purple: #6f42c1;
+    --stepper-completed-color: var(--success-color);
+    --stepper-active-color: var(--primary-color);
+    --stepper-inactive-color: var(--text-muted-color);
+    --stepper-line-color: var(--divider-color);
+    --stepper-delayed-color: var(--danger-color);
+}
+
+/* --- ESTRUTURA DE LAYOUT GLOBAL (CORREÇÃO DA ROLAGEM) --- */
+html, body {
+    height: 100%;
+    margin: 0;
+    /* CORREÇÃO: Removido 'overflow: hidden' para restaurar a rolagem */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--main-bg-color);
+    color: var(--text-color);
+}
+
+#appContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ocupa toda a altura da viewport */
+}
+
+/* --- Estilo Geral para Telas (Conteúdo Principal) --- */
+.tela {
+    display: none; /* Escondido por padrão */
+    flex-grow: 1;  /* Faz a tela ocupar todo o espaço vertical restante */
+    overflow-y: auto; /* Adiciona a barra de rolagem APENAS à área da tela */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.tela.active {
+    display: block; /* Mostra a tela ativa */
+}
+
+
+/* --- Navegação Entre Telas (COM MENU RESPONSIVO) --- */
+.screen-selector {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--card-bg-color);
+    border-bottom: 1px solid var(--divider-color);
+    box-shadow: var(--box-shadow);
+    gap: 10px;
+    flex-wrap: nowrap; /* Impede que os itens quebrem linha no desktop */
+    position: relative;
+    z-index: 999;
+    flex-shrink: 0; /* Impede que a navegação encolha */
+}
+
+/* Container para os links de navegação */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+.screen-selector button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.screen-selector button:hover {
+    background-color: var(--secondary-hover-color);
+    transform: translateY(-2px);
+}
+
+.screen-selector button.active {
+    background-color: var(--primary-color);
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.user-info-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+/* --- ESTILOS DO MENU HAMBÚRGUER --- */
+.nav-header {
+    display: none; /* Escondido em telas grandes */
+}
+
+/* Regras para telas com largura máxima de 992px (tablets e celulares) */
+@media (max-width: 992px) {
+    .screen-selector {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        flex-wrap: wrap;
+    }
+
+    .nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        height: 60px;
+        background-color: var(--card-bg-color);
+    }
+    
+    .nav-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: var(--primary-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--card-bg-color);
+        padding: 10px 20px 20px 20px;
+        box-sizing: border-box;
+        border-top: 1px solid var(--divider-color);
+        gap: 8px;
+    }
+    
+    .screen-selector.open .nav-links {
+        display: flex;
+    }
+    
+    .screen-selector button,
+    .user-info-area {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .user-info-area {
+        margin-left: 0;
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 10px;
+    }
+}
+
+
+/* --- Estilos de Modal --- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    width: 95%;
+    max-width: 1200px;
+    height: auto;
+    max-height: 95vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content.show {
+    transform: scale(1.05);
+}
+
+.modal-content.small {
+    max-width: 450px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.close-modal, .close {
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-muted-color);
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover, .close:hover {
+    color: var(--danger-color);
+}
+
+.modal h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 10px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0px;
+    gap: 10px;
+    flex-shrink: 0;;
+    margin-bottom: 50px;
+}
+
+.modal-buttons .close-modal-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.modal-buttons .close-modal-btn:hover {
+    background-color: var(--secondary-hover-color);
+}
+
+/* --- Notificações Toast --- */
+#notification-wrapper {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 11000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 90%;
+}
+
+.notification-message {
+    padding: 15px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transform: translateX(100%);
+    min-width: 250px;
+}
+
+.notification-message.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification-message.success { background-color: var(--success-color); }
+.notification-message.error { background-color: var(--danger-color); }
+.notification-message.info { background-color: var(--info-color); }
+.notification-message.warning { background-color: var(--warning-color); color: var(--text-color); }
+
+/* --- Estilos de Formulário Globais --- */
+.form-section {
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--primary-color);
+}
+
+.form-section h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="date"],
+input[type="datetime-local"],
+select,
+textarea {
+    padding: 10px 12px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* --- Botões de Ação Gerais --- */
+.action-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button.primary { background-color: var(--primary-color); color: white; }
+.action-button.primary:hover { background-color: var(--primary-hover-color); transform: translateY(-2px); }
+.action-button.secondary { background-color: var(--secondary-color); color: white; }
+.action-button.secondary:hover { background-color: var(--secondary-hover-color); transform: translateY(-2px); }
+.action-button.info { background-color: var(--info-color); color: white; }
+.action-button.info:hover { background-color: var(--info-hover-color); transform: translateY(-2px); }
+.action-button.danger { background-color: var(--danger-color); color: white; }
+.action-button.danger:hover { background-color: var(--danger-hover-color); transform: translateY(-2px); }
+.action-button.success { background-color: var(--success-color); color: white; }
+.action-button.success:hover { background-color: var(--success-hover-color); }
+.action-button.warning { background-color: var(--warning-color); color: var(--text-color); }
+.action-button.warning:hover { background-color: var(--warning-hover-color); }
+
+
+/* --- Classes de Permissão --- */
+.hidden-by-permission { display: none !important; }
+.disabled-by-permission { cursor: not-allowed !important; opacity: 0.6 !important; pointer-events: none !important; }
+
+/* --- Outros Globais --- */
+.password-input-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.password-input-container input {
+    padding-right: 40px;
+}
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted-color);
+    font-size: 1em;
+    padding: 0;
+}
+
+#loggedInUserDisplay {
+    font-weight: bold;
+    color: var(--primary-color);
+    white-space: nowrap;
+}
+
+#stopRefreshButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* Estilo para o campo de busca de permissões no modal */
+.permissions-search-container {
+    margin-bottom: 15px;
+}
+
+#editPermissionsSearchInput {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9em;
+}
+
+/* Adicione esta regra para o novo botão */
+.action-button.success {
+    background-color: var(--success-color);
+    color: white;
+}
+.action-button.success:hover {
+    background-color: var(--success-hover-color);
+}
+
+/* --- ESTILOS FINAIS PARA SEÇÕES SANFONA (ACORDEÃO) --- */
+
+.collapsible-section.form-section,
+.collapsible-section.tool-list-section {
+    border: 1px solid var(--divider-color);
+    border-left: 5px solid var(--primary-color); /* ADICIONADA BORDA AZUL À ESQUERDA */
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    overflow: hidden;
+    padding: 0; 
+}
+
+.collapsible-section .collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 15px 20px;
+    margin: 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--divider-color);
+    transition: background-color 0.2s ease;
+}
+
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-right: 10px;
+    overflow: hidden; /* Adicionado para ajudar a conter os filhos flexíveis */
+}
+
+.collapsible-section:hover .collapsible-header {
+    background-color: #f8f9fa;
+}
+
+.collapsible-section .collapsible-header h3 {
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    font-size: 1.2em;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.toggle-collapse-btn {
+    background: none;
+    border: none;
+    font-size: 1.1em;
+    color: var(--text-muted-color);
+    cursor: pointer;
+    transition: transform 0.4s ease, color 0.3s ease;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.collapsible-section.open .collapsible-header {
+    border-bottom-color: var(--primary-color);
+}
+
+.collapsible-section.open .toggle-collapse-btn {
+    transform: rotate(180deg);
+    color: var(--primary-color);
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+    /* ATUALIZAÇÃO: Padding horizontal e vertical zerados quando fechado */
+    padding: 0 25px; 
+    background-color: #fdfdfd;
+}
+
+/* Estado ABERTO da sanfona */
+.collapsible-section.open .collapsible-content {
+    /* ATUALIZADO: Padding é aplicado apenas quando a seção está aberta */
+    padding: 20px 25px; 
+    max-height: 2000px; /* Um valor alto para acomodar qualquer conteúdo */
+    border-top: 1px solid var(--divider-color);
+    transition: max-height 0.5s ease-in, padding 0.5s ease-in; /* Adicionado padding à transição */
+}
+
+.permissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Cria colunas responsivas */
+    gap: 10px; /* Espaço entre os itens */
+    max-height: 400px; /* Altura máxima para a lista */
+    overflow-y: auto; /* Adiciona rolagem se a lista for muito grande */
+    background-color: #ffffff;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    padding: 15px;
+}
+
+.permission-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.permission-item:hover {
+    background-color: #f1f3f5;
+}
+
+.permission-item input[type="checkbox"] {
+    width: auto; /* Reseta a largura do checkbox */
+    flex-shrink: 0;
+    transform: scale(1.1);
+}
+
+.permission-item label {
+    font-weight: normal;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin: 0;
+}
+/* --- ESTILOS PARA A LISTA DE NÍVEIS DE ACESSO --- */
+
+.roles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 5px; /* Espaço para a barra de rolagem */
+}
+
+.role-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #ffffff;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: all 0.2s ease-in-out;
+}
+
+.role-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    border-left-color: var(--primary-color);
+}
+
+.role-item span {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.role-item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Adicione estas regras para habilitar o scroll e estilizar a paginação no modal de usuários */
+
+#userListSection .collapsible-content {
+    display: flex;
+    flex-direction: column;
+    /* A propriedade 'overflow: hidden;' foi REMOVIDA para permitir que o painel principal role */
+}
+
+#userList {
+    /* As propriedades 'flex-grow' e 'overflow-y' foram REMOVIDAS. */
+    /* A lista agora terá sua altura natural, permitindo que a paginação apareça abaixo. */
+    padding-right: 10px; 
+}
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    padding: 10px;
+    flex-shrink: 0; /* Impede que o container de paginação encolha */
+}
+
+.pagination-controls .page-info {
+    font-weight: bold;
+    color: var(--text-muted-color);
+    margin: 0 10px;
+}
+

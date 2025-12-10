@@ -1,0 +1,231 @@
+/* project-registration.css */
+
+#projectRegistrationModal .form-container {
+    /* Removemos as propriedades que agora são controladas pelo modal */
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-container h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 15px; /* Adiciona padding para a barra de rolagem */
+    box-sizing: border-box;
+}
+
+.form-section {
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border: 4px solid var(--divider-color);
+}
+
+.form-section h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 10px;
+    font-size: 1.3em;
+}
+
+.form-info {
+    color: var(--text-muted-color);
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    background-color: rgba(0, 123, 255, 0.05);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--info-color);
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+#projectRegistrationModal .form-group {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 15px;
+}
+
+.form-group.flex-grow {
+    flex: 2;
+}
+
+.form-container label {
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container input[type="date"],
+.form-container input[type="datetime-local"],
+.form-container select {
+    padding: 10px 12px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.etapas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding-left: 0%;
+    padding-right: 0%;
+}
+
+.etapa-item {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-left: 3px solid var(--info-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.etapa-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.etapa-item h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1em;
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 8px;
+}
+
+.submit-button {
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.submit-button:hover {
+    background-color: var(--success-hover-color);
+    transform: translateY(-2px);
+}
+
+.submit-button:before {
+    content: '\f0c7'; /* FontAwesome save icon */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+#statusMsg {
+    text-align: center;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    margin-top: 15px;
+    font-weight: bold;
+    display: none;
+}
+
+#statusMsg.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+#statusMsg.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .form-group {
+        min-width: unset;
+        width: 100%;
+    }
+    .etapas-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- INÍCIO DA MODIFICAÇÃO: Estilo de tela cheia para o modal de cadastro --- */
+
+#projectRegistrationModal .modal-content {
+    max-width: 100vw;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    transform: none;
+    overflow-y: auto;
+}
+
+#editProjectModal .buttons-edit-project-modal {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end; 
+    flex-wrap: wrap;
+}
+
+#editProjectModal .buttons-edit-project-modal > * {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 480px) {
+    #editProjectModal .buttons-edit-project-modal {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #editProjectModal .buttons-edit-project-modal > * {
+        width: 100%;
+    }
+}
+/* --- FIM DA MODIFICAÇÃO --- */

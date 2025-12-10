@@ -1,0 +1,20 @@
+# Dependências do Node (Pesado)
+node_modules/
+
+# Arquivos de Segurança e Senhas (NUNCA SUBIR)
+.env
+*.pem
+
+# Backups e Dados
+*.sql
+bkp/
+uploads/
+
+# Arquivos Compactados (Seus backups manuais)
+*.rar
+*.zip
+*.7z
+
+# Logs e arquivos de sistema
+*.log
+.DS_Store

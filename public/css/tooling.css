@@ -1,0 +1,996 @@
+/* tooling.css (NOVOS AJUSTES PARA DIMINUIR VERTICALMENTE E AUMENTAR HORIZONTALMENTE) */
+
+.tooling-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.tooling-container h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 2.2em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Seções de Formulário e Lista de Ferramentas */
+.tooling-container .form-section,
+.tooling-container .tool-list-section {
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    border-left: 6px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.tooling-container .form-section:hover,
+.tooling-container .tool-list-section:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tooling-container .form-section h3,
+.tooling-container .tool-list-section h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed var(--divider-color);
+    padding-bottom: 12px;
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+#addToolForm .form-group,
+#editToolForm .form-group {
+    margin-bottom: 18px;
+}
+
+#addToolForm textarea,
+#editToolForm textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    min-height: 100px;
+    resize: vertical;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+#addToolForm textarea:focus,
+#editToolForm textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
+}
+
+.tool-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tool-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: var(--card-bg-color);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 8px solid var(--info-color);
+    min-height: 220px;
+    position: relative;
+}
+
+.tool-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+}
+
+.tool-info h4 {
+    color: var(--primary-color);
+    font-size: 1.6em;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 8px;
+}
+
+.tool-info p {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.tool-info .tool-description {
+    color: var(--text-muted-color);
+    font-style: italic;
+    margin-top: 10px;
+    font-size: 0.98em;
+    max-height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tool-progress-bar {
+    padding: 15px 20px;
+    background-color: #e9f5ff;
+    border-radius: var(--border-radius);
+    margin-top: 10px;
+    border: 1px solid #cce5ff;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.tool-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.tool-progress-header h5 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.tool-progress-indicator {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+/* CORREÇÃO: Remover background-image para texto 'Em Andamento' */
+.tool-progress-indicator.tool-progress-completed {
+    color: var(--success-color);
+}
+.tool-progress-indicator.tool-progress-delayed {
+    color: var(--danger-color);
+}
+.tool-progress-indicator.tool-progress-in-progress {
+    color: var(--primary-color); /* Apenas o texto será azul */
+    background-image: none; /* Garante que não haja fundo */
+}
+.tool-progress-indicator.tool-progress-in-process {
+    color: var(--process-color);
+    background-image: none;
+}
+.tool-progress-indicator.tool-progress-pending {
+    color: var(--secondary-color);
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #dee2e6;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 12px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 6px;
+    transition: width 0.6s ease-in-out;
+}
+
+.progress-bar-fill.tool-progress-completed {
+    background-color: var(--success-color);
+}
+.progress-bar-fill.tool-progress-delayed {
+    background-color: var(--danger-color);
+}
+.progress-bar-fill.tool-progress-in-progress {
+    background-color: var(--primary-color);
+    background-image: linear-gradient(to right, #6ab3f8, var(--primary-color));
+}
+.progress-bar-fill.tool-progress-in-process {
+    background-color: var(--process-color);
+    background-image: linear-gradient(to right, #ffc107, var(--process-color));
+}
+.progress-bar-fill.tool-progress-pending {
+    background-color: var(--secondary-color);
+}
+
+.tool-sub-etapas-overview {
+    margin-top: 15px;
+    padding: 15px 20px;
+    background-color: #f0f4f7;
+    border-radius: var(--border-radius);
+    border: 1px solid #dcdfe3;
+    display: flex;
+    flex-direction: column; /* GARANTIDO que os itens fiquem um abaixo do outro */
+    gap: 8px;
+    align-items: flex-start;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.tool-sub-etapas-none {
+    color: var(--text-muted-color);
+    font-style: italic;
+    font-size: 0.95em;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.tool-sub-etapa-item-overview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 0.98em;
+    color: var(--text-color);
+    line-height: 1.3;
+    width: 100%;
+}
+
+.sub-etapa-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.sub-etapa-dot-concluida {
+    background-color: var(--success-color);
+}
+.sub-etapa-dot-em-andamento {
+    background-color: var(--primary-color);
+}
+.sub-etapa-dot-atrasada {
+    background-color: var(--danger-color);
+}
+.sub-etapa-dot-pendente {
+    background-color: var(--secondary-color);
+}
+
+.sub-etapa-text {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
+.tool-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.tool-actions button {
+    padding: 10px 18px;
+    font-size: 0.95em;
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tool-actions button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+.tool-actions button.disabled-by-permission {
+    opacity: 0.6;
+    background-color: var(--secondary-color);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.tool-actions button.disabled-by-permission:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+
+.tool-actions button.view-sub-stages {
+    background-color: var(--info-color);
+    color: white;
+}
+.tool-actions button.view-sub-stages:hover {
+    background-color: var(--info-hover-color);
+}
+
+
+/* --- MODAIS ESPECÍFICOS DA FERRAMENTARIA --- */
+
+/* Modal de Sub-etapas de Produção (Alvo principal) */
+#toolSubStagesModal .modal-content {
+    /* Centralização com margens verticais BEM MAIS AMPLAS */
+    margin: 120px auto; /* AUMENTADO para 120px de margem superior/inferior para deixá-lo BEM MENOR VERTICALMENTE */
+    
+    /* Largura e Padding */
+    max-width: 850px; /* AUMENTADO de 800px para 850px para ser mais largo */
+    width: 90%; /* Continua adaptável */
+    padding: 30px;
+    
+    /* Altura e Overflow */
+    max-height: calc(100vh - 240px); /* Ajusta para respeitar 120px de margem em cima e embaixo */
+    height: auto;
+    overflow-y: auto;
+    
+    /* Estilo visual */
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Título do Modal de Sub-etapas de Produção */
+#toolSubStagesModal h2 {
+    font-size: 2em;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* Nome da Ferramenta no Modal de Sub-etapas de Produção */
+#toolSubStagesToolName {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: var(--text-color);
+    display: block;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed var(--divider-color);
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+/* Lista de Sub-etapas dentro do modal */
+.sub-etapas-list {
+    margin-top: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fdfdfd;
+    max-height: 150px; /* REDUZIDO AINDA MAIS para compactar mais o modal */
+    overflow-y: auto;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+}
+
+.sub-etapa-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px dashed var(--divider-color);
+    font-size: 1.05em;
+    color: var(--text-color);
+    transition: background-color 0.2s ease;
+}
+
+.sub-etapa-item:hover {
+    background-color: #f8f9fa;
+}
+
+.sub-etapa-item:last-child {
+    border-bottom: none;
+}
+
+.sub-etapa-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.sub-etapa-checkbox {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.sub-etapa-descricao {
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.sub-etapa-text {
+    flex-grow: 1;
+}
+
+.sub-etapa-due-date {
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+    margin-left: 20px;
+    white-space: nowrap;
+    font-style: italic;
+}
+
+.sub-etapa-concluida-text {
+    color: var(--success-color);
+    font-weight: 600;
+    margin-left: 10px;
+    font-style: normal;
+}
+
+.sub-etapa-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.sub-etapa-actions button.small {
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.sub-etapa-actions button.small:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* FORMULÁRIO PARA ADICIONAR SUB-ETAPA NO MODAL */
+.sub-etapas-form {
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    flex-grow: 1;
+}
+
+.sub-etapas-form h4 {
+    font-size: 1.3em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--divider-color);
+    text-align: center;
+}
+
+#addToolSubStageForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+#addToolSubStageForm .form-group {
+    flex-basis: calc(50% - 10px);
+    min-width: 320px; /* AUMENTADO para 320px para garantir 2 colunas bem espaçadas */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+/* A descrição e o operador podem ocupar a largura total */
+#addToolSubStageForm .form-group.flex-grow {
+    flex-basis: 100%;
+}
+
+
+#addToolSubStageForm input[type="text"],
+#addToolSubStageForm input[type="number"],
+#addToolSubStageForm input[type="date"],
+#addToolSubStageForm select {
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 1em;
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    width: 100%;
+}
+#addToolSubStageForm input:focus,
+#addToolSubStageForm select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
+}
+
+/* Botão "Adicionar" do formulário de sub-etapa */
+#addToolSubStageForm button[type="submit"] {
+    flex: 1 1 100%;
+    max-width: 250px;
+    margin: 20px auto 0 auto;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
+    display: block;
+    text-align: center;
+}
+#addToolSubStageForm button[type="submit"]:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 123, 255, 0.35);
+}
+
+
+/* Modal de Edição de Ferramenta (Ajustes) */
+#editToolModal .modal-content {
+    /* Centralização com margens verticais BEM MAIS AMPLAS */
+    margin: 120px auto; /* AUMENTADO para 120px de margem superior/inferior */
+    
+    /* Largura e Padding */
+    max-width: 650px; /* AUMENTADO para 650px para um pouco mais de largura */
+    width: 90%;
+    padding: 30px;
+    
+    /* Altura e Overflow */
+    max-height: calc(100vh - 240px); /* Ajusta para respeitar 120px de margem em cima e embaixo */
+    height: auto;
+    overflow-y: auto;
+    
+    /* Estilo visual */
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+#editToolModal h2 {
+    font-size: 2em;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* Modal de Detalhes da Ferramenta (Ajustes) */
+#toolDetailsModal .modal-content {
+    /* Centralização horizontal com margens */
+    margin: 120px auto; /* AUMENTADO para 120px de margem superior/inferior */
+    
+    /* Largura e padding */
+    max-width: 1100px; /* AUMENTADO para 1100px para detalhes */
+    width: 90%;
+    padding: 35px;
+    
+    /* Altura e overflow */
+    max-height: calc(100vh - 240px);
+    height: auto;
+    overflow-y: auto;
+    
+    /* Estilo visual */
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+#toolDetailsContent {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 20px;
+    box-sizing: border-box;
+}
+
+.tool-details-header h3 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 30px;
+    font-size: 2em;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--divider-color);
+}
+
+.tool-details-section {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-left: 6px solid var(--primary-color);
+}
+
+.tool-details-section h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    border-bottom: 1px dashed var(--divider-color);
+    padding-bottom: 10px;
+    font-weight: 600;
+}
+
+.tool-details-section p {
+    margin: 10px 0;
+    font-size: 1.05em;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.tool-details-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.tool-details-section th,
+.tool-details-section td {
+    padding: 12px 15px;
+    border: 1px solid #e9ecef;
+    text-align: left;
+}
+
+.tool-details-section thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.tool-details-section tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.tool-details-section tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Modal de Confirmação de Exclusão (Ajustes) */
+#confirmDeleteToolModal .modal-content {
+    /* Centralização horizontal com margens */
+    margin: 120px auto; /* AUMENTADO para 120px de margem superior/inferior */
+    
+    /* Largura e padding */
+    max-width: 550px; /* AUMENTADO para 550px */
+    width: 90%;
+    padding: 30px;
+    
+    /* Altura e overflow */
+    max-height: calc(100vh - 240px);
+    height: auto;
+    overflow-y: auto;
+
+    /* Estilo visual */
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+#confirmDeleteToolModal h2 {
+    color: var(--danger-color);
+    border-bottom: 2px solid var(--danger-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+#confirmDeleteToolModal p {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+#confirmDeleteToolModal .modal-buttons {
+    justify-content: center;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .tool-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .tool-actions {
+        justify-content: center;
+    }
+    /* Adaptação de modais para telas médias */
+    #toolSubStagesModal .modal-content,
+    #editToolModal .modal-content,
+    #toolDetailsModal .modal-content,
+    #confirmDeleteToolModal .modal-content {
+        max-width: 85%; /* AUMENTADO para telas médias */
+        width: 90%;
+        margin: 50px auto; /* AUMENTADO para 50px de margem vertical em telas médias */
+    }
+    /* Adaptação específica para o modal de edição de sub-etapa */
+    #editToolSubStageModal .modal-content {
+        max-width: 600px; /* AUMENTADO para 600px para esse modal */
+        width: 90%;
+        margin: 50px auto; /* AUMENTADO para 50px de margem vertical em telas médias */
+    }
+}
+
+@media (max-width: 768px) {
+    .tool-card {
+        padding: 20px;
+        border-left-width: 6px;
+    }
+    .tool-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .tool-actions button {
+        width: 100%;
+        padding: 12px;
+    }
+    .tooling-container .form-section,
+    .tooling-container .tool-list-section {
+        padding: 20px;
+    }
+
+    .tool-progress-bar {
+        padding: 12px;
+    }
+    .tool-progress-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .tool-progress-header h5, .tool-progress-indicator {
+        font-size: 1em;
+    }
+
+    .tool-sub-etapas-overview {
+        padding: 12px;
+        gap: 6px;
+    }
+    .tool-sub-etapa-item-overview {
+        font-size: 0.9em;
+        gap: 8px;
+    }
+    .sub-etapa-dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Modais em telas menores */
+    #toolSubStagesModal .modal-content,
+    #editToolModal .modal-content,
+    #toolDetailsModal .modal-content,
+    #confirmDeleteToolModal .modal-content {
+        width: 95%;
+        max-width: 95%;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 10px auto;
+    }
+
+    #toolSubStagesModal h2, #editToolModal h3, #toolDetailsModal h3 {
+        font-size: 1.6em;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+    }
+    #toolSubStagesToolName {
+        font-size: 1.4em;
+    }
+
+    .sub-etapas-list {
+        padding: 15px;
+        max-height: 120px;
+    }
+    .sub-etapa-item {
+        padding: 10px 0;
+        font-size: 0.95em;
+    }
+    .sub-etapa-info {
+        gap: 8px;
+    }
+    .sub-etapa-actions {
+        gap: 6px;
+    }
+    .sub-etapa-actions button.small {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    .sub-etapas-form { /* Este bloco será substituído pela nova seção */
+        padding: 20px;
+        margin-top: 20px;
+    }
+    #addToolSubStageForm { /* Este bloco será substituído pela nova seção */
+        gap: 10px;
+    }
+    #addToolSubStageForm .form-group { /* Este bloco será substituído pela nova seção */
+        flex-basis: 100%;
+    }
+    #addToolSubStageForm button[type="submit"] { /* Este bloco será substituído pela nova seção */
+        max-width: 100%;
+        font-size: 1em;
+        padding: 10px;
+    }
+    .tool-details-section {
+        padding: 20px;
+    }
+    .tool-details-section h4 {
+        font-size: 1.2em;
+    }
+    .tool-details-section p {
+        font-size: 0.95em;
+    }
+    .tool-details-section th, .tool-details-section td {
+        padding: 8px 10px;
+        font-size: 0.85em;
+    }
+}
+/* --- NEW STYLES FOR SELECT PART FOR PRODUCTION --- */
+.select-part-for-production-section {
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    flex-grow: 1; /* Permite que cresça para preencher espaço */
+    display: flex;
+    flex-direction: column;
+}
+
+.select-part-for-production-section h4 {
+    font-size: 1.3em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--divider-color);
+    text-align: center;
+}
+
+.select-part-for-production-section .search-parts-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.select-part-for-production-section #searchProjectPartsInput {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+}
+
+.select-part-for-production-section #searchProjectPartsBtn {
+    flex-shrink: 0;
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+.parts-to-select-list {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #fdfdfd;
+    max-height: 200px; /* Altura máxima para rolagem */
+    overflow-y: auto;
+    flex-grow: 1; /* Permite que a lista cresça */
+}
+
+.parts-to-select-list .no-parts-available {
+    text-align: center;
+    color: var(--text-muted-color);
+    font-style: italic;
+    padding: 10px;
+}
+
+.part-to-select-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--divider-color);
+    font-size: 1em;
+    color: var(--text-color);
+    cursor: pointer; /* Indica que é clicável */
+    transition: background-color 0.2s ease;
+}
+
+.part-to-select-item:hover {
+    background-color: rgba(0, 123, 255, 0.05); /* Pequeno destaque no hover */
+}
+
+.part-to-select-item:last-child {
+    border-bottom: none;
+}
+
+.part-to-select-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.part-to-select-info strong {
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+.part-to-select-info span {
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+}
+
+/* Adicionando estilos explícitos para o `part-to-select-status` para garantir que a cor do texto e o fundo apareçam */
+.part-to-select-status {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.85em;
+    margin-left: 10px;
+    color: white; /* Garante o texto branco para contraste com o fundo */
+    text-transform: uppercase; /* Opcional: para que os status apareçam em maiúsculas */
+}
+
+/* Cores de status */
+.part-to-select-status.status-em-falta { /* Para 'Falta B.O.M' - VERMELHO */
+    background-color: var(--danger-color);
+}
+.part-to-select-status.status-disponivel { /* Para 'Disponível' - VERDE */
+    background-color: var(--success-color); 
+    color: white; /* Garante texto branco sobre verde */
+}
+.part-to-select-status.status-em-ordem { /* Para dados legados que ainda possam ser 'Em Ordem' - CINZA */
+    background-color: var(--secondary-color);
+    color: white;
+}
+.part-to-select-status.status-recebido { /* Para 'Concluído' - AZUL */
+    background-color: var(--primary-color);
+    color: white;
+}
+/* NOVO: Estilo para o status 'Aguardando Análise' - AMARELO */
+.part-to-select-status.status-aguardando-analise {
+    background-color: var(--warning-color);
+    color: var(--text-color);
+}
+
+
+/* NOVO ESTILO: Para peças DISPONÍVEIS, mas que já estão EM PRODUÇÃO para a ferramenta atual */
+/* ESTA REGRA TEM MAIOR ESPECIFICIDADE E SOBRESCREVE `status-disponivel` QUANDO `part-in-production` TAMBÉM ESTÁ PRESENTE */
+.part-to-select-item.part-in-production .part-to-select-status.status-disponivel {
+    background-color: var(--warning-color); /* AMARELO */
+    color: var(--text-color); /* Texto escuro para contraste com amarelo */
+    border: 1px dashed rgba(0,0,0,0.3); /* Borda tracejada para diferenciar ainda mais */
+}
+
+
+@media (max-width: 768px) {
+    .select-part-for-production-section .search-parts-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .select-part-for-production-section #searchProjectPartsInput,
+    .select-part-for-production-section #searchProjectPartsBtn {
+        width: 100%;
+        min-width: unset;
+    }
+    .parts-to-select-list {
+        max-height: 150px; /* Ajuste para telas menores */
+    }
+    .part-to-select-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .part-to-select-status {
+        align-self: flex-end;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+}

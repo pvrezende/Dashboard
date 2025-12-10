@@ -1,0 +1,326 @@
+/* management-activities.css - Estilos para Tela 8 (Consulta de Atividades) */
+
+/* --- INÍCIO DA CORREÇÃO: Evita que a tela "trema" ao mudar de página --- */
+#tela8 {
+    overflow-y: scroll !important; /* Força a barra de rolagem a estar sempre presente, evitando o salto de layout */
+}
+/* --- FIM DA CORREÇÃO --- */
+
+/* Container da Grade de Cards */
+#activitiesDetailsDisplay {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    padding-top: 20px;
+    align-items: start; /* Alinha os cards ao topo da linha */
+}
+
+/* Card do Funcionário (Estilo de Card + Lógica de Sanfona) */
+#tela8 .employee-dashboard-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    border-top: 4px solid var(--primary-color);
+    overflow: hidden; 
+    transition: box-shadow 0.2s ease;
+}
+
+#tela8 .employee-dashboard-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Cabeçalho Clicável */
+#tela8 .employee-card-header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    gap: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#tela8 .employee-card-header:hover {
+    background-color: #f8f9fa;
+}
+
+#tela8 .employee-avatar {
+    font-size: 3em;
+    color: var(--secondary-color);
+}
+
+#tela8 .employee-avatar.has-activities {
+    color: var(--success-color); /* Verde */
+}
+
+#tela8 .employee-avatar.no-activities {
+    color: var(--danger-color); /* Vermelho */
+}
+
+#tela8 .employee-info-main {
+    flex-grow: 1; 
+}
+
+
+#tela8 .employee-info-main h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+#tela8 .employee-info-main p {
+    margin: 2px 0 0;
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+}
+
+#tela8 .expand-icon {
+    font-size: 1.2rem;
+    color: var(--text-muted-color);
+    transition: transform 0.3s ease;
+}
+
+
+/* Corpo Recolhível (escondido por padrão) */
+#tela8 .employee-card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+    padding: 0 20px;
+    background-color: #f8f9fa;
+}
+
+/* Estado Expandido */
+#tela8 .employee-dashboard-card.expanded .employee-card-body {
+    max-height: 650px;
+    overflow-y: auto;  
+    padding: 15px 20px;
+    border-top: 1px solid var(--divider-color);
+    transition: max-height 0.4s ease-in, padding 0.4s ease-in;
+}
+
+#tela8 .employee-dashboard-card.expanded .expand-icon {
+    transform: rotate(180deg);
+}
+
+/* Atividades */
+#tela8 .employee-dashboard-activities {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#tela8 .dashboard-activity-item {
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-left: 3px solid #6c757d;
+}
+
+#tela8 .dashboard-activity-item.status-pendente {
+    border-left-color: #e67e22;
+}
+
+#tela8 .dashboard-activity-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#tela8 .dashboard-activity-description {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+#tela8 .dashboard-activity-details {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.85em;
+    color: var(--text-muted-color);
+}
+
+#tela8 .activity-project-name {
+    font-weight: 500;
+}
+
+/* Cronômetro */
+#tela8 .timer-section {
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px dashed var(--divider-color);
+}
+
+#tela8 .timer-display {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.8em;
+    padding: 4px 0;
+    background-color: #f1f3f5;
+    border-radius: 4px;
+    text-align: center;
+}
+
+#tela8 .timer-controls button {
+    padding: 5px 8px;
+    font-size: 0.8em;
+    min-width: 80px;
+    flex-grow: 1;
+}
+
+/* Seção de Busca e Paginação */
+#tela8 .dashboard-search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+}
+
+#tela8 .dashboard-search-bar input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+}
+
+#tela8 .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 25px;
+    padding: 10px;
+}
+
+#tela8 .pagination-controls .page-btn {
+    padding: 8px 14px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#tela8 .pagination-controls .page-info {
+    font-weight: bold;
+    color: var(--text-muted-color);
+    margin: 0 10px;
+}
+
+/* Estilos para o indicador de relógio */
+#tela8 .activity-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    background-color: #f0f2f5;
+    border-radius: 20px;
+    flex-shrink: 0;
+}
+
+#tela8 .activity-indicator .fa-clock {
+    font-size: 1em;
+    color: var(--primary-color);
+}
+
+#tela8 .activity-indicator .activity-count-badge {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 0.8em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* Novo Wrapper para os indicadores do cabeçalho */
+#tela8 .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* Novo Indicador de Cronômetro */
+#tela8 .chronometer-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    font-weight: bold;
+}
+
+#tela8 .chronometer-indicator.inactive {
+    background-color: #e9ecef;
+    color: var(--text-muted-color);
+}
+
+#tela8 .chronometer-indicator.active {
+    background-color: var(--success-color);
+    color: white;
+}
+
+#tela8 .chronometer-indicator i {
+    font-size: 0.9em;
+}
+
+/* Paginação Dentro do Card */
+#tela8 .activities-pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    padding: 10px 0;
+    border-top: 1px solid var(--divider-color);
+}
+
+#tela8 .activities-pagination-controls .page-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--primary-color);
+    background-color: #fff;
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#tela8 .activities-pagination-controls .page-btn:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+#tela8 .activities-pagination-controls .page-btn:disabled {
+    border-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+#tela8 .activities-pagination-controls .page-info {
+    font-weight: bold;
+    color: var(--text-muted-color);
+    margin: 0 10px;
+    font-size: 0.9em;
+}
+
+/* Garante que o corpo do card expandido tenha altura suficiente */
+#tela8 .employee-dashboard-card.expanded .employee-card-body {
+    max-height: 2000px; /* Altura generosa para acomodar 3 atividades + paginação */
+}
+

@@ -1,0 +1,115 @@
+/* tablet-mode.css */
+
+/* --- Estilos para o Modo Tablet (Tela 6) --- */
+.tablet-mode-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Ocupa a altura total da tela */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: var(--main-bg-color); /* Fundo similar ao resto da aplicação */
+    text-align: center;
+}
+
+.tablet-mode-container h1 {
+    font-size: 2.5em;
+    color: var(--primary-color);
+    margin-bottom: 40px;
+}
+
+.tablet-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Botões se ajustam em colunas */
+    gap: 30px; /* Espaçamento entre os botões */
+    width: 100%;
+    max-width: 900px; /* Limita a largura do grid para não ficar muito espalhado em telas grandes */
+    margin: 0 auto; /* Centraliza o grid de botões */
+}
+
+.tablet-action-button {
+    height: 200px; /* Altura fixa para botões grandes */
+    display: flex;
+    flex-direction: column; /* Ícone e texto em coluna */
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Espaçamento entre ícone e texto */
+    font-size: 1.5em; /* Tamanho da fonte do texto do botão */
+    font-weight: bold;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: white; /* Texto branco para todos os botões */
+    border: none;
+    cursor: pointer;
+}
+
+.tablet-action-button:hover {
+    transform: translateY(-5px); /* Efeito de elevação no hover */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.tablet-action-button i {
+    font-size: 3em; /* Tamanho grande para os ícones */
+    margin-bottom: 10px;
+}
+
+/* Cores específicas para os botões do tablet mode */
+.tablet-action-button.primary {
+    background-color: var(--primary-color);
+}
+.tablet-action-button.primary:hover {
+    background-color: var(--primary-hover-color);
+}
+
+.tablet-action-button.info {
+    background-color: var(--info-color);
+}
+.tablet-action-button.info:hover {
+    background-color: var(--info-hover-color);
+}
+
+.tablet-action-button.success {
+    background-color: var(--success-color);
+}
+.tablet-action-button.success:hover {
+    background-color: var(--success-hover-color);
+}
+
+/* Responsividade para o Modo Tablet */
+@media (max-width: 768px) {
+    .tablet-mode-container h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+
+    .tablet-buttons-grid {
+        grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
+        gap: 20px;
+        max-width: 100%;
+    }
+
+    .tablet-action-button {
+        height: 150px; /* Altura menor para botões em telas pequenas */
+        font-size: 1.3em;
+        gap: 10px;
+    }
+
+    .tablet-action-button i {
+        font-size: 2.5em; /* Ícones menores em telas pequenas */
+    }
+}
+
+@media (max-width: 480px) {
+    .tablet-mode-container h1 {
+        font-size: 1.8em;
+    }
+    .tablet-action-button {
+        height: 120px; /* Altura ainda menor para botões em telas muito pequenas */
+        font-size: 1.1em;
+    }
+    .tablet-action-button i {
+        font-size: 2em;
+    }
+}

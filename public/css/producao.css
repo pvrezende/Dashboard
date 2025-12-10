@@ -1,0 +1,1176 @@
+/* producao.css (VERSÃO FINAL E CORRIGIDA - SEM DRAG-AND-DROP) */
+
+.producao-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background-color: #f0f2f5;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+/* Esconde o cabeçalho da produção (incluindo o botão de fullscreen) quando em modo fullscreen */
+.producao-container.fullscreen-mode .producao-header {
+    display: none;
+}
+
+/* Placeholder e Indicador de Carregamento */
+.placeholder-message,
+.loading-indicator {
+    text-align: center;
+    color: #666;
+    font-size: 1.4em;
+    padding: 20px;
+    width: 100%;
+}
+
+/* Layout Principal - Grid 4x4 (4 colunas, 2 linhas) */
+#ferramentaDetailsDisplay {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto; /* Alterado para auto para se ajustar ao conteúdo */
+    gap: 15px;
+    padding: 10px;
+    width: 100%;
+    /* Ajustado para compensar a remoção do header, mas pode ser flexível */
+    min-height: calc(100vh - 120px);
+    box-sizing: border-box;
+    align-items: stretch; /* Garante que os itens se estiquem para preencher a altura da célula */
+}
+
+/* NOVO: Layout Principal em Fullscreen */
+.producao-container.fullscreen-mode #ferramentaDetailsDisplay {
+    display: flex; /* Agora o display principal em fullscreen é flex para conter os 2 painéis */
+    flex-direction: row;
+    gap: 20px; /* Espaçamento entre os painéis (imagem + atividades/anexos) */
+    padding: 20px; /* Padding geral para o conteúdo em fullscreen */
+    align-items: stretch; /* Garante que os painéis se estiquem verticalmente */
+    height: calc(100vh - 120px); /* Ajusta a altura total */
+    box-sizing: border-box;
+}
+
+
+/* Mini Cards de Ferramentas (Modo Normal) */
+.ferramenta-mini-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    border: 2px solid transparent;
+    /* ALTERADO: Aumenta o min-height padrão para acomodar os botões em mais linhas, se necessário */
+    min-height: 600px;
+}
+
+.ferramenta-mini-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ferramenta-mini-card.active-selected {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.ferramenta-mini-card.overdue-card {
+    border-left: 5px solid #dc3545;
+}
+
+.ferramenta-mini-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.ferramenta-mini-card-name {
+    font-weight: bold;
+    font-size: 0.9em; /* ALTERADO: Reduzido de 1.1em para 0.9em */
+    color: #333;
+    line-height: 1.3;
+    white-space: normal; /* Permitir quebra de linha natural */
+    overflow: hidden; /* Garantir que não vaze se for muito longo */
+    text-overflow: ellipsis; /* Adicionar reticências se houver corte vertical (mas o foco é evitar isso) */
+    flex-grow: 1; /* Permitir que o nome ocupe mais espaço */
+    min-width: 0; /* Permitir encolhimento, forçando quebra de linha */
+}
+
+.ferramenta-mini-card-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    white-space: nowrap; /* Manter o status em uma linha */
+    padding-left: 5px; /* Adicionar um pequeno padding para separar do nome */
+}
+
+.ferramenta-mini-card-status-dot {
+    display: none;
+}
+
+.ferramenta-mini-card-status-text {
+    font-size: 0.8em; /* ALTERADO: Reduzido de 0.9em para 0.8em */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ferramenta-mini-card-status-text.status-atrasada,
+.ferramenta-mini-card-status-text.status-atrasado {
+    color: #dc3545;
+}
+
+.ferramenta-mini-card-status-text.status-em-andamento {
+    color: #28a745;
+}
+
+.ferramenta-mini-card-status-text.status-em-processo {
+    color: var(--process-color); /* Laranja para "Em Processo" */
+}
+
+.ferramenta-mini-card-status-text.status-pendente {
+    color: #ffc107;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+.ferramenta-mini-card-status-text.status-concluida,
+.ferramenta-mini-card-status-text.status-concluido {
+    color: #6c757d;
+}
+
+.ferramenta-mini-card-status-text.status-sem-turno {
+    color: #007bff;
+}
+
+/* NOVO: Adicionado estilo para status "ENCERRADO" (mesma cor de "concluída" por enquanto) */
+.ferramenta-mini-card-status-text.status-encerrado {
+    color: #6c757d; /* Mesma cor de concluída */
+}
+
+.ferramenta-mini-card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 12px;
+    align-items: center;
+    flex-grow: 1;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.ferramenta-mini-card-image-container {
+    flex-shrink: 0;
+    width: 140px;
+    height: 140px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.ferramenta-mini-card-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.ferramenta-mini-card-details-content {
+    flex-grow: 1;
+    width: 100%;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-bottom: 5px;
+    flex-shrink: 0;
+}
+
+.mini-card-text {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 0px;
+    line-height: 1.3;
+    white-space: normal;
+    text-align: left;
+    width: 100%;
+    max-height: unset;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.mini-card-text.activity-description {
+    max-height: unset;
+}
+
+.mini-card-text strong {
+    white-space: normal;
+}
+
+/* Estilos para as labels e valores dentro do mini-card - CORES DA IMAGEM FORNECIDA */
+.mini-card-text .label-color {
+    font-weight: bold;
+    margin-right: 5px;
+    color: #6c757d; /* Cor padrão para labels: cinza */
+}
+
+/* Cores dos VALORES com base na imagem_d4c979.png */
+.mini-card-text .activity-value {
+    color: #007bff; /* Azul para a descrição da atividade */
+}
+.mini-card-text .value-na {
+    color: #6c757d; /* Cinza médio para N/A */
+}
+.mini-card-text .turn-time {
+    color: #343a40; /* Preto/cinza escuro para o turno */
+}
+.mini-card-text .realized-hours {
+    color: #28a745; /* Verde para Realizado */
+}
+.mini-card-text .planned-hours {
+    color: #dc3545; /* Vermelho para Previsto */
+}
+.mini-card-text .scheduled-date {
+    color: #6c757d; /* Cinza para Agendado */
+}
+.mini-card-text .due-date {
+    color: #dc3545; /* Vermelho para Prazo */
+}
+.sub-etapa-project-name {
+    color: #007bff; /* Azul para Nome do Projeto */
+}
+.operator-name {
+    color: #28a745; /* Verde para Operador */
+}
+
+.mini-card-text.no-activity {
+    text-align: center;
+    font-style: italic;
+    color: #999;
+    flex-grow: 1; /* Para que a mensagem de "Nenhuma atividade agendada" ocupe o espaço */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Temporizador e Controles (Mini Card) */
+.timer-section {
+    padding: 12px 15px;
+    border-top: 1px solid #e9ecef;
+    background-color: #f0f2f5;
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+    order: 2;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 90px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.timer-display {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    padding: 6px 0;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.timer-progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.timer-progress-bar-fill {
+    height: 100%;
+    background-color: #007bff;
+    width: 0%;
+    transition: width 1s linear;
+}
+
+/* ALTERADO: TIMER CONTROLS PARA RESPONSIVIDADE DOS BOTÕES */
+.timer-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center; /* Centraliza os botões */
+    align-items: center; /* Alinha verticalmente os botões se houver diferença de altura */
+}
+
+.timer-controls button {
+    /* ALTERADO: Flex-basis mais agressivo, padding e font-size */
+    flex: 1 1 calc(50% - 6px); /* 2 botões por linha */
+    max-width: 150px;
+    min-width: 80px;
+    padding: 6px 4px; /* Reduzir ainda mais o padding */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7em; /* Reduzir ainda mais a fonte */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px; /* Reduzir o gap entre ícone e texto */
+    transition: background-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+/* Novo estilo para botões desabilitados */
+.timer-controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+.timer-controls .start-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.timer-controls .start-btn:hover {
+    background-color: #218838;
+}
+
+.timer-controls .pause-btn {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.timer-controls .pause-btn:hover {
+    background-color: #e0a800;
+}
+
+.timer-controls .stop-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.timer-controls .stop-btn:hover {
+    background-color: #c82333;
+}
+
+.timer-controls .save-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.timer-controls .save-btn:hover {
+    background-color: #0056b3;
+}
+
+.timer-controls .complete-activity-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.timer-controls .complete-activity-btn:hover {
+    background-color: #5a6268;
+}
+
+.timer-controls .hidden-control {
+    display: none;
+}
+
+/* Card de Detalhes (Visualização Detalhada - OCUPA TELA TODA) */
+.ferramenta-card-details {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    width: 100%;
+    height: 100%; /* Ocupa 100% do pai, que será 100vh em fullscreen */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-sizing: border-box;
+    position: relative; /* Para o botão de fechar */
+}
+
+.ferramenta-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 25px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    flex-wrap: wrap;
+    flex-shrink: 0; /* Impede que o cabeçalho encolha */
+}
+
+.ferramenta-header h2 {
+    margin: 0;
+    font-size: 2.5em;
+    color: #333;
+    flex-grow: 1;
+}
+
+.status-indicator {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-indicator.atrasado {
+    background-color: #dc3545;
+}
+
+.status-indicator.em-andamento {
+    background-color: #28a745;
+}
+
+.status-indicator.pendente {
+    background-color: #ffc107;
+}
+
+.status-indicator.concluido {
+    background-color: #6c757d;
+}
+
+.status-indicator.sem-turno {
+    background-color: #007bff;
+}
+
+/* Botão "Voltar à Lista" posicionado no canto superior direito do card em tela cheia */
+.back-to-list-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+    z-index: 10;
+}
+
+.back-to-list-btn:hover {
+    background-color: var(--secondary-hover-color);
+}
+
+
+.ferramenta-content-inner {
+    display: flex;
+    gap: 35px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+/* NOVA SEÇÃO DE IMAGEM para o CARD DE TELA CHEIA (Left Panel) */
+.ferramenta-image-section-fullscreen {
+    flex-basis: 350px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ferramenta-image-fullscreen {
+    width: 250px;
+    height: 250px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.ferramenta-image-fullscreen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.operador-info-fullscreen {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.operador-info-fullscreen strong {
+    font-weight: bold;
+    color: #333;
+}
+
+
+.progress-bar-container-fullscreen {
+    width: 100%;
+    height: 25px;
+    background-color: #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 15px;
+}
+
+.progress-bar-container-fullscreen .progress-bar-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    width: 0%;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: width 0.5s ease-out;
+}
+
+/* NOVA SEÇÃO DE ATIVIDADES para o CARD DE TELA CHEIA (Right Panel) */
+.ferramenta-activities-section-fullscreen {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    /* Altura máxima para forçar o scroll */
+    max-height: calc(100vh - 180px); /* Ajuste este valor para dar espaço ao header e rodapé */
+    overflow-y: auto; /* Garante a rolagem vertical */
+}
+
+.activities-header {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+/* Cores do cabeçalho de atividades com base no status geral da ferramenta */
+.activities-header.activities-header-atrasado { border-color: #dc3545; color: #dc3545; }
+.activities-header.activities-header-em-andamento { border-color: #28a745; color: #28a745; }
+.activities-header.activities-header-pendente { border-color: #ffc107; color: #ffc107; }
+.activities-header.activities-header-concluido { border-color: #6c757d; color: #6c757d; }
+.activities-header.activities-header-sem-turno { border-color: #007bff; color: #007bff; }
+
+.activities-list-fullscreen {
+    flex-grow: 1;
+    overflow-y: auto; /* A rolagem principal está aqui */
+}
+
+/* Removidas classes de drag-and-drop */
+.activity-item {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+    border-left: 5px solid transparent;
+    flex-shrink: 0; 
+    cursor: default; /* CORREÇÃO AQUI: Altera o cursor para padrão */
+}
+.activity-item:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.activity-item-main-grid {
+    display: grid;
+    grid-template-columns: 1fr auto; 
+    gap: 15px;
+    align-items: flex-start;
+    width: 100%;
+    padding-right: 5px;
+    overflow: hidden;
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+}
+
+.activity-info-text-grid-col {
+    flex-grow: 1;
+    min-width: 0;
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+    padding-left: 0; /* Removendo o padding que dava espaço ao handle de drag */
+}
+
+/* Ícone de arrastar removido */
+.activity-item::before {
+    display: none;
+}
+/* Removida a classe .drag-instructions */
+
+
+/* Conteúdo do Anexo */
+.attachment-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    width: 140px;
+    justify-content: flex-start;
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+}
+.attachment-actions-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+}
+.attachment-actions-group .action-button {
+    padding: 6px 10px;
+    font-size: 0.85em;
+    white-space: nowrap;
+    justify-content: flex-start;
+}
+.attachment-thumbnail-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    flex-shrink: 0;
+    overflow: auto;
+}
+.attachment-thumbnail-container:hover {
+    transform: scale(1.05);
+}
+.attachment-thumbnail-container img,
+.attachment-thumbnail-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: contain;
+    display: block;
+    pointer-events: auto !important;
+    overflow: auto !important;
+}
+.attachment-icon-small {
+    font-size: 2.5em;
+    color: var(--info-color);
+}
+.attachment-column.hidden-attachment-column {
+    display: none !important;
+}
+.activity-item-main-grid > .activity-info-text-grid-col:first-child:last-child {
+    grid-column: 1 / -1;
+}
+
+/* Timer Fixo na Tela Cheia (Canto Inferior Direito) */
+.timer-section-fullscreen {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 280px;
+    box-sizing: border-box;
+    display: none !important;
+}
+.timer-section-fullscreen .timer-display {
+    font-size: 2.2em;
+    color: white;
+    background-color: transparent;
+    padding: 0;
+}
+.timer-section-fullscreen .timer-progress-bar-container {
+    background-color: rgba(255, 255, 255, 0.2);
+    height: 10px;
+}
+.timer-section-fullscreen .timer-progress-bar-fill {
+    background-color: var(--success-color);
+}
+.timer-section-fullscreen .timer-controls {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.timer-section-fullscreen .timer-controls button {
+    font-size: 0.9em;
+    padding: 10px 12px;
+    flex: 1;
+    min-width: 90px;
+}
+
+/* NOVO MODAL: Anexo Viewer */
+#attachmentViewerModal .modal-content {
+    width: 100%;       
+    max-width: 100%;   
+    height: 100%;       
+    max-height: 100%;  
+    margin: 0;          
+    border-radius: 0;   
+
+    display: flex;
+    flex-direction: column;
+    padding: 20px;      
+    box-sizing: border-box;
+}
+#attachmentViewerModal h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--divider-color);
+    flex-shrink: 0;
+}
+.attachment-viewer-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.attachment-viewer-content iframe,
+.attachment-viewer-content img {
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: contain;
+    display: block;
+}
+.attachment-viewer-content p {
+    text-align: center;
+    color: var(--text-muted-color);
+}
+#attachmentViewerModal .modal-buttons {
+    flex-shrink: 0;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+#attachmentViewerModal .modal-buttons .action-button {
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+
+/* Responsividade */
+/* Ajustes para telas maiores que mobile, mas menores que desktop padrão (e.g., tablets na horizontal) */
+@media (max-width: 1200px) {
+    .producao-container.fullscreen-mode #ferramentaDetailsDisplay {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .ferramenta-image-section-fullscreen {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .ferramenta-image-fullscreen {
+        width: 200px;
+        height: 200px;
+    }
+    /* Ajuste para a coluna de anexo e botões em telas médias */
+    .attachment-column {
+        flex-direction: column;
+        align-items: center;
+        width: auto;
+        min-width: unset;
+    }
+    .attachment-actions-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+    .attachment-thumbnail-container {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 0;
+        margin-right: 0;
+    }
+    .attachment-actions-group .action-button {
+        font-size: 0.75em;
+        padding: 5px 8px;
+    }
+}
+
+/* ALTERADO: Ajustes específicos para telas de aproximadamente 1072px de largura (3 colunas) */
+@media (max-width: 1072px) {
+    #ferramentaDetailsDisplay {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    /* ALTERADO: MIN-HEIGHT DO CARD PARA 3 COLUNAS */
+    .ferramenta-mini-card {
+        min-height: 600px;
+        padding-bottom: 8px;
+    }
+
+    .ferramenta-mini-card-image-container {
+        width: 110px;
+        height: 110px;
+    }
+
+    .ferramenta-mini-card-header {
+        padding: 10px 12px;
+    }
+
+    .mini-card-text {
+        font-size: 0.8em;
+        line-height: 1.2;
+        margin-bottom: 2px;
+    }
+
+    .timer-section {
+        padding: 8px 10px;
+        min-height: 90px;
+        gap: 5px;
+    }
+
+    .timer-display {
+        font-size: 1em;
+        padding: 4px 0;
+    }
+
+    /* ALTERADO: BOTÕES DO TIMER NESTA MEDIA QUERY */
+    .timer-controls button {
+        font-size: 0.65em;
+        padding: 4px 2px;
+        min-width: unset;
+        flex: 1 1 calc(50% - 6px);
+    }
+}
+
+/* ALTERADO: Ajustes específicos para telas de aproximadamente 918px de largura (2 colunas) */
+@media (max-width: 918px) {
+    #ferramentaDetailsDisplay {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* ALTERADO: MIN-HEIGHT DO CARD PARA 2 COLUNAS (OVERLAP DA REGRA ACIMA PARA SER MAIS ESPECÍFICO) */
+    .ferramenta-mini-card {
+        min-height: 610px;
+        padding-bottom: 10px;
+    }
+
+    .ferramenta-mini-card-image-container {
+        width: 120px;
+        height: 120px;
+    }
+
+    .ferramenta-mini-card-header {
+        padding: 10px 12px;
+    }
+
+    .mini-card-text {
+        font-size: 0.8em;
+        line-height: 1.2;
+    }
+
+    .timer-section {
+        padding: 10px 12px;
+        min-height: 90px;
+    }
+
+    .timer-display {
+        font-size: 1.1em;
+    }
+
+    /* ALTERADO: BOTÕES DO TIMER NESTA MEDIA QUERY */
+    .timer-controls button {
+        font-size: 0.75em;
+        padding: 6px 8px;
+        min-width: unset;
+        flex: 1 1 calc(50% - 6px);
+    }
+}
+
+
+/* Ajustes para telas menores (e.g., tablets na vertical) */
+@media (max-width: 900px) {
+    .producao-container {
+        padding: 8px;
+    }
+
+    #ferramentaDetailsDisplay {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+    }
+
+    /* ALTERADO: MIN-HEIGHT DO CARD PARA 2 COLUNAS (OVERLAP DA REGRA ACIMA PARA SER MAIS ESPECÍFICO) */
+    .ferramenta-mini-card {
+        min-height: 610px;
+    }
+
+    .ferramenta-mini-card-name {
+        font-size: 1em;
+    }
+
+    .mini-card-text {
+        font-size: 0.85em;
+        white-space: normal;
+    }
+
+    .ferramenta-mini-card-image-container {
+        width: 110px;
+        height: 110px;
+    }
+
+    /* Fullscreen adjustments */
+    .ferramenta-content-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .ferramenta-image-section-fullscreen {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        margin: 0 auto;
+    }
+    .ferramenta-image-fullscreen {
+        width: 200px;
+        height: 200px;
+    }
+    .ferramenta-header h2 {
+        font-size: 2em;
+    }
+    .activities-header {
+        font-size: 1.6em;
+    }
+    .activity-item p {
+        font-size: 0.9em;
+    }
+
+    .back-to-list-btn {
+        font-size: 0.95em;
+        padding: 10px 14px;
+    }
+
+    /* NOVO: Regras para o attachment-item em telas pequenas (modo fullscreen) */
+    .activity-item-main-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .attachment-column {
+        flex-direction: column; 
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .attachment-actions-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+    .attachment-thumbnail-container {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 0;
+        margin-right: 0;
+    }
+    /* Ocultar elementos na coluna de anexo se não houver conteúdo visualizável */
+    .attachment-column.hidden-attachment-column {
+        display: none !important;
+    }
+    /* Para a mensagem de "Sem Anexo" no modo responsivo */
+    .attachment-column .no-attachment-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Ajustes para telas MUITO MUITO pequenas (smartphones mais antigos/pequenos) */
+@media (max-width: 480px) {
+    .producao-container {
+        padding: 8px;
+    }
+
+    #ferramentaDetailsDisplay {
+        grid-template-columns: 1fr;
+    }
+    /* ALTERADO: MIN-HEIGHT DO CARD PARA 1 COLUNA */
+    .ferramenta-mini-card {
+        min-height: 580px;
+    }
+
+
+    .ferramenta-mini-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .ferramenta-mini-card-name {
+        font-size: 1em;
+    }
+
+    .ferramenta-mini-card-status {
+        align-self: flex-end;
+    }
+
+    .timer-display {
+        font-size: 1.2em;
+    }
+
+    /* ALTERADO: BOTÕES DO TIMER NESTA MEDIA QUERY */
+    .timer-controls button {
+        font-size: 0.7em;
+        padding: 6px 7px;
+        min-width: unset;
+        flex: 1 1 calc(50% - 6px);
+    }
+
+    .ferramenta-header h2 {
+        font-size: 1.8em;
+    }
+
+    .ferramenta-details-section p {
+        font-size: 1.1em;
+    }
+
+    .sub-etapas-section h3 {
+        font-size: 1.5em;
+    }
+
+    .activity-item p {
+        font-size: 1em;
+    }
+
+    .back-to-list-btn {
+        font-size: 0.95em;
+        padding: 10px 14px;
+    }
+
+    /* NOVO: Regras para o attachment-item em telas pequenas (modo fullscreen) */
+    .activity-item-main-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .attachment-column {
+        flex-direction: column; 
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .attachment-actions-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+    .attachment-thumbnail-container {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 0;
+        margin-right: 0;
+    }
+    /* Ocultar elementos na coluna de anexo se não houver conteúdo visualizável */
+    .attachment-column.hidden-attachment-column {
+        display: none !important;
+    }
+    /* Para a mensagem de "Sem Anexo" no modo responsivo */
+    .attachment-column .no-attachment-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+/* ---- ESTILOS PARA DRAG-AND-DROP DE ATIVIDADES (SUB-ETAPAS) ---- */
+
+/* REMOVIDO: cursor: grab; da classe .activity-item */
+.activity-item:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.activity-item-main-grid > .activity-info-text-grid-col {
+    /* Ajuste para remover o padding à esquerda, já que o ícone de arrastar foi removido */
+    padding-left: 0; 
+}
+
+/* REMOVIDO: Ícone de arrastar */
+.activity-item::before {
+    display: none;
+}
+
+/* Removido as classes e estilos relacionados a drag-and-drop */
+/* .activity-item.is-dragging { ... } */
+/* .activity-item.drag-over { ... } */
+/* .drag-instructions { ... } */
+
+.ferramenta-mini-card-status-text.status-na-fila-de-producao {
+    color: #007bff; /* Azul para 'Na fila de produção' */
+}
+
+.ferramenta-mini-card-status-text.status-disponivel {
+    color: #6c757d; /* Cinza para 'Disponível' */
+}
+
+.status-indicator.na-fila-de-producao {
+    background-color: #007bff;
+}
+
+.status-indicator.disponivel {
+    background-color: #6c757d;
+}
+

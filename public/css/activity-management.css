@@ -1,0 +1,662 @@
+/* activity-management.css - VERSÃO FINAL E CORRIGIDA */
+
+/* ========================================================== */
+/* ESTILOS DA TELA 7: GERENCIAMENTO DE ATIVIDADES
+/* ========================================================== */
+
+#tela7 .employee-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border-left: 5px solid var(--secondary-color); /* Cinza padrão */
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    width: 100%; /* Garante que o card do funcionário ocupe a largura total */
+    box-sizing: border-box;
+}
+
+#tela7 .employee-card.has-activities {
+    border-left-color: var(--success-color);
+}
+
+#tela7 .employee-card.no-activities {
+    border-left-color: var(--danger-color);
+}
+
+#tela7 .employee-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+/* --- CABEÇALHO DO CARD DO COLABORADOR --- */
+#tela7 .employee-card-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+    gap: 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* NOVO: Wrapper para alinhar o indicador e os botões */
+#tela7 .employee-header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço entre o indicador e os botões */
+    flex-shrink: 0; /* Impede que o container encolha */
+}
+
+/* NOVO: Estilo para o placeholder que garante o alinhamento */
+#tela7 .activity-indicator-placeholder {
+    min-width: 65px; /* Largura mínima para manter o alinhamento mesmo quando vazio */
+    display: flex;
+    justify-content: center; /* Centraliza o indicador dentro do seu espaço */
+    align-items: center;
+}
+
+#tela7 .employee-info-wrapper {
+    flex-grow: 1;
+    text-align: left;
+}
+
+#tela7 .employee-info-wrapper h4 {
+    font-size: 1.4em; /* Ajustado */
+    color: #2c3e50;
+    margin: 0 0 5px 0; /* Ajustado */
+    font-weight: 600;
+}
+
+#tela7 .employee-info-wrapper p {
+    font-size: 1em; /* Ajustado */
+    color: #495057;
+    margin: 0;
+}
+
+/* Container para o relógio e os botões */
+#tela7 .employee-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    /* justify-content: flex-end; foi movido para o pai .employee-header-right */
+}
+
+#tela7 .employee-actions .action-button {
+    padding: 8px 12px; /* Ajustado para botões menores */
+    font-size: 0.9em; /* Ajustado */
+}
+
+#tela7 .expand-icon {
+    font-size: 1.2rem; /* Ajustado */
+    color: #6c757d;
+    transition: transform 0.3s ease;
+    justify-self: end;
+}
+
+#tela7 .employee-card.expanded .expand-icon {
+    transform: rotate(180deg);
+}
+
+/* --- INDICADOR DE ATIVIDADES (RELÓGIO) --- */
+#tela7 .activity-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Ajustado */
+    padding: 4px 8px; /* Ajustado */
+    background-color: #e9ecef;
+    border-radius: 20px;
+    font-size: 0.9em; /* Ajustado */
+}
+
+#tela7 .activity-indicator .fa-clock {
+    font-size: 1em; /* Ajustado */
+}
+
+#tela7 .activity-indicator .activity-count-badge {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    width: 20px; /* Ajustado */
+    height: 20px; /* Ajustado */
+    font-size: 0.8em; /* Ajustado */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- CORPO EXPANSÍVEL DO CARD --- */
+#tela7 .employee-card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+    padding: 0 20px;
+}
+
+#tela7 .employee-card.expanded .employee-card-body {
+    max-height: 2000px; /* Altura generosa para acomodar conteúdo */
+    padding: 20px;
+    border-top: 1px solid var(--divider-color);
+}
+
+/* Filtros dentro do card */
+#tela7 .activity-filter-controls {
+    display: flex;
+    flex-wrap: wrap; /* Adicionado para responsividade */
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px; /* Ajustado */
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+#tela7 .filter-checkbox-group {
+    display: flex;
+    gap: 15px; /* Espaçamento entre checkboxes */
+    flex-wrap: wrap;
+}
+
+#tela7 .filter-search-group {
+    flex-grow: 1;
+    min-width: 200px; /* Garante que o campo de busca não fique muito pequeno */
+}
+
+#tela7 .activity-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9em;
+}
+
+/* --- INÍCIO DA CORREÇÃO DE LAYOUT DAS ATIVIDADES --- */
+#tela7 .employee-activities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Adiciona um espaçamento consistente entre as atividades */
+    width: 100%; /* Garante que a lista ocupe a largura total */
+}
+
+/* --- FIM DA CORREÇÃO --- */
+
+/* Paginação dentro do card */
+#tela7 .activities-pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid var(--divider-color);
+}
+
+/* ========================================================== */
+/* ESTILOS DO ITEM DE ATIVIDADE INDIVIDUAL (LAYOUT FINAL)
+/* ========================================================== */
+
+#tela7 .activity-item {
+    padding: 20px; /* Ajustado */
+    margin-bottom: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    display: flex; /* Adicionado para flexbox */
+    flex-direction: column; /* Adicionado para empilhar conteúdo */
+    gap: 15px; /* Espaçamento entre seções do item */
+    width: 100%; /* Garante que o item ocupe a largura total */
+    box-sizing: border-box; /* Inclui padding e borda na largura total */
+}
+
+/* ========================================================== */
+/* ===== INÍCIO DA ALTERAÇÃO PARA O LAYOUT HORIZONTAL E COMENTARIOS UNIFICADOS ===== */
+/* ========================================================== */
+.activity-layout-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%; /* Garante que o grid ocupe a largura total */
+}
+
+.activity-item-header {
+    display: flex;
+    flex-direction: column; /* Alterado para coluna para melhor empilhamento em telas menores */
+    gap: 15px; /* Ajustado */
+    width: 100%; /* Garante que o cabeçalho ocupe a largura total */
+}
+
+@media (min-width: 768px) { /* Layout horizontal em telas maiores */
+    .activity-item-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+}
+
+.activity-hierarchy-info {
+    flex-grow: 1;
+    display: grid; /* Alterado para grid */
+    grid-template-columns: auto 1fr; /* Duas colunas: label e valor */
+    gap: 5px 10px; /* Espaçamento entre itens do grid */
+    align-items: baseline;
+}
+
+.hierarchy-level {
+    display: contents; /* Faz com que os filhos participem diretamente do grid */
+    font-size: 1em; /* Ajustado */
+}
+
+.hierarchy-level:nth-child(2),
+.hierarchy-level:nth-child(3),
+.hierarchy-level:nth-child(4) {
+    padding-left: 0; /* Remove o padding-left problemático */
+}
+
+.hierarchy-label {
+    font-weight: bold;
+    color: var(--text-muted-color);
+    white-space: nowrap; /* Evita quebra de linha no label */
+}
+
+.hierarchy-value {
+    color: var(--text-color);
+}
+
+.hierarchy-level:last-child .hierarchy-value {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.activity-top-right-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha à esquerda em telas menores */
+    gap: 10px; /* Ajustado */
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .activity-top-right-wrapper {
+        align-items: flex-end; /* Alinha à direita em telas maiores */
+    }
+}
+
+.activity-meta-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha à esquerda em telas menores */
+    gap: 5px; /* Ajustado */
+    font-size: 1em; /* Ajustado */
+}
+
+@media (min-width: 768px) {
+    .activity-meta-info {
+        align-items: flex-end; /* Alinha à direita em telas maiores */
+    }
+}
+
+.activity-meta-info .meta-item strong {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.activity-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap; /* Adicionado para responsividade */
+    justify-content: flex-start; /* Alinha à esquerda em telas menores */
+}
+
+@media (min-width: 768px) {
+    .activity-actions {
+        justify-content: flex-end; /* Alinha à direita em telas maiores */
+    }
+}
+
+.activity-actions .action-button {
+    padding: 6px 10px; /* Ajustado para botões menores */
+    font-size: 0.85em; /* Ajustado */
+}
+
+.leader-comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%; /* Garante que o formulário ocupe a largura total */
+}
+
+.leader-comment-input {
+    min-height: 60px;
+    font-size: 1em; /* Ajustado */
+    padding: 10px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    resize: vertical; /* Permite redimensionar verticalmente */
+    width: 100%; /* Garante que o input ocupe a largura total */
+    box-sizing: border-box;
+}
+
+.leader-actions-wrapper {
+    display: flex;
+    justify-content: flex-end; /* Alinha o botão de enviar à direita */
+    align-items: center;
+    margin-top: 10px; /* Espaçamento superior */
+    width: 100%; /* Garante que o wrapper ocupe a largura total */
+}
+
+.leader-actions-wrapper .action-button {
+    padding: 8px 15px; /* Ajustado */
+    font-size: 0.9em; /* Ajustado */
+}
+
+/* Estilos de comentários unificados */
+.activity-comments-unified {
+    display: flex;
+    flex-direction: column;
+    /* Altere o valor de 'gap' abaixo */
+    gap: 5px; /* Valor reduzido para diminuir o espaçamento entre os comentários */
+    margin-top: 15px;
+    padding: 15px;
+    border-top: 1px solid var(--divider-color);
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.comment-item {
+    /* padding: 8px 15px; Ajustado para o espaçamento interno */
+    border-radius: 0; /* Remove o arredondamento */
+    font-size: 0.95em;
+    /* white-space: pre-wrap; */
+    word-break: break-word;
+    border-left: 4px solid;
+    box-shadow: none; /* Remove a sombra */
+    border-bottom: 1px solid #e0e0e0; /* Adiciona uma linha divisória para separar */
+}
+
+.comment-item:last-child {
+    border-bottom: none; /* Remove a borda inferior do último item */
+}
+
+.comment-item strong {
+    display: inline; /* Mantém o nome na mesma linha do comentário */
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #495057;
+    margin-right: 5px; /* Espaçamento entre o nome e o comentário */
+}
+
+.comment-item {
+    padding: 8px 12px;
+    margin: 4px 0;
+    border-radius: 4px;
+    border-left: 4px solid;
+}
+
+.comment-item {
+    padding: 8px 12px;
+    margin: 4px 0;
+    border-radius: 4px;
+    border-left: 4px solid #ccc;
+}
+
+.comment-item.user-color-1 {
+    background-color: #e8f5e9; 
+    border-left-color: var(--text-muted-color); 
+}
+.comment-item.user-color-2 {
+    background-color: #fff8e1; 
+    border-left-color: var(--primary-color); 
+}
+.comment-item.user-color-3 {
+    background-color: #e3f2fd; 
+    border-left-color: var(--success-color); 
+}
+.comment-item.user-color-4 {
+    background-color: #f3e5f5; 
+    border-left-color: #4d107b;
+}
+.comment-item.user-color-5 {
+    background-color: #fce4ec; 
+    border-left-color: #4d107b;
+}
+
+.comment-item.leader-comment {
+    background-color: #ffe6e6; 
+    border-left-color: var(--danger-color);
+    font-weight: bold;
+}
+
+/* Oculta as seções de comentários antigas */
+.activity-comments-grid, .comment-box, .comment-title, .comment-content {
+    display: none !important;
+}
+
+/* Estilos para o container principal da tela 7 */
+#tela7 .main-content-area {
+    padding: 20px;
+    width: 100%; /* Garante que a área de conteúdo principal ocupe a largura total */
+    box-sizing: border-box;
+}
+
+#tela7 .employee-search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%; /* Garante que o container de busca ocupe a largura total */
+    box-sizing: border-box;
+}
+
+#tela7 #employeeSearchInput {
+    flex-grow: 1;
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+}
+
+#tela7 #searchEmployeesBtn {
+    padding: 10px 15px;
+    font-size: 1em;
+}
+
+/* Adicione a nova regra de estilo para exibi-los um abaixo do outro */
+#tela7 #employeeList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Opcional: Para manter a paginação no rodapé da lista,
+   certifique-se de que a div de paginação esteja fora da #employeeList */
+#tela7 .pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid var(--divider-color);
+}
+
+#tela7 .no-tools, #tela7 .no-activities-found {
+    text-align: center;
+    color: var(--text-muted-color);
+    padding: 20px;
+    font-size: 1.1em;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    #tela7 .employee-card-header {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    #tela7 .employee-actions {
+        justify-content: flex-start;
+    }
+
+    #tela7 .activity-filter-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #tela7 .filter-search-group {
+        width: 100%;
+    }
+
+    #tela7 .activity-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #tela7 .activity-top-right-wrapper,
+    #tela7 .activity-meta-info,
+    #tela7 .activity-actions {
+        align-items: flex-start;
+    }
+}
+
+/* Garante que o container de botões use flexbox e alinhe à direita */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end; /* Alinha os botões à direita */
+    gap: 10px; /* Adiciona um espaço entre os botões */
+    margin-top: 20px;
+}
+
+/* Estilos específicos para o Modal de Atribuir Atividade */
+#addManagementActivityModal .modal-content {
+    max-width: 100vw;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    margin: 0;
+}
+
+#addManagementActivityModal h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+#addManagementActivityModal .modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Campos de seleção em cascata */
+#addManagementActivityModal .form-group select {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+/* Campo de seleção de múltiplos colaboradores com busca e paginação */
+.multi-select-wrapper {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    background-color: #f8f9fa;
+    overflow: hidden;
+}
+
+.employee-select-controls {
+    flex-shrink: 0;
+    margin-bottom: 10px;
+}
+
+.employee-select-controls input {
+    width: 100%;
+    padding: 8px 12px;
+}
+
+.multi-select-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-right: 5px;
+}
+
+.multi-select-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.multi-select-item:hover {
+    background-color: #e9ecef;
+}
+
+.multi-select-item.selected {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.multi-select-item.selected label {
+    color: white;
+}
+
+.multi-select-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+/* Estilos de paginação para a lista de colaboradores */
+.employee-pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    flex-shrink: 0;
+}
+
+.employee-pagination-controls .action-button {
+    padding: 5px 10px;
+    font-size: 0.8em;
+}
+
+.employee-pagination-controls .action-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.employee-pagination-controls span {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--text-muted-color);
+}

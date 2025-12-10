@@ -1,0 +1,3980 @@
+/* project-status.css - OTIMIZADO PARA RESPONSIVIDADE TOTAL E SOBREPOSIÇÃO */
+
+/* Estilos gerais para o contêiner */
+.dashboard-content {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Cabeçalho para a lista de projetos */
+.project-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.project-list-header h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 2em;
+    flex-shrink: 0;
+    min-width: 150px;
+}
+
+.project-list-header .stepper-text {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+.project-list-header .action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 150px;
+    flex-wrap: wrap; /* Permite que os botões quebrem a linha */
+}
+
+.search-project-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-grow: 1;
+}
+
+#projectSearchInput {
+    padding: 8px 12px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease;
+    flex-grow: 1;
+    min-width: 120px;
+}
+
+#projectSearchInput:focus {
+    border-color: var(--primary-color);
+}
+
+#refreshProjects {
+    background-color: var(--info-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#refreshProjects:hover {
+    background-color: var(--info-hover-color);
+    transform: translateY(-2px);
+}
+
+/* Layout para Cartões de Projeto */
+.projects-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.project-card {
+    display: grid;
+    grid-template-columns: 1fr auto; /* Duas colunas principais: conteúdo e ações */
+    grid-template-rows: auto auto; /* Duas linhas: conteúdo superior e entregável inferior */
+    gap: 20px;
+    align-items: start;
+    background-color: var(--card-bg-color);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 5px solid var(--primary-color);
+    min-height: 280px;
+    position: relative; /* Para posicionamento absoluto de elementos internos se necessário */
+}
+
+.project-main-content-wrapper {
+    grid-column: 1 / 2; /* Ocupa a primeira coluna */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.project-actions {
+    grid-column: 2 / 3; /* Ocupa a segunda coluna */
+    grid-row: 1 / 2; /* Fica na primeira linha */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end; /* Alinha os botões à direita */
+    justify-content: flex-start; /* Alinha os botões ao topo */
+}
+
+.weekly-deliverable-section {
+    grid-column: 1 / -1; /* Ocupa todas as colunas */
+    grid-row: 2 / 3; /* Fica na segunda linha */
+    margin-top: 0; /* Remove margem superior, já controlada pelo gap do grid */
+    width: 100%; /* Ocupa a largura total */
+    margin-right: 0; /* Remove margem direita */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo para o card de projeto encerrado */
+.project-card.project-encerrado {
+    background-color: #f0f0f0;
+    border-left-color: #6c757d;
+    pointer-events: none;
+}
+
+.project-card.project-encerrado .project-stepper-wrapper {
+    filter: grayscale(100%);
+    opacity: 0.6;
+}
+
+.project-card.project-encerrado .project-actions button {
+    pointer-events: auto;
+}
+
+.project-card.project-encerrado:hover {
+    transform: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.project-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.project-info-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+/* Estilo para o rótulo "ENCERRADO" */
+.project-status-label {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: 10px;
+    color: white;
+}
+
+.encerrado-label {
+    background-color: #6c757d;
+}
+
+.project-info-details {
+    font-size: 1.1em;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- Seção do Stepper (Barra de Progresso) --- */
+.project-stepper-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%;
+    min-height: 100px;
+}
+
+.stepper-text {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+.stepper-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    justify-items: center;
+    align-items: start;
+    position: relative;
+    width: 100%;
+    padding: 20px 0;
+    gap: 10px;
+    row-gap: 80px;
+}
+
+.step-connector {
+    display: none;
+}
+
+.step {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    border-radius: 50%;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6em;
+    font-weight: bold;
+    border: 3px solid var(--stepper-inactive-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    z-index: 2;
+    flex-shrink: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    padding: 0;
+    box-sizing: border-box;
+    margin-bottom: 55px;
+    margin-top: 35px;
+}
+
+.step:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.step.completed {
+    background-color: var(--stepper-completed-color);
+    border-color: var(--stepper-completed-color);
+    color: white;
+        /* box-shadow: 0 0 8px rgba(220, 53, 69, 0.6); */
+}
+
+.step.active {
+    background-color: var(--stepper-active-color);
+    border-color: var(--stepper-active-color);
+    color: white;
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.5);
+}
+
+.step.delayed {
+    background-color: var(--stepper-delayed-color);
+    border-color: var(--stepper-delayed-color);
+    color: white;
+}
+
+/* NOVO: Estilo para etapa concluída com atraso */
+.step.completed-late {
+    background-color: #6610f2;
+    border-color: #6610f2;
+    color: white;
+    box-shadow: 0 0 12px rgba(102, 16, 242, 0.5);
+}
+
+
+/* Estilo para a Data de Início acima da bolinha */
+.step-start-date {
+    position: absolute;
+    bottom: calc(100% + 28px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.7em;
+    color: var(--text-muted-color);
+    text-align: center;
+    font-style: italic;
+    font-weight: normal;
+    min-width: 90px;
+}
+
+/* Estilo para a Data de Fim acima da bolinha, abaixo da data de início */
+.step-date {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.7em;
+    color: var(--text-muted-color);
+    text-align: center;
+    font-style: italic;
+    font-weight: normal;
+    min-width: 90px;
+}
+
+.step-label {
+    position: absolute;
+    top: calc(100% + 18px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal;
+    width: 95px;
+    max-width: 95px;
+    font-size: 0.45em;
+    line-height: 1.2;
+    color: var(--text-muted-color);
+    text-align: center;
+    font-weight: 500;
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.step.completed .step-label {
+    color: var(--success-color);
+    font-weight: bold;
+}
+/* CORREÇÃO: Altera a cor do texto do label para a nova classe */
+.step.completed-late .step-label {
+    color: #6610f2;
+    font-weight: bold;
+}
+
+
+.step.active .step-label {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.step.delayed .step-label {
+    color: var(--danger-color);
+}
+
+/* Seção de Ações do Projeto */
+.project-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.project-actions button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    min-width: 90px;
+}
+
+.project-actions button.view-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+.project-actions button.view-btn:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-2px);
+}
+
+.project-actions button.edit-btn {
+    background-color: var(--info-color);
+    color: white;
+}
+.project-actions button.edit-btn:hover {
+    background-color: var(--info-hover-color);
+    transform: translateY(-2px);
+}
+
+.project-actions button.delete-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+.project-actions button.delete-btn:hover {
+    background-color: var(--danger-hover-color);
+    transform: translateY(-2px);
+}
+
+.project-actions button.parts-button {
+    background-color: var(--warning-color);
+    color: var(--text-color);
+    order: 5;
+}
+
+.project-actions button.parts-button:hover {
+    background-color: var(--warning-hover-color);
+    transform: translateY(-2px);
+}
+
+/* NOVO: Estilo para o botão de Compras */
+.project-actions button.shopping-btn {
+    background-color: #6610f2; /* Roxo para Compras */
+    color: white;
+    order: 6; /* Para posicionar abaixo do botão de peças */
+}
+.project-actions button.shopping-btn:hover {
+    background-color: #5a34a3;
+    transform: translateY(-2px);
+}
+
+/* NOVO: Estilo para o botão de Gerenciamento de Atividades */
+.project-actions button.activities-button {
+    display: none; /* Adicione esta linha para esconder o botão */
+    background-color: #fd7e14; /* Laranja para Gerenciamento de Atividades */
+    color: white;
+    order: 7; /* Posição na lista de botões */
+}
+.project-actions button.activities-button:hover {
+    background-color: #e76f0c;
+    transform: translateY(-2px);
+}
+
+.no-projects {
+    text-align: center;
+    color: var(--text-muted-color);
+    font-style: italic;
+    padding: 20px;
+}
+
+/* --- INÍCIO DA ALTERAÇÃO: NOVO ESTILO DO ENTREGÁVEL DA SEMANA --- */
+
+/* Contêiner principal do entregável */
+.weekly-deliverable-section {
+    /* Estilos já definidos no grid-template-columns e grid-row */
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    overflow: visible;
+    display: flex;
+    flex-direction: row; /* Layout horizontal */
+    align-items: stretch; /* Alinha os itens com a mesma altura */
+}
+
+.deliverable-header {
+    padding: 12px 20px;
+    background-color: #f0f0f0; /* Fundo cinza claro */
+    color: #fd7e14; /* Texto laranja */
+    font-size: 1.2em; /* Aumenta um pouco a fonte */
+    font-weight: bold; /* Deixa o texto em negrito */
+    text-align: center; /* Centraliza o texto */
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    box-sizing: border-box;
+    position: relative;
+    flex: 0 0 auto; /* Não cresce nem encolhe, tamanho automático */
+    min-width: 200px; /* Largura mínima para o header */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* ***** INÍCIO DA MODIFICAÇÃO ***** */
+.deliverable-content {
+    flex-grow: 1;
+    background-color: var(--card-bg-color);
+    padding: 12px 20px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    overflow: hidden;
+}
+
+.marquee-text {
+    white-space: normal;
+    overflow: visible;
+    text-align: center;
+    display: inline-block;
+    animation: none;
+    transform: none;
+    font-weight: bold;
+    color: #000000; /* Cor preta escura */
+    font-size: 1.2em;
+}
+
+/* ***** FIM DA MODIFICAÇÃO ***** */
+
+/* Estilos para o textarea de edição */
+.deliverable-textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.deliverable-content.has-content .marquee-text {
+    color: var(--primary-color); 
+    font-weight: bold;   /* Adicione esta linha */
+    font-size: 1.2em;    /* Adicione esta linha */
+}
+
+.deliverable-content:not(.has-content) .marquee-text {
+    color: var(--text-muted-color) !important;
+    font-style: italic !important;
+    font-weight: normal !important; /* Remove o negrito quando não há conteúdo */
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 1200px) {
+    .project-card {
+        grid-template-columns: 1fr; /* Em telas menores, o layout se torna uma única coluna */
+        grid-template-rows: auto auto auto; /* Info, Stepper, Actions, Deliverable */
+    }
+
+    .project-main-content-wrapper {
+        grid-column: 1 / -1;
+        grid-row: 1 / 2;
+    }
+
+    .project-actions {
+        grid-column: 1 / -1;
+        grid-row: 2 / 3; /* Move as ações para a segunda linha */
+        flex-direction: row; /* Botões em linha */
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .project-actions button {
+        width: auto;
+        min-width: unset;
+        flex-grow: 1;
+    }
+
+    .weekly-deliverable-section {
+        grid-column: 1 / -1;
+        grid-row: 3 / 4; /* Move o entregável para a terceira linha */
+    }
+}
+
+@media (max-width: 768px) {
+    .project-card {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .project-list-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .project-list-header .stepper-text {
+        text-align: left;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .project-list-header .action-buttons {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .search-project-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #projectSearchInput {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .stepper-container {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        row-gap: 60px;
+    }
+
+    .step {
+        width: 70px;
+        height: 70px;
+        min-width: 70px;
+        max-width: 70px;
+        font-size: 1.2em;
+        margin-bottom: 45px;
+        margin-top: 25px;
+    }
+
+    .step-label {
+        font-size: 0.4em;
+        width: 75px;
+        max-width: 75px;
+    }
+
+    .deliverable-header {
+        min-width: 150px;
+        font-size: 1em;
+        padding: 10px 15px;
+    }
+
+    .deliverable-content {
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-list-header h2 {
+        font-size: 1.5em;
+    }
+
+    .project-list-header .stepper-text {
+        font-size: 1.2em;
+    }
+
+    .project-actions button {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+
+    .step {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        max-width: 60px;
+        font-size: 1em;
+        margin-bottom: 40px;
+        margin-top: 20px;
+    }
+
+    .step-label {
+        font-size: 0.35em;
+        width: 65px;
+        max-width: 65px;
+    }
+
+    .deliverable-header {
+        min-width: 120px;
+        font-size: 0.9em;
+        padding: 8px 10px;
+    }
+
+    .deliverable-content {
+        padding: 8px 10px;
+    }
+}
+
+
+
+
+/* Responsividade */
+
+/* Telas MUITO LARGAS (acima de 1601px, 6 colunas) */
+@media (min-width: 1601px) {
+    .stepper-container {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 15px;
+        row-gap: 85px;
+    }
+}
+
+/* Telas GRANDES (entre 1201px e 1600px, 5 colunas) */
+@media (max-width: 1600px) {
+    .stepper-container {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        row-gap: 80px;
+    }
+}
+
+/* Telas MÉDIAS (entre 993px e 1200px, 4 colunas) */
+@media (max-width: 1200px) {
+    .stepper-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        row-gap: 75px;
+    }
+    .step-label {
+        width: 105px;
+        max-width: 105px;
+        font-size: 0.48em;
+    }
+}
+
+/* Telas PEQUENAS (entre 769px e 992px, 3 colunas) */
+@media (max-width: 992px) {
+    .project-card {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        min-height: 320px;
+    }
+    .project-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .project-actions button {
+        width: 48%;
+        max-width: unset;
+        flex-grow: 1;
+        justify-content: center;
+    }
+    .project-actions button.parts-button {
+        order: 5;
+        width: 100%;
+        min-width: 180px;
+    }
+
+    .project-actions button.shopping-btn {
+        order: 6;
+        width: 100%;
+        min-width: 180px;
+    }
+    .stepper-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        row-gap: 70px;
+    }
+    .step {
+        width: 90px;
+        height: 90px;
+        font-size: 1.6em;
+        margin-bottom: 55px;
+        margin-top: 35px;
+    }
+    .step-label {
+        font-size: 0.5em;
+        width: 90px;
+        max-width: 90px;
+        line-height: 1.1;
+    }
+    
+    #subEtapasModal .sub-etapas-list {
+        grid-template-columns: 1fr; /* Volta para uma coluna em telas menores */
+    }
+}
+
+/* Telas MUITO PEQUENAS (entre 481px e 768px, 2 colunas) */
+@media (max-width: 768px) {
+    .project-list-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .project-list-header .stepper-text {
+        text-align: left;
+        margin-left: 0;
+    }
+    .project-list-header .action-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .project-card {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        min-height: 280px;
+    }
+    .project-actions {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        width: 100%;
+        margin-top: 15px;
+    }
+    .project-actions button {
+        width: 100%;
+        flex-grow: 0;
+        min-width: unset;
+    }
+    .stepper-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        row-gap: 65px;
+        padding: 10px 0;
+    }
+    .step {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2em;
+        margin-bottom: 35px;
+        margin-top: 25px;
+    }
+    .step-label {
+        font-size: 0.5em;
+        top: 65px;
+        width: 60px;
+        max-width: 60px;
+        line-height: 1;
+    }
+}
+
+/* Telas EXTREMAMENTE PEQUENAS (smartphones em modo retrato) */
+@media (max-width: 480px) {
+    .stepper-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        row-gap: 55px;
+    }
+    .step {
+        width: 50px;
+        height: 50px;
+        font-size: 1em;
+        margin-bottom: 30px;
+        margin-top: 20px;
+    }
+    .step-label {
+        font-size: 0.45em;
+        top: 55px;
+        width: 50px;
+        max-width: 50px;
+    }
+}
+/* Estilos para Sub-Etapas Atrasadas (em .sub-etapa-item) */
+.sub-etapa-item.sub-etapa-atrasada {
+    border-left: 3px solid var(--danger-color);
+    background-color: rgba(220, 53, 69, 0.05); /* Fundo vermelho claro */
+}
+
+.sub-etapa-item.sub-etapa-atrasada .sub-etapa-descricao {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+/* Estilos para Status Visuais de Sub-Etapas Individuais */
+.sub-etapa-item.sub-etapa-atrasada {
+    background-color: rgba(220, 53, 69, 0.1); /* Fundo vermelho claro */
+    border-left: 4px solid var(--danger-color);
+}
+
+.sub-etapa-item.sub-etapa-em-andamento {
+    background-color: rgba(0, 123, 255, 0.05);
+    border-left: 4px solid var(--primary-color);
+}
+
+.sub-etapa-item.sub-etapa-concluida-visual {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid var(--success-color);
+}
+
+.sub-etapa-item.sub-etapa-concluida-atrasada-visual {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid var(--success-color); /* Garante a barra verde */
+}
+
+.sub-etapa-item.sub-etapa-concluida-visual .sub-etapa-descricao,
+.sub-etapa-item.sub-etapa-concluida-atrasada-visual .sub-etapa-descricao {
+    color: var(--text-muted-color);
+}
+
+
+/* --- Indicadores de Atualização e Botão de Parar --- */
+.refresh-indicator {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 123, 255, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 1000;
+}
+
+/* Botão para parar atualização */
+#stopRefreshButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* --- Notificações Toast --- */
+/* Wrapper para todas as notificações */
+#notification-wrapper {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre as notificações */
+    max-width: 90%; /* Para responsividade */
+}
+
+/* Estilo base para cada mensagem de notificação */
+.notification-message {
+    padding: 15px;
+    border-radius: var(--border-radius); /* Usando sua variável */
+    box-shadow: var(--box-shadow); /* Usando sua variável */
+    color: white;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transform: translateX(100%); /* Começa fora da tela para animação de entrada */
+    min-width: 250px; /* Largura mínima para ser legível */
+}
+
+/* Estado visível da notificação */
+.notification-message.show {
+    opacity: 1;
+    transform: translateX(0); /* Desliza para dentro */
+}
+
+/* Cores por tipo de notificação */
+.notification-message.success {
+    background-color: var(--success-color); /* Usando sua variável */
+}
+
+.notification-message.error {
+    background-color: var(--danger-color); /* Usando sua variável */
+}
+
+.notification-message.info {
+    background-color: var(--info-color); /* Usando sua variável */
+}
+
+.notification-message.warning {
+    background-color: var(--warning-color); /* Usando sua variável */
+    color: var(--text-color); /* Mudar a cor do texto para contraste com amarelo */
+}
+
+/* --- Estilos de Inputs e Seletores de Data/Hora --- */
+input[type="datetime-local"],
+input[type="text"],
+select {
+  padding: 10px;
+  border: 1px solid var(--divider-color);
+  border-radius: var(--border-radius);
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* --- Estilos do Botão "Gerar Relatório" --- */
+.button-relatorio {
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    border: 2px solid #007BFF;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background 0.3s, transform 0.2s;
+}
+.button-relatorio:hover {
+    background: #007BFF;
+    cursor: pointer;
+    transform: scale(1.05);
+}
+.button-relatorio:active {
+    opacity: 0.8;
+}
+
+/* --- Estilos de Login e Logout --- */
+/* Estilos para o modal de login */
+#loginModal .modal-content.small { /* Certifica-se que o modal de login usa o estilo 'small' */
+    max-width: 450px;
+}
+
+/* Mensagem de status para o formulário de login */
+.status-message {
+    text-align: center;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    margin-top: 15px;
+    font-weight: bold;
+    display: block; /* Sempre visível para feedback de login */
+}
+
+.status-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Adições para o botão de logout */
+#logoutButton {
+    background-color: #f44336; /* Vermelho para logout */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#logoutButton:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+/* Estilos para o container das etapas para arrastar e soltar */
+.drag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    min-height: 150px; /* Garante que o container tenha uma altura mínima para soltar os itens */
+    border: 1px dashed var(--divider-color);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    transition: border-color 0.3s ease;
+}
+
+.drag-container.drag-over {
+    border-color: var(--primary-color); /* Realça a borda quando um item é arrastado sobre o container */
+}
+
+/* Estilos para os itens das etapas */
+.drag-item {
+    cursor: grab;
+}
+
+.drag-item:active {
+    cursor: grabbing;
+}
+
+/* Efeito visual para o item que está sendo arrastado */
+.is-dragging {
+    opacity: 0.5; /* Deixa o item arrastado semi-transparente */
+    border: 2px solid var(--primary-color);
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Efeito visual para os outros itens enquanto um está sendo arrastado */
+.drag-container.is-dragging .drag-item:not(.is-dragging) {
+    opacity: 0.3; /* Diminui a opacidade dos outros itens para destacar o que está sendo movido */
+}
+
+/* ESTILO DO NOVO MODAL DE ATIVIDADES - OCUPANDO TODA A TELA */
+#projectActivitiesModal .modal-content {
+    max-width: 100vw;
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    margin: 0;
+}
+
+#projectActivitiesModal h2 {
+    font-size: 2em;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+#projectActivitiesProjectName {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: var(--text-color);
+    display: block;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.activities-list-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.activities-list-section h3 {
+    font-size: 1.4em;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--divider-color);
+}
+
+.activities-list {
+    max-height: calc(10 * 60px); /* Altura para exatamente 10 atividades (60px cada) */
+    overflow-y: auto;
+    padding-right: 10px;
+    flex-grow: 1;
+}
+
+.no-activities {
+    text-align: center;
+    color: var(--text-muted-color);
+    font-style: italic;
+    padding: 10px;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: var(--border-radius);
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-left: 5px solid;
+    transition: all 0.3s ease;
+    min-height: 50px; /* Altura mínima para cada item */
+}
+
+.activity-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.activity-item.status-concluido {
+    border-color: var(--success-color);
+}
+.activity-item.status-atrasado {
+    border-color: var(--danger-color);
+}
+.activity-item.status-pendente {
+    border-color: var(--primary-color);
+}
+
+.activity-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.activity-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.activity-status-text.status-concluido {
+    color: var(--success-color);
+    font-weight: bold;
+}
+.activity-status-text.status-atrasado {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+.activity-status-text.status-pendente {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.activity-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.add-activity-form-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.add-activity-form-section h4 {
+    font-size: 1.3em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--divider-color);
+    text-align: center;
+}
+
+#addProjectActivityForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Modais de edição de atividade */
+#editProjectActivityModal .modal-content {
+    max-width: 500px;
+    padding: 30px;
+}
+
+#editProjectActivityModal h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* --- Modal de Peças do Projeto (#projectPartsModal) --- */
+#projectPartsModal .modal-content {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+}
+
+#projectPartsModal h2 {
+    font-size: 1.8em; /* Reduzindo um pouco o tamanho da fonte */
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px 20px; /* Adicionando padding lateral */
+    border-bottom: 2px solid var(--primary-color);
+    white-space: normal; /* Permite que o texto quebre a linha */
+    overflow: visible; /* Garante que o texto não seja cortado */
+    word-wrap: break-word; /* Quebra palavras longas se necessário */
+    line-height: 1.3; /* Melhora o espaçamento entre linhas */
+    max-width: 100%; /* Garante que não ultrapasse a largura do container */
+    box-sizing: border-box; /* Inclui padding no cálculo da largura */
+}
+
+#projectPartsModal .modal-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 0;
+    overflow: auto; 
+    z-index: 10500; 
+}
+
+.parts-list-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    flex-grow: 1;
+}
+
+.parts-list-section h3 {
+    font-size: 1.5em;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--divider-color);
+}
+
+.parts-list {
+    max-height: 80vh; /* Aumenta a altura máxima para ocupar mais da tela */
+    overflow-y: auto;
+    padding-right: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; /* Seis colunas de tamanho igual */
+    gap: 20px; /* Espaçamento entre as colunas */
+    column-gap: 30px; /* Espaçamento específico entre colunas */
+}
+
+.no-parts {
+    text-align: center;
+    color: var(--text-muted-color);
+    font-style: italic;
+    padding: 10px;
+    grid-column: 1 / -1; /* Ocupa todas as colunas */
+}
+
+.part-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--divider-color);
+    font-size: 1em;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+    border-left: 4px solid var(--primary-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.part-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.part-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.part-info span {
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+}
+
+.part-status-text {
+    font-weight: bold;
+}
+
+.part-status-text.status-em-falta { color: var(--danger-color); }
+.part-status-text.status-disponivel { color: var(--success-color); }
+.part-status-text.status-recebido { color: var(--primary-color); }
+.part-status-text.status-em-ordem { color: var(--secondary-color); }
+.part-status-text.status-aguardando-analise { color: var(--warning-color); }
+.part-status-text.status-atrasado { color: var(--danger-color); }
+.part-status-text.status-em-processo {
+    color: white;
+    background-color: var(--process-color); /* Laranja */
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-style: normal;
+}
+.part-status-text.status-na-listagem {
+    color: white;
+    background-color: purple; /* MODIFICADO AQUI */
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-style: normal;
+}
+
+.part-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.add-part-form-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.add-part-form-section h4 {
+    font-size: 1.3em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--divider-color);
+    text-align: center;
+}
+
+#addProjectPartForm {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+/* --- Modal de Anexos (#attachmentsModal) --- */
+#attachmentsModal .modal-content {
+    max-width: 1000px;
+    width: 90%;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+#attachmentsModal h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.attachments-section {
+    margin-top: 20px;
+}
+
+.attachments-section h4 {
+    font-size: 1.3em;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--divider-color);
+}
+
+.attachments-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.attachment-item {
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.attachment-item:hover {
+    transform: translateY(-5px);
+}
+
+.attachment-thumbnail-wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--divider-color);
+}
+
+.attachment-thumbnail-wrapper img,
+.attachment-thumbnail-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: contain;
+}
+
+.attachment-icon-large {
+    font-size: 4em;
+    color: var(--secondary-color);
+}
+
+.attachment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.attachment-name {
+    font-weight: bold;
+    word-break: break-all;
+}
+
+.attachment-date {
+    font-size: 0.8em;
+    color: var(--text-muted-color);
+}
+
+.attachment-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.upload-attachment-form {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.upload-attachment-form .form-group {
+    flex-grow: 1;
+}
+
+.custom-file-upload {
+    border: 1px solid var(--primary-color);
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: white;
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-file-upload:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.file-name-display {
+    margin-left: 10px;
+    color: var(--text-muted-color);
+    font-style: italic;
+}
+
+/* --- INÍCIO DA MODIFICAÇÃO: Estilos para o Entregável da Semana --- */
+.sub-etapa-atribuicao {
+    color: var(--warning-color); /* ALTERADO: de azul para amarelo (cor de aviso) */
+    font-weight: normal;
+    margin-left: 8px;
+    font-style: italic;
+}
+
+.sub-etapa-atribuicao strong {
+    font-weight: bold; /* Mantém o nome em negrito */
+}
+/* Responsividade para o layout de peças em duas colunas */
+@media (max-width: 768px) {
+    .parts-list {
+        grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
+        column-gap: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .part-item {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    
+    .part-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .part-actions button {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+}
+
+
+/* Responsividade específica para o título do modal de peças */
+@media (max-width: 1024px) {
+    #projectPartsModal h2 {
+        font-size: 1.6em;
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    #projectPartsModal h2 {
+        font-size: 1.4em;
+        padding: 10px 15px;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 480px) {
+    #projectPartsModal h2 {
+        font-size: 1.2em;
+        padding: 8px 10px;
+        line-height: 1.5;
+    }
+}
+
+/* --- Estilos do Modal de Sub-Etapas --- */
+
+#subEtapasContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+
+/* Estilo para a lista de sub-etapas em seu modal */
+.sub-etapas-list {
+    padding: 15px;
+    display: flex;
+    flex-direction: column; /* Garante o empilhamento vertical dos itens */
+    gap: 12px;
+}
+
+.sub-etapa-item {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebra de linha em telas pequenas */
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-bg-color);
+    padding: 12px 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--secondary-color);
+}
+
+.sub-etapa-item:last-child {
+    border-bottom: none;
+}
+
+.sub-etapa-descricao {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.sub-etapa-text {
+    flex-grow: 1;
+}
+
+.sub-etapa-due-date {
+    font-size: 0.85em;
+    color: var(--text-muted-color);
+    margin-left: 15px;
+    white-space: nowrap;
+    font-style: italic;
+}
+
+.sub-etapa-concluida {
+    color: var(--success-color);
+    font-weight: normal;
+    margin-left: 8px;
+    font-style: italic;
+}
+
+.sub-etapa-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 15px;
+}
+
+.sub-etapa-actions button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.sub-etapa-actions button.edit-btn {
+    background-color: var(--info-color);
+    color: white;
+}
+.sub-etapa-actions button.edit-btn:hover {
+    background-color: var(--info-hover-color);
+}
+
+.sub-etapa-actions button.complete-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+.sub-etapa-actions button.complete-btn:hover {
+    background-color: var(--success-hover-color);
+}
+
+.sub-etapa-actions button.uncomplete-btn {
+    background-color: var(--warning-color);
+    color: var(--text-color);
+}
+.sub-etapa-actions button.uncomplete-btn:hover {
+    background-color: var(--warning-hover-color);
+}
+
+.sub-etapa-actions button.delete-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+.sub-etapa-actions button.delete-btn:hover {
+    background-color: var(--danger-hover-color);
+}
+
+/*
+#############################################################
+# INÍCIO DA MODIFICAÇÃO: Estilos para o Modal de Sub-etapas #
+#############################################################
+*/
+
+/* Torna o modal de sub-etapas muito maior para ocupar mais espaço na tela */
+#subEtapasModal .modal-content {
+    max-width: 100vw;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Faz o container interno do conteúdo do modal crescer e ter sua própria rolagem */
+#subEtapasModal #subEtapasContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto; /* PERMITE ROLAGEM SE A LISTA + FORMULÁRIO EXCEDEREM A ALTURA */
+    padding-right: 10px; /* Adiciona espaço para a barra de rolagem não sobrepor o conteúdo */
+}
+
+/* A lista de sub-etapas agora tem altura baseada no conteúdo e layout de 2 colunas */
+#subEtapasModal .sub-etapas-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Cria duas colunas iguais */
+    gap: 15px; /* Adiciona espaço entre os itens */
+    max-height: 65vh; /* Ajustado para dar mais espaço vertical para as 5 linhas */
+    flex-shrink: 0;
+    overflow-y: auto;
+    align-content: start; /* Alinha os itens no início do contêiner */
+}
+
+/* #################### INÍCIO DA MODIFICAÇÃO (Compactar Layout) #################### */
+/* Ajusta o tamanho da fonte e o espaçamento dos itens na lista para um visual mais compacto */
+#subEtapasModal .sub-etapa-item {
+    font-size: 0.9em; /* Reduz o tamanho geral da fonte do item */
+    padding: 10px;    /* Adiciona padding uniforme e reduz o espaçamento vertical */
+    align-items: center; /* Centraliza verticalmente o conteúdo */
+    flex-wrap: wrap; /* Permite que os botões quebrem a linha se necessário */
+}
+
+/* Reduz o tamanho dos botões de ação dentro da lista */
+#subEtapasModal .sub-etapa-actions button {
+    padding: 5px 8px; /* Diminui o padding do botão */
+    font-size: 0.9em; /* Ajusta o tamanho da fonte do botão em relação ao novo tamanho do item */
+}
+
+/* Reduz o tamanho dos ícones dentro dos botões */
+#subEtapasModal .sub-etapa-actions button i {
+    font-size: 0.9em;
+}
+
+/* Ajusta o tamanho dos títulos dentro do modal para um visual mais equilibrado */
+#subEtapasModal h2 {
+    font-size: 1.8em;
+}
+
+#subEtapasModal .sub-etapas-form h4 {
+    font-size: 1.2em;
+}
+/* #################### FIM DA MODIFICAÇÃO (Compactar Layout) #################### */
+
+
+/*
+#############################################################
+# FIM DA MODIFICAÇÃO                                        #
+#############################################################
+*/
+
+/* ========================================================== */
+/* ===== INÍCIO DOS NOVOS ESTILOS PARA O MODAL DE DETALHES ===== */
+/* ========================================================== */
+
+.project-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.project-details-header h3 {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 1.8em;
+    margin: 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.project-details-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.project-details-section {
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    border-left: 5px solid var(--primary-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.project-details-section h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 10px;
+}
+
+.project-details-section p {
+    line-height: 1.6;
+    color: var(--text-muted-color);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.info-item {
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.info-label {
+    display: block;
+    font-weight: bold;
+    color: var(--text-muted-color);
+    font-size: 0.9em;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.details-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.details-table th,
+.details-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.details-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.details-table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Estilos para os badges de status */
+.details-table .status-completed,
+.details-table .status-delayed,
+.details-table .status-in-progress,
+.details-table .status-pending,
+.info-value.status-completed,
+.info-value.status-delayed,
+.info-value.status-in-progress,
+.info-value.status-pending {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 15px;
+    color: white;
+    font-size: 0.85em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-completed { background-color: var(--success-color); }
+.status-delayed { background-color: var(--danger-color); }
+.status-in-progress { background-color: var(--primary-color); }
+.status-pending { background-color: var(--secondary-color); }
+
+/* --- Estilos para o Card de Projeto com Detalhes Recolhíveis --- */
+
+.project-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adiciona um espaço entre o nome e o botão */
+    width: 100%;
+}
+
+.details-toggle-btn {
+    background: none;
+    border: 1px solid var(--divider-color);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    color: var(--text-muted-color);
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    flex-shrink: 0; /* Impede que o botão encolha */
+}
+
+.details-toggle-btn:hover {
+    background-color: #e9ecef;
+}
+
+.project-info-details.collapsible {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out, margin-top 0.5s ease-out;
+    opacity: 0;
+    margin-top: 0; /* Sem margem quando escondido */
+    padding-top: 0; /* Sem padding quando escondido */
+    border-top: none; /* Sem borda quando escondido */
+}
+
+/* Estado visível (quando a classe 'details-visible' é adicionada ao card) */
+.project-card.details-visible .project-info-details.collapsible {
+    max-height: 500px; /* Altura máxima para a animação */
+    opacity: 1;
+    margin-top: 15px; /* Adiciona espaço quando visível */
+    padding-top: 15px; /* Adiciona espaçamento interno */
+    border-top: 1px solid var(--divider-color); /* Adiciona uma linha separadora */
+}
+
+.project-card.details-visible .details-toggle-btn {
+    transform: rotate(180deg);
+    background-color: var(--primary-color);
+    color: white;
+}
+/* --- Estilos para bloquear edição de entregáveis passados --- */
+
+.deliverable-content.past-week {
+    cursor: not-allowed;
+    background-color: #f8f9fa; /* Um fundo levemente acinzentado para indicar inatividade */
+}
+
+.deliverable-content.past-week .marquee-text {
+    color: #6c757d; /* Cor do texto um pouco mais clara */
+}
+
+#notification-wrapper {
+    z-index: 11000; /* Um valor bem alto para garantir que fique na frente de tudo */
+}
+
+/* --- INÍCIO DA ESTILIZAÇÃO DO BOTÃO "MOSTRAR PROJETOS ENCERRADOS" --- */
+
+/* Container do switch */
+.form-check.form-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px; /* Adiciona um respiro */
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+.form-check.form-switch:hover {
+    background-color: #e9ecef; /* Um leve destaque ao passar o mouse */
+}
+
+/* Esconde o checkbox padrão */
+.form-check-input {
+    display: none;
+}
+
+/* Estilo da Label (que agora será nosso switch) */
+.form-check-label {
+    color: var(--text-muted-color);
+    font-weight: 500;
+    font-size: 0.9em;
+    position: relative;
+    padding-left: 50px; /* Espaço para o "interruptor" */
+    line-height: 24px; /* Alinha o texto verticalmente com o switch */
+    user-select: none; /* Impede que o texto seja selecionado */
+}
+
+/* Cria a base (trilho) do switch usando a label */
+.form-check-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 44px; /* Largura do trilho */
+    height: 24px; /* Altura do trilho */
+    border-radius: 12px;
+    background-color: #ccc;
+    transition: background-color 0.3s ease;
+}
+
+/* Cria o botão (círculo) do switch */
+.form-check-label::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 16px; /* Tamanho do círculo */
+    height: 16px; /* Tamanho do círculo */
+    border-radius: 50%;
+    background-color: white;
+    transition: transform 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Estilos para quando o switch está ATIVADO (checked) */
+.form-check-input:checked + .form-check-label {
+    color: var(--primary-color); /* Opcional: muda a cor do texto */
+}
+
+.form-check-input:checked + .form-check-label::before {
+    background-color: var(--primary-color); /* Fundo do trilho fica azul */
+}
+
+.form-check-input:checked + .form-check-label::after {
+    transform: translateX(20px); /* Move o círculo para a direita */
+}
+
+/* --- FIM DA ESTILIZAÇÃO --- */
+
+/* --- Estilos para o Novo Layout de Setores --- */
+
+.modal-scrollable-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 15px; /* Espaço para a barra de rolagem */
+}
+
+.setores-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.setor-card {
+    background-color: #f8f9fa;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+}
+
+.setor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Esta propriedade centraliza o título e o bloco de botões verticalmente */
+    padding: 12px 15px; /* Leve ajuste no padding para melhor espaçamento */
+    background-color: #e9ecef;
+    border-bottom: 1px solid var(--divider-color);
+}
+.setor-header h4 {
+    margin: 0;
+    font-size: 1.2em;
+    color: var(--text-color);
+}
+
+.setor-actions {
+    display: flex;
+    flex-direction: column; /* Empilha os botões verticalmente */
+    gap: 5px; /* Reduz o espaço entre os botões empilhados */
+}
+
+.setor-body {
+    padding: 15px;
+}
+
+.inline-form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.inline-form input {
+    flex-grow: 1;
+}
+
+.add-setor-form-container {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid var(--primary-color);
+}
+
+/* Formulário para adicionar nova sub-etapa (CORRIGIDO) */
+.sub-etapas-form {
+    padding: 15px;
+    border-top: 1px solid var(--divider-color);
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens quebrem a linha */
+    gap: 10px;
+    align-items: center;
+}
+
+/* Seletor de atributo para IDs que começam com "addSubEtapaDescricao-" */
+.sub-etapas-form input[id^="addSubEtapaDescricao-"] {
+    flex: 1 1 300px; /* Permite crescer e encolher, com uma base de 300px */
+}
+
+.sub-etapas-form input[type="date"] {
+    flex-basis: 160px; /* Largura base para o campo de data */
+}
+
+.sub-etapas-form button {
+    flex-shrink: 0; /* Impede que o botão encolha */
+}
+/* --- NOVOS ESTILOS COMPLETOS PARA O BOTÃO E MODAL NPS (TELA CHEIA E TAMANHO CORRIGIDO) --- */
+
+/* project-status.css */
+
+/* --- CÓDIGO FINAL E CORRIGIDO PARA O MODAL NPS INTERATIVO --- */
+
+.project-actions button.nps-btn {
+    background-color: #6f42c1;
+    color: white;
+}
+.project-actions button.nps-btn:hover {
+    background-color: #5a2b9d;
+}
+
+#npsFormModal .modal-content {
+    width: 100vw;
+    height: 100vh;
+    max-width: 92vw;
+    max-height: 92vh;
+    border-radius: 0;
+    padding: 20px 40px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+}
+
+#npsFormModal h2 {
+    font-size: 1.6em;
+    margin-bottom: 5px;
+}
+#npsFormModal > .modal-content > p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.nps-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--divider-color);
+    margin-bottom: 15px;
+    flex-shrink: 0;
+}
+.nps-tab-button {
+    padding: 8px 18px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: var(--text-muted-color);
+    border-bottom: 3px solid transparent;
+}
+.nps-tab-button.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-weight: bold;
+}
+
+.nps-tab-content {
+    display: none;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+.nps-tab-content.active {
+    display: block;
+}
+
+.nps-form-header {
+    margin-bottom: 20px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-left: 4px solid var(--info-color);
+    border-radius: var(--border-radius);
+}
+.nps-form-header h3 {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+}
+.nps-form-header p {
+    font-size: 0.85rem;
+}
+
+.nps-question-container {
+    padding: 0px 1px;
+    border-bottom: 1px solid var(--divider-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.nps-question-text {
+    font-size: 1.0em;
+    flex-grow: 1;
+    line-height: 1.4;
+}
+
+.rating-scale-container {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.rating-option input[type="radio"] {
+    display: none; /* Esconde o radio button padrão */
+}
+
+.rating-option label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    font-weight: bold;
+    color: #888;
+    transition: all 0.2s ease;
+}
+
+.rating-option input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.rating-option label:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+#npsFormModal .form-group {
+    margin-top: 20px;
+}
+#npsFormModal textarea {
+    min-height: 80px;
+    font-size: 0.9rem;
+}
+
+#npsFormModal .modal-buttons {
+    padding-top: 15px;
+    border-top: 1px solid var(--divider-color);
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+
+/* Estiliza as "bolinhas" desabilitadas para ficarem cinzas */
+.rating-option input[type="radio"]:disabled + label {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+    color: #6c757d;
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+/* Estiliza a área de texto desabilitada */
+.nps-comments-textarea:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* Substitua a regra 'body.modal-open' anterior por esta */
+body.modal-open,
+body.modal-open .tela.active {
+    overflow: hidden;
+}
+
+/* CORREÇÃO: Nova regra para estilizar a bolinha que está marcada E desabilitada */
+.rating-option input[type="radio"]:checked:disabled + label {
+    background-color: var(--primary-color); /* Fundo azul para indicar que está selecionado */
+    border-color: var(--primary-color);   /* Borda azul */
+    color: white;                         /* Número branco */
+    cursor: not-allowed;                  /* Mantém o cursor de bloqueio */
+    opacity: 0.75;                        /* Leve opacidade para indicar que está desabilitado */
+}
+/* --- NOVOS ESTILOS PARA O LAYOUT DO MODAL DE GERENCIAMENTO DE USUÁRIOS --- */
+
+/* Container principal que define o layout de duas colunas */
+.manage-users-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Cria duas colunas de largura igual */
+    gap: 25px; /* Espaço entre as colunas */
+    flex-grow: 1; /* Permite que o layout ocupe o espaço vertical disponível */
+    overflow-y: visible; /* <-- MUDE DE 'hidden' PARA 'visible' (ou remova a linha) */
+}
+
+/* Painel da Esquerda (Cadastro e Lista de Usuários) */
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* overflow-y: auto; */ /* <-- REMOVA ESTA LINHA */
+    padding-right: 10px;
+}
+
+/* Painel da Direita (Cadastro e Lista de Níveis de Acesso) */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* overflow-y: auto; */ /* <-- REMOVA ESTA LINHA */
+    padding-right: 10px;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 992px) {
+    .manage-users-layout {
+        grid-template-columns: 1fr; /* Em telas menores, as colunas ficam uma sobre a outra */
+    }
+}
+
+/* --- ESTILO PARA DEIXAR O MODAL DE GERENCIAR USUÁRIOS EM TELA CHEIA --- */
+
+#manageUsersModal .modal-content {
+    max-width: 100vw;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    transform: none;
+    padding: 25px;
+    box-sizing: border-box;
+    overflow-y: auto; /* <-- ADICIONE ESTA LINHA */
+}
+
+/* project-status.css */
+
+/* --- Estilos para a Nova Lista de Compras no Modal --- */
+.shopping-file-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+}
+
+.shopping-setor-group h4 {
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 5px;
+}
+
+.shopping-file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: var(--shadow-small);
+}
+
+.shopping-file-item span i {
+    margin-right: 8px;
+    color: var(--success-color);
+}
+
+.shopping-file-item span em {
+    font-size: 0.8em;
+    color: var(--text-muted-color);
+    margin-left: 10px;
+}
+
+.shopping-file-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.shopping-upload-form {
+    margin-top: 20px;
+    border-top: 1px solid var(--divider-color);
+    padding-top: 20px;
+}
+
+/* Adicione este estilo para a nova data de compra */
+.sub-etapa-compra {
+    color: #28a745; /* Verde */
+    font-weight: normal;
+    margin-left: 8px;
+    font-style: italic;
+}
+
+.sub-etapa-compra strong {
+    font-weight: bold;
+}
+
+/* Estilos para os botões e status de aprovação da BOM */
+.shopping-file-actions .approve-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+.shopping-file-actions .approve-btn:hover {
+    background-color: var(--success-hover-color);
+}
+
+.shopping-file-actions .reject-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+.shopping-file-actions .reject-btn:hover {
+    background-color: var(--danger-hover-color);
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.status-badge.status-aprovado {
+    background-color: var(--success-color);
+}
+
+.status-badge.status-reprovado {
+    background-color: var(--danger-color);
+}
+
+/* --- INÍCIO DA MODIFICAÇÃO: Modal de Visualização de Arquivo em Tela Cheia --- */
+
+#fileViewerModal .modal-content {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    padding: 20px 30px; /* Adiciona um pouco de padding lateral */
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    transform: none;
+    display: flex; /* Garante que os filhos (header, content, footer) possam ser controlados */
+    flex-direction: column;
+}
+
+#fileViewerModal h2 {
+    flex-shrink: 0; /* Impede que o header encolha */
+}
+
+#fileViewerContent {
+    flex-grow: 1; /* Faz a área de conteúdo crescer para preencher o espaço */
+    max-height: none; /* Remove qualquer limite de altura anterior */
+    overflow-y: auto; /* Garante que a rolagem aconteça apenas na área de conteúdo */
+}
+
+#fileViewerModal .modal-buttons {
+    flex-shrink: 0; /* Impede que o rodapé encolha */
+}
+
+/* --- FIM DA MODIFICAÇÃO --- */
+
+
+.file-viewer-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.file-viewer-content table th,
+.file-viewer-content table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.file-viewer-content table th {
+    background-color: #e9ecef;
+    font-weight: bold;
+}
+
+/* Estilos para a tabela de visualização da BOM */
+.bom-viewer-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.bom-viewer-table th,
+.bom-viewer-table td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.bom-viewer-table thead th {
+    background-color: #e9ecef;
+    font-weight: bold;
+}
+
+.bom-viewer-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Estilo para a linha de Total Geral */
+.bom-viewer-table tfoot .total-geral-row {
+    background-color: #343a40;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.bom-viewer-table tfoot .total-geral-row td {
+    text-align: right;
+}
+
+.bom-viewer-table tfoot .total-geral-row td:last-child {
+    text-align: left;
+}
+/* Estilos para a informação de quem aprovou/reprovou */
+.shopping-file-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px 15px; /* Espaçamento vertical e horizontal */
+    flex-grow: 1;
+}
+
+.upload-info, .status-change-info {
+    font-size: 0.8em;
+    color: var(--text-muted-color);
+    font-style: italic;
+}
+
+.status-change-info strong {
+    font-weight: 600;
+    color: var(--text-color);
+}
+/* Estilo da bolinha de progresso do setor */
+.setor-progress-dot {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px; /* Aumenta a largura para caber a porcentagem */
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 15px; /* Espaço entre a bolinha e o nome do setor */
+    font-size: 0.75em;
+    font-weight: bold;
+    color: white;
+    border: 3px solid;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+/* Cores da bolinha baseadas no status */
+.setor-progress-dot.pending-dot {
+    background-color: var(--stepper-inactive-color);
+    border-color: var(--stepper-inactive-color);
+}
+
+.setor-progress-dot.in-progress-dot {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.setor-progress-dot.completed-dot {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+/* Estilo da bolinha de progresso do setor na tabela de detalhes */
+.setores-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.setor-progress-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+}
+
+.setor-progress-dot {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 0.7em;
+    font-weight: bold;
+    color: white;
+    border: 2px solid;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.setor-progress-dot.pending-dot {
+    background-color: var(--stepper-inactive-color);
+    border-color: var(--stepper-inactive-color);
+}
+
+.setor-progress-dot.in-progress-dot {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.setor-progress-dot.completed-dot {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.etapa-nome-cel {
+    vertical-align: top;
+}
+
+.etapa-info {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Em project-status.css, adicione estes novos estilos no final do arquivo */
+
+/* --- NOVOS ESTILOS PARA FILTROS DE PEÇAS --- */
+.parts-filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #e9ecef;
+    border-radius: var(--border-radius);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: var(--text-muted-color);
+    margin-bottom: 0; /* Remove a margem padrão da label */
+}
+
+.filter-group select,
+.filter-group input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.filter-group select {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.filter-group.checkboxes {
+    gap: 15px;
+}
+
+.filter-group.checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: normal;
+}
+
+/* Adicione ao final do arquivo project-status.css */
+
+.bom-viewer-table td img {
+    max-width: 70px;
+    max-height: 70px;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+}
+
+.bom-viewer-table td img:hover {
+    transform: scale(2.5); /* Efeito de zoom ao passar o mouse */
+    cursor: pointer;
+}
+
+.bom-viewer-table td {
+    vertical-align: middle; /* Centraliza o conteúdo das células verticalmente */
+    text-align: center; /* Centraliza o conteúdo horizontalmente */
+}
+
+.bom-viewer-table td:nth-child(2),
+.bom-viewer-table td:nth-child(3),
+.bom-viewer-table td:nth-child(5) {
+    text-align: left; /* Alinha colunas de texto à esquerda */
+}
+
+/* --- NOVOS ESTILOS PARA O ORÇAMENTO EDITÁVEL --- */
+
+/* Tabela de visualização de BOM com inputs */
+.bom-viewer-table input[type="text"],
+.bom-viewer-table input[type="number"],
+.bom-viewer-table input[type="date"] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9em;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease;
+}
+
+.bom-viewer-table input:focus {
+    background-color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.bom-viewer-table input:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    border-color: #ced4da;
+}
+
+/* Status de cada item da BOM */
+.bom-item-status {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.bom-item-status.status-pendente {
+    background-color: var(--secondary-color);
+}
+
+.bom-item-status.status-verificado {
+    background-color: var(--success-color);
+}
+
+.bom-item-status.status-comprado {
+    background-color: var(--info-color);
+}
+
+/* Botão para salvar alterações no modal de visualização */
+#fileViewerModal .modal-buttons {
+    display: flex;
+    justify-content: space-between; /* Alinha botões nas extremidades */
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--divider-color);
+}
+
+/* Botão para Atribuir Verificador */
+.shopping-file-actions .assign-btn {
+    background-color: var(--warning-color);
+    color: var(--text-color);
+}
+
+.shopping-file-actions .assign-btn:hover {
+    background-color: var(--warning-hover-color);
+}
+
+/* Botão para Finalizar Orçamento */
+.shopping-file-actions .finalize-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+.shopping-file-actions .finalize-btn:hover {
+    background-color: var(--success-hover-color);
+}
+
+/* NOVO: Estilo para o modal de compras em tela cheia */
+#shoppingModal .modal-content {
+    max-width: 100vw;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    transform: none;
+    padding: 25px;
+    box-sizing: border-box;
+    display: flex; /* Habilita flexbox para controle do conteúdo interno */
+    flex-direction: column; /* Organiza os elementos filhos em uma coluna */
+}
+
+/* Garante que a lista de arquivos possa rolar se o conteúdo for maior que a tela */
+#shoppingModal .shopping-file-info {
+    flex-grow: 1; /* Faz esta área crescer para preencher o espaço disponível */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical se necessário */
+    padding-right: 10px; /* Espaço para a barra de rolagem não sobrepor o conteúdo */
+}
+
+/* --- INÍCIO: NOVOS ESTILOS PARA CARD DE ITEM DA BOM COM IMAGEM --- */
+
+.bom-item-card {
+    background-color: white;
+    border: 1px solid var(--divider-color);
+    border-left: 5px solid var(--info-color);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    display: grid;
+    /* Define o layout: coluna da imagem, coluna de detalhes, coluna de ações */
+    grid-template-columns: 120px 1fr auto;
+    gap: 15px 20px;
+    align-items: center;
+}
+
+.bom-item-card.status-aprovado-para-compra {
+    border-left-color: var(--success-color);
+}
+
+.bom-item-image {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3; /* Ocupa as duas linhas da grid */
+    width: 100px;
+    height: 100px;
+    background-color: #f0f0f0;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.bom-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.bom-item-image .fa-image { /* Ícone para quando não há imagem */
+    color: #ccc;
+    font-size: 2em;
+}
+
+
+.bom-item-details {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3; /* Ocupa as duas linhas */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bom-item-details p {
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+}
+
+.bom-item-details .item-descricao {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.bom-item-details .item-info {
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+}
+
+.bom-item-details .item-info strong {
+    color: var(--text-color);
+}
+
+.bom-item-actions {
+    grid-column: 3 / 4;
+    grid-row: 1 / 3; 
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* CRÍTICO: Alinha no topo e estica (conforme a imagem) */
+    align-self: flex-start; 
+    justify-content: flex-start;
+    padding-left: 10px; 
+}
+
+/* Adicione esta classe (action-stack) para garantir o empilhamento vertical */
+.bom-item-actions.action-stack {
+    flex-direction: column; 
+    align-items: stretch; /* Estica os botões para ter a mesma largura */
+    justify-content: flex-start;
+}
+
+.bom-item-actions button {
+    width: 100%;
+    min-width: 120px; /* Garante que os botões tenham uma largura mínima */
+    text-align: center;
+    justify-content: center; /* Centraliza ícone e texto */
+}
+
+/* ------------------------------------------------------------------- */
+/* 2. CONTROLE DE VISIBILIDADE DO FORMULÁRIO DE AÇÃO RÁPIDA (NOVO) */
+/* ------------------------------------------------------------------- */
+
+/* Esconde o formulário de adição por padrão (apenas o container do formulário, não a seção de quotes) */
+.add-quote-form-container.add-quote-cotacoes-panel {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    margin: 0;
+    border-top: none !important; /* Desabilita a borda no estado inicial */
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out, margin 0.3s ease-in-out;
+}
+
+/* Mostra o formulário quando o botão de ação rápida o abre */
+.add-quote-form-container.add-quote-cotacoes-panel.open-quick-add {
+    max-height: 500px; /* Suficiente para mostrar o formulário */
+    padding: 15px 20px;
+    margin-top: 15px;
+    border-top: 1px dashed var(--divider-color) !important;
+}
+
+/* Oculta o formulário de adição na aba Cotações se o item não estiver em cotação. 
+   O CSS mais específico abaixo anula esta regra, garantindo que o formulário seja sempre 
+   exibido corretamente quando o botão de ação rápida é clicado. */
+.bom-item-card.status-em-cotacao .add-quote-form-container.add-quote-cotacoes-panel,
+.bom-item-card.status-cotacao-finalizada .add-quote-form-container.add-quote-cotacoes-panel {
+    display: block; /* Garante que o formulário é um bloco no painel de cotações */
+}
+
+.bom-item-status-badge {
+    grid-column: 2 / 3; /* Fica na mesma coluna dos detalhes */
+    grid-row: 2 / 3;    /* Mas na segunda linha (abaixo da descrição) */
+    align-self: end;    /* Alinha na parte de baixo da célula */
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    width: fit-content;
+}
+/* --- FIM: NOVOS ESTILOS PARA CARD DE ITEM DA BOM COM IMAGEM --- */
+
+/* --- INÍCIO: NOVOS ESTILOS PARA ORÇAMENTOS EXPANSÍVEIS (ACORDEÃO) --- */
+
+.bom-item-card {
+    /* Adicionando flex-direction para empilhar o conteúdo */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre a parte principal e a seção de orçamentos */
+}
+
+/* O container principal do item, sem os orçamentos */
+.bom-item-main-content {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 15px 20px;
+    align-items: center;
+    width: 100%;
+}
+
+/* Botão para expandir/recolher os orçamentos */
+.bom-item-quotes-toggle {
+    grid-column: 1 / -1; /* Ocupa todas as colunas */
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+    background-color: #f0f2f5;
+    border: 1px solid var(--divider-color);
+    border-top: none;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--primary-color);
+    transition: background-color 0.2s ease;
+}
+
+.bom-item-quotes-toggle:hover {
+    background-color: #e2e6ea;
+}
+
+.bom-item-quotes-toggle .fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+.bom-item-card.quotes-open .bom-item-quotes-toggle .fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+
+/* Container dos orçamentos (escondido por padrão) */
+.bom-item-quotes-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    padding: 0 10px; /* Padding lateral para não colar nas bordas */
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.bom-item-card.quotes-open .bom-item-quotes-container {
+    max-height: 500px; /* Altura máxima ao expandir */
+    overflow-y: auto; /* Rolagem se tiver muitos orçamentos */
+    padding-bottom: 15px;
+    transition: max-height 0.5s ease-in;
+}
+
+/* Lista de orçamentos dentro do container */
+.quotes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Item de orçamento individual */
+.quote-item-display {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.quote-info-display {
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+/* 1. Estilo para o Orçamento de Sugestão (Index 0) */
+.quote-item-display.quote-color-suggestion {
+    border-color: var(--primary-color); /* Azul padrão, para destaque */
+    background-color: #f7faff; /* Fundo azul bem claro */
+    font-weight: 500;
+}
+
+/* 2. Estilo ÚNICO para Todos os Novos Orçamentos (Index > 0) */
+.quote-item-display.quote-color-new-quote {
+    border-color: #ffc107; /* Amarelo/Ouro (Cor diferente para distinção) */
+    background-color: #fff8e7; /* Fundo amarelo muito claro */
+    font-weight: 500;
+}
+
+/* 3. Estilo para a tag de Sugestão (mantido da resposta anterior) */
+.suggestion-tag {
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--primary-color); 
+    background-color: #ccddff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* 4. Estilo para o Orçamento Selecionado (mantido) */
+.quote-item-display.quote-selected {
+    border-color: var(--success-color); /* Verde */
+    background-color: #eaf6ec;
+}
+
+/* Formulário para adicionar novo orçamento (dentro do container) */
+.add-quote-form-container {
+    display: flex; /* Garante que o container interno use flex para centralização */
+    flex-direction: column;
+    align-items: center;
+}
+.add-quote-form-container form {
+    width: 100%;
+    max-width: 600px; /* Limita a largura do formulário para não esticar demais */
+    align-items: stretch;
+}
+.add-quote-form-container .form-row {
+    gap: 10px;
+}
+.add-quote-form-container input {
+    font-size: 0.9em;
+    padding: 8px;
+}
+.add-quote-form-container button {
+    align-self: flex-end;
+}
+
+
+/* --- FIM: NOVOS ESTILOS PARA ORÇAMENTOS EXPANSÍVEIS (ACORDEÃO) --- */
+
+/* --- NOVOS ESTILOS PARA AÇÕES DE ORÇAMENTO (EDITAR/EXCLUIR) --- */
+
+.quote-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0; /* Impede que os botões encolham */
+}
+
+/* Adiciona um espaçamento para o botão de selecionar no painel de cotações */
+.quote-actions .action-button.success {
+    margin-left: 10px;
+}
+
+/* --- ESTILOS PARA O NOVO PAINEL DE SOLICITAÇÕES DE COMPRA --- */
+
+#solicitacoesDashboard .modal-content {
+    max-width: 1200px; /* Um modal mais largo */
+    width: 90%;
+}
+
+.solicitacoes-list {
+    margin-top: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f0f2f5;
+    border-radius: var(--border-radius);
+}
+
+/* O card agora é um grid de 3 colunas: Imagem | Detalhes | Ações */
+.solicitacao-card {
+    background-color: white;
+    border: 1px solid var(--divider-color);
+    border-left: 5px solid var(--warning-color); /* Laranja para 'Aguardando Aprovação' */
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    /* Ajustado para uma grid de 4 colunas para incluir o checkbox (1/5) */
+    display: grid;
+    grid-template-columns: auto 100px 1fr auto; 
+    gap: 15px 20px;
+    align-items: center; /* CRÍTICO: Centraliza os elementos verticalmente no grid */
+}
+
+.solicitacao-info {
+    font-size: 0.9em;
+    padding: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    grid-column: 1 / -1; /* Ocupa a linha toda */
+    margin-bottom: 10px;
+}
+
+.solicitacao-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* --- NOVOS ESTILOS DE STATUS PARA OS CARDS DE COMPRA --- */
+
+/* Esconde o formulário de adicionar orçamento por padrão */
+.bom-item-card .add-quote-form-container {
+    display: none;
+}
+
+/* MOSTRA o formulário apenas se o status for 'Em Cotação' */
+.bom-item-card.status-em-cotacao .add-quote-form-container {
+    display: block;
+}
+
+/* Cor da borda para "Aguardando Aprovação" */
+.bom-item-card.status-aguardando-aprovacao {
+    border-left-color: var(--warning-color); /* Laranja */
+}
+
+/* Cor da borda e badge para "Reprovado" */
+.bom-item-card.status-reprovado {
+    border-left-color: var(--danger-color); /* Vermelho */
+    opacity: 0.7;
+}
+
+.bom-item-status-badge.status-aguardando-aprovacao {
+    background-color: var(--warning-color);
+}
+.bom-item-status-badge.status-reprovado {
+    background-color: var(--danger-color);
+}
+/* --- ESTILOS PARA OS BOTÕES DE APROVAÇÃO NO MODAL DE COMPRAS --- */
+
+.bom-item-approval-actions {
+    display: flex;
+    justify-content: flex-end; /* Alinha os botões à direita */
+    gap: 10px;
+    padding: 10px 15px;
+    border-top: 1px dashed var(--divider-color);
+    margin-top: 10px;
+}
+/* --- ESTILOS PARA CONTROLES DE APROVAÇÃO EM MASSA --- */
+
+.solicitacoes-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--divider-color);
+}
+
+.select-all-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.select-all-container label {
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+}
+
+#selectAllSolicitacoes {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.bulk-actions-container {
+    display: flex;
+    gap: 10px;
+}
+
+
+/* 1. Checkbox */
+.solicitacao-checkbox-container {
+    grid-column: 1 / 2;
+    padding-right: 15px;
+}
+
+.solicitacao-checkbox {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+/* 2. Imagem */
+.solicitacao-card .bom-item-image {
+    grid-column: 2 / 3;
+    /* Centraliza a imagem no meio do espaço */
+    align-self: center;
+    justify-self: center;
+}
+
+/* 3. Detalhes (Texto - Centro) */
+.solicitacao-card .bom-item-details {
+    grid-column: 3 / 4;
+    flex-grow: 1;
+    /* Alinha o texto na parte superior do espaço disponível (default do flex-direction column) */
+    align-self: center; /* CRÍTICO: Centraliza o bloco de texto verticalmente no grid-cell */
+    min-width: 0;
+}
+
+.solicitacao-card .action-button.small {
+    padding: 8px 12px;
+    font-size: 0.9em;
+}
+
+/* Garante que a lista de itens do painel de aprovação tenha rolagem */
+#approvalPanelContent {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px; 
+}
+
+/* Garante que a seção do formulário não encolha */
+#shoppingModal .form-section.collapsible-section {
+    flex-shrink: 0;
+}
+
+/* Garante que a lista de itens tenha uma altura máxima e rolagem */
+#shoppingModal #bomItemsListContainer {
+    flex-grow: 1;
+    /* max-height: 500px;  <- REMOVA ESTA LINHA SE EXISTIR */
+    overflow-y: auto;
+    padding: 15px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--border-radius);
+    background-color: #fdfdfd;
+    min-height: 100px; /* Garante que o container seja visível mesmo sem itens */
+}
+
+/* --- NOVOS ESTILOS PARA GRUPOS DE SETORES NA LISTA DE COMPRAS --- */
+
+.sector-group {
+  border: 1px solid #e0e0e0;
+  border-left-width: 8px; /* Borda colorida mais grossa */
+  border-radius: 8px;
+  margin-bottom: 25px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  overflow: hidden; /* Garante que os cantos arredondados funcionem bem */
+}
+
+.sector-title {
+  background-color: #f7f7f7;
+  padding: 12px 20px;
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Garante que o container de itens do setor se adapte ao flex */
+.sector-items-container {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Cores específicas para cada setor (usando o atributo data-sector) */
+.sector-group[data-sector="Mecânica"] {
+  border-left-color: #007bff; /* Azul */
+}
+.sector-group[data-sector="Mecânica"] .sector-title {
+  color: #0056b3;
+}
+
+.sector-group[data-sector="Software"] {
+  border-left-color: #6f42c1; /* Roxo */
+}
+.sector-group[data-sector="Software"] .sector-title {
+  color: #4a2d82;
+}
+
+.sector-group[data-sector="Elétrica"] {
+  border-left-color: #fd7e14; /* Laranja */
+}
+.sector-group[data-sector="Elétrica"] .sector-title {
+  color: #b95603;
+}
+
+.sector-group[data-sector="Geral"] {
+  border-left-color: #6c757d; /* Cinza */
+}
+.sector-group[data-sector="Geral"] .sector-title {
+  color: #343a40;
+}
+
+/* Adicione mais setores e cores conforme precisar */
+.sector-group[data-sector="Hidráulica"] {
+  border-left-color: #17a2b8; /* Ciano */
+}
+.sector-group[data-sector="Hidráulica"] .sector-title {
+  color: #0f6674;
+}
+
+/* --- ESTILO PARA O BOTÃO DE ENVIAR SETOR --- */
+.sector-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.send-sector-btn {
+    margin-left: auto; /* Empurra o botão para a direita */
+    flex-shrink: 0;
+}
+
+/* project-status.css (ADICIONE ESTE BLOCO NO FINAL DO ARQUIVO) */
+
+/* --- Estilos para o Acordeão (Collapse/Expand) dentro do Modal de Compras --- */
+
+/* 1. Reset e Aparência do Container do Acordeão (seção) */
+.collapsible-section {
+    border: 1px solid var(--divider-color);
+    border-left: 5px solid var(--primary-color); 
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    overflow: hidden; /* CRÍTICO: Para esconder o conteúdo quando max-height for 0 */
+    padding: 0; 
+}
+
+/* 2. Estilo do Cabeçalho Clicável */
+.collapsible-section .collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 15px 20px;
+    margin: 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid transparent; /* Transparente para evitar linha dupla no estado fechado */
+    transition: background-color 0.2s ease;
+}
+
+.collapsible-section:hover .collapsible-header {
+    background-color: #f8f9fa;
+}
+
+.collapsible-section .collapsible-header h3 {
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    font-size: 1.2em;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.toggle-collapse-btn {
+    background: none;
+    border: none;
+    font-size: 1.1em;
+    color: var(--text-muted-color);
+    cursor: pointer;
+    transition: transform 0.4s ease, color 0.3s ease;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+/* 3. CONTEÚDO (CRÍTICO: Lógica de Abertura/Fechamento) */
+.collapsible-content {
+    max-height: 0; /* ESTADO FECHADO */
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out; /* Transiciona a altura e o padding */
+    padding: 0 25px; 
+    background-color: #fdfdfd;
+}
+
+/* 4. ESTADO ABERTO (com a classe 'open' no pai) */
+.collapsible-section.open .collapsible-content {
+    /* Um valor alto para forçar a abertura */
+    max-height: 2000px; 
+    /* Adiciona o padding que estava em 0 no estado fechado */
+    padding: 20px 25px; 
+    border-top: 1px solid var(--divider-color);
+    transition: max-height 0.6s ease-in, padding 0.6s ease-in;
+}
+
+/* 5. Estilo da seta no estado ABERTO */
+.collapsible-section.open .toggle-collapse-btn i {
+    transform: rotate(180deg);
+}
+
+/* Garante que o cabeçalho não tenha borda inferior duplicada ao abrir */
+.collapsible-section.open .collapsible-header {
+    border-bottom: 1px solid var(--divider-color); 
+}
+
+/* --- Estilos para o Painel de Aprovação (Solicitações) --- */
+
+.shopping-panel-tabs {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 2px solid var(--divider-color);
+    margin-bottom: 20px;
+}
+
+.shopping-panel-tabs .tab-button {
+    padding: 10px 15px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1em;
+    color: var(--text-muted-color);
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.shopping-panel-tabs .tab-button:hover:not(.active) {
+    color: var(--primary-color);
+}
+
+.shopping-panel-tabs .tab-button.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* project-status.css: NOVO BLOCO DE ESTILOS PARA AS ABAS DE COMPRAS */
+
+/* Estilos de ÍCONES: Definindo uma cor única para cada aba */
+.shopping-panel-tabs .tab-button i {
+    margin-right: 5px;
+    /* Estilos genéricos, para caso falhe a regra específica */
+    color: var(--text-color); 
+    transition: color 0.3s ease;
+}
+
+/* 1. Lista de Pedido de Compra */
+.tab-button i.fa-list-alt { 
+    color: var(--primary-color); /* Azul principal */
+}
+
+/* 2. Painel Aprovação Líder */
+.tab-button i.fa-user-check { 
+    color: #fd7e14; /* Laranja (Cor de Aviso/Em Andamento) */
+}
+
+/* 3. Painel de Aprovação Gestores */
+.tab-button i.fa-vote-yea { 
+    color: var(--danger-color); /* Vermelho (Cor de Alerta/Urgência) */
+}
+
+/* 4. Cotações/Compras */
+.tab-button i.fa-hand-holding-usd { 
+    color: #6f42c1; /* Roxo (Cor de Aquisições/Compras) */
+}
+
+/* 5. Painel de Aprovação Diretoria */
+.tab-button i.fa-user-tie { 
+    color: var(--info-color); /* Azul Ciano/Info (Cor de Gerência/Diretoria) */
+}
+
+/* 6. Aprovação Final */
+.tab-button i.fa-check-double { 
+    color: var(--success-color); /* Verde (Cor de Concluído/Aprovado) */
+}
+
+/* 7. Status dos Pedidos */
+.tab-button i.fa-check-square { 
+    color: var(--success-color); /* Verde (Cor de Concluído/Aprovado) */
+}
+
+/* Estilos de CONTADORES (Badges) */
+#liderApprovalCountBadge,
+#solicitacoesCountBadge,
+#directorApprovalCountBadge,
+#finalItemsCountBadge {
+    margin-left: 5px;
+    background-color: transparent !important;
+    font-weight: bold;
+    /* Estilo padrão: apenas texto em cor de alerta (vermelho) */
+    color: var(--danger-color) !important; 
+}
+/* Se houver necessidade de cores diferentes para os contadores, defina-as aqui: */
+#liderApprovalCountBadge {
+    color: #fd7e14 !important; /* Laranja do Líder */
+}
+#directorApprovalCountBadge,
+#finalItemsCountBadge {
+    color: var(--success-color) !important; /* Verde (para Diretoria/Final) */
+}
+/* FIM do NOVO BLOCO DE ESTILOS PARA AS ABAS DE COMPRAS */
+
+.shopping-panel-wrapper {
+    flex-grow: 1;
+    overflow-y: hidden; /* Controla o overflow do conteúdo das abas */
+}
+
+.shopping-panel-wrapper {
+    flex-grow: 1;
+    overflow-y: hidden; /* Controla o overflow do conteúdo das abas */
+}
+
+.tab-content {
+    display: none;
+    height: 100%; /* Permite que o conteúdo da aba ocupe o espaço */
+    overflow-y: auto; /* Adiciona rolagem se o conteúdo for grande */
+    padding-right: 10px; /* Espaço para barra de rolagem */
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.solicitacoes-list-container .loading-message,
+.solicitacoes-list-container .no-items-message {
+    text-align: center;
+    color: var(--text-muted-color);
+    padding: 20px;
+}
+
+/* project-status.css: Estilos para o Painel de Aprovação de Compras (ADICIONAR ESTE BLOCO NO FINAL) */
+
+.approval-header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--divider-color);
+}
+
+.approval-header-info h3 {
+    font-size: 1.4em;
+    color: var(--primary-color);
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+}
+
+.solicitacoes-controls {
+    display: flex;
+    gap: 10px;
+}
+
+/* Garante que o painel de aprovação também tenha rolagem */
+.solicitacoes-list-container {
+    flex-grow: 1;
+    /* max-height: 500px;  <- REMOVA ESTA LINHA SE EXISTIR */
+    overflow-y: auto;
+    padding-right: 10px; /* Espaço para barra de rolagem */
+}
+
+
+.solicitacao-card .bom-item-image img,
+.solicitacao-card .bom-item-image .fas {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    font-size: 2.5em; /* Para ícones */
+    color: var(--info-color);
+}
+
+
+
+.solicitacao-card .item-descricao {
+    font-weight: bold;
+    color: var(--text-color);
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.solicitacao-card .item-info {
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+    margin: 3px 0;
+}
+
+
+.solicitacao-card .action-button.small {
+    padding: 8px 12px;
+    font-size: 0.9em;
+}
+
+
+
+/* Estilos para Agrupamento por Setor no Painel de Aprovação */
+.approval-sector-group {
+    margin-bottom: 25px;
+    border: 1px solid #e0e0e0;
+    border-left-width: 8px; /* Borda colorida mais grossa */
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    overflow: hidden; 
+}
+
+.approval-sector-header {
+    background-color: #f7f7f7;
+    padding: 12px 20px;
+    margin: 0;
+    font-size: 1.2em; /* Um pouco maior que o título do item */
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.approval-sector-header h4 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.approval-items-container {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre os cards de solicitação */
+}
+
+/* Cores específicas para cada setor no painel de aprovação (REUTILIZA AS CORES DA BOM) */
+.approval-sector-group[data-sector="Mecânica"] {
+  border-left-color: #007bff; /* Azul */
+}
+.approval-sector-group[data-sector="Elétrica"] {
+  border-left-color: #fd7e14; /* Laranja */
+}
+.approval-sector-group[data-sector="Software"] {
+  border-left-color: #6f42c1; /* Roxo */
+}
+.approval-sector-group[data-sector="Geral"] {
+  border-left-color: #6c757d; /* Cinza */
+}
+
+.project-group-content {
+    padding: 10px 15px;
+}
+
+.cotacao-sector-subgroup {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px dashed var(--divider-color);
+    border-radius: var(--border-radius);
+    background-color: #fcfcfc;
+}
+
+.cotacao-sector-subgroup h5 {
+    font-size: 1.1em;
+    color: var(--secondary-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.badge-final {
+    background-color: var(--success-color); /* Verde */
+    color: white;
+}
+
+/* Cores para o Histórico de Status do Pedido */
+.bom-item-details .info-solicitante {
+    color: #007bff; /* Azul */
+    font-weight: 500;
+}
+.bom-item-details .info-gestor {
+    color: #28a745; /* Verde */
+    font-weight: 500;
+}
+.bom-item-details .info-cotacao {
+    color: #6f42c1; /* Roxo */
+    font-weight: 500;
+}
+.bom-item-details .info-diretor {
+    color: #3b5998; /* Azul Escuro */
+    font-weight: 500;
+}
+.bom-item-details .info-reprovado {
+    color: #dc3545; /* Vermelho */
+    font-weight: 500;
+}
+
+/* NOVO ESTILO: Aprovação do Líder */
+.bom-item-details .info-lider {
+    color: #fd7e14; /* Laranja (Cor do Painel do Líder) */
+    font-weight: 500;
+}
+.bom-item-details .info-gestor {
+    color: #28a745; /* Verde */
+    font-weight: 500;
+}
+
+.bom-item-details .item-info i {
+    margin-right: 6px;
+    width: 14px; /* Garante alinhamento */
+    text-align: center;
+}
+
+/* Adicionar ao project-status.css se não existir */
+.action-button.warning {
+    background-color: var(--warning-color);
+    color: #212529; /* Cor de texto escura para melhor contraste com amarelo */
+}
+.action-button.warning:hover {
+    background-color: var(--warning-hover-color);
+}
+
+/* --- ESTILOS PARA ALERTAS NO DASHBOARD (TELA 1) --- */
+.dashboard-alerts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px; /* Espaço antes da grade de indicadores */
+}
+
+.dashboard-alert {
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    font-weight: 500;
+    border: 1px solid transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dashboard-alert:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Alerta Gerência (Aprovação Pendente) */
+.dashboard-alert.alert-gerencia {
+    background-color: #fff8e1; /* Amarelo claro */
+    border-color: var(--warning-color);
+    color: #66512c;
+}
+.dashboard-alert.alert-gerencia .fas {
+    color: var(--warning-color);
+}
+
+/* Alerta Compras (Em Cotação) */
+.dashboard-alert.alert-compras {
+    background-color: #e6f7ff; /* Azul claro */
+    border-color: var(--primary-color);
+    color: #004085;
+}
+.dashboard-alert.alert-compras .fas {
+    color: var(--primary-color);
+}
+
+/* Alerta Diretoria (Aprovação Diretoria) */
+.dashboard-alert.alert-diretoria {
+    background-color: #e9ecef; /* Cinza claro */
+    border-color: #3b5998; /* Azul Escuro (Cor da Diretoria) */
+    color: #3b5998;
+}
+.dashboard-alert.alert-diretoria .fas {
+    color: #3b5998;
+}
+
+.dashboard-alert .alert-text {
+    flex-grow: 1;
+}
+.dashboard-alert .alert-text strong {
+    font-size: 1.2em;
+}
+.dashboard-alert .alert-action {
+    margin-left: 20px;
+    font-weight: 600;
+}
+.dashboard-alert .alert-action i {
+    margin-left: 8px;
+}
+
+/* --- CORREÇÃO DE LAYOUT DO ALERTA (TELA 2) --- */
+.project-list-header .dashboard-alerts {
+    flex-basis: 100%; /* Faz o container do alerta ocupar a largura total */
+    order: 10; /* Garante que ele vá para a próxima linha (depois de h2, stepper, e action-buttons) */
+    margin-top: 15px; /* Adiciona um espaço acima dos alertas */
+    margin-bottom: 0; /* Remove a margem inferior padrão */
+}
+
+/* Botão de limpar filtro (novo) */
+.clear-alert-filter-btn {
+    margin-top: 10px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+.clear-alert-filter-btn:hover {
+    background-color: #5a6268;
+    color: white;
+}
+
+/* ================================================================= */
+/* CORREÇÃO FINAL E DEFINITIVA: Modal de Compras em Tela Cheia com Scroll Interno */
+/* ================================================================= */
+
+/* 1. Força o modal a ocupar a tela inteira e se posicionar corretamente */
+#shoppingModal .modal-content {
+    width: 100vw; /* 100% da largura da tela */
+    height: 100vh; /* 100% da altura da tela */
+    max-width: 100vw;
+    max-height: 100vh;
+    top: 0;
+    left: 0;
+    margin: 0;
+    border-radius: 0; /* Remove cantos arredondados */
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex; /* Habilita flexbox para controle do conteúdo interno */
+    flex-direction: column; /* Organiza os elementos filhos em uma coluna */
+    transform: none; /* Remove qualquer transformação que possa afetar o posicionamento */
+}
+
+/* 2. Garante que o corpo da página não tenha rolagem quando o modal estiver aberto */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* 3. Faz o wrapper das abas crescer para preencher o espaço vertical */
+#shoppingModal .shopping-panel-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0; /* Essencial para o flexbox funcionar corretamente com overflow */
+}
+
+/* 4. Faz o conteúdo da aba ativa ocupar todo o espaço disponível */
+#shoppingModal .tab-content.active {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0; /* Essencial para o flexbox funcionar corretamente com overflow */
+}
+
+/* 5. A MÁGICA ACONTECE AQUI: Aplica a rolagem aos containers da lista */
+#bomItemsListContainer,
+#sentBomItemsListContainer,
+#approvalPanelContent,
+#cotacoesListContainer,
+#directorApprovalPanelContent,
+#financialApprovalPanelContent,
+#finalItemsListContainer {
+    overflow-y: auto; /* CRÍTICO: Adiciona a barra de rolagem vertical */
+    flex-grow: 1; /* Faz a lista crescer para preencher o espaço */
+    padding: 15px;
+    border: 1px solid var(--divider-color);
+    border-radius: 8px;
+    background-color: #fdfdfd;
+}
+
+/* 6. Garante que as seções de formulário não sejam espremidas */
+#myShoppingPanel .form-section {
+    flex-shrink: 0; /* Impede que o formulário de "Adicionar Item" encolha */
+}
+
+/* 7. Garante que a lista de itens dentro da seção também possa crescer */
+.bom-items-list-section {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+}

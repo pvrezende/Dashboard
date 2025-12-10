@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Produção</title>
+    <link rel="stylesheet" href="css/styles.css?v=1.2">
+    <link rel="stylesheet" href="css/dashboard.css?v=1.3">
+    <link rel="stylesheet" href="css/project-status.css?v=1.2">
+    <link rel="stylesheet" href="css/project-registration.css?v=1.2">
+    <link rel="stylesheet" href="css/tooling.css?v=1.2">
+    <link rel="stylesheet" href="css/producao.css?v=1.2">
+    <link rel="stylesheet" href="css/tablet-mode.css?v=1.2">
+    <link rel="stylesheet" href="css/activity-management.css?v=1.2">
+    <link rel="stylesheet" href="css/management-activities.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="icon" type="image/x-icon" href="img/dashboards.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+</head>
+<body>
+    <div id="appContent">
+        <nav class="screen-selector">
+            <div class="nav-header">
+                <span class="nav-title">Dashboard</span>
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            <div class="nav-links">
+                <button onclick="switchScreen('tela1')" class="active">📊 Dashboard</button>
+                <button onclick="switchScreen('tela2')">📌 Status do Projeto</button>
+                <button onclick="switchScreen('tela4')">🛠️ Ferramentaria</button>
+                <button onclick="switchScreen('tela5')">📈 Produção</button>
+                <button onclick="switchScreen('tela6')">📱 Modo Tablet</button>
+                <button onclick="switchScreen('tela7')">🧑‍💼 Atividades do Colaborador</button>
+                <button onclick="switchScreen('tela8')">📑 Consultar Atividades</button>
+                
+                <div class="user-info-area">
+                    <span id="loggedInUserDisplay" style="display: none;"></span>
+                    <button id="manageUsersBtn" class="action-button secondary" style="display: none;">
+                        <i class="fas fa-users-cog"></i> Gerenciar Usuários
+                    </button>
+                    <button id="loginButton" class="action-button primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button id="logoutButton" class="action-button danger" style="display: none;">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="tela1" class="tela active">
+            <div class="dashboard">
+                <div class="header">
+                    <h1>CONTROLE DE PRODUÇÃO</h1>
+                    <div class="current-date-time" id="currentDateTime"></div>
+                    <div class="action-buttons-container">
+                        <div class="date-filter">
+                            <label for="selectedDate">Data:</label>
+                            <input type="date" id="selectedDate" class="date-input">
+                        </div>
+                        <button id="registerProductionBtn" class="action-button primary">
+                            <i class="fas fa-plus"></i> Registrar Produção
+                        </button>
+                        <button id="generateReportModalBtn" class="action-button info">
+                            <i class="fas fa-file-alt"></i> Gerar Relatório
+                        </button>
+                        <button id="toggleFullscreenDashboard" class="action-button secondary">
+                            <i class="fas fa-expand"></i> Tela Cheia
+                        </button>
+                    </div>
+                </div>
+                <div class="indicators-grid">
+                    <div class="indicator-card meta-card">
+                        <div class="card-icon"><i class="fas fa-boxes"></i></div>
+                        <div class="card-content">
+                            <div class="card-title">PEÇAS ESTIMADAS</div>
+                            <div class="card-values">
+                                <div class="card-box-value"><span id="totalCaixasEstimadas">0</span> <span class="unit">cx</span></div>
+                                <div class="card-total-value"><span id="totalPecasEstimadas">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="indicator-card produced-card">
+                        <div class="card-icon"><i class="fas fa-box-open"></i></div>
+                        <div class="card-content">
+                            <div class="card-title">PEÇAS PRODUZIDAS</div>
+                            <div class="card-values">
+                                <div class="card-box-value"><span id="totalCaixasProduzidas">0</span> <span class="unit">cx</span></div>
+                                <div class="card-total-value"><span id="totalPecasProduzidasValue">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="indicator-card approved-card">
+                        <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="card-content">
+                            <div class="card-title">TOTAL APROVADOS</div>
+                            <div class="card-values">
+                                <div class="card-total-value"><span id="pecasAprovadasHoje">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="indicator-card approved-percent-card">
+                        <div class="card-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="card-content">
+                            <div class="card-title">% APROVADOS</div>
+                            <div class="card-values">
+                                <div class="card-total-value"><span id="percentAprovados">0</span>%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="indicator-card rejected-card">
+                        <div class="card-icon"><i class="fas fa-times-circle"></i></div>
+                        <div class="card-content">
+                            <div class="card-title">TOTAL REPROVADOS</div>
+                            <div class="card-values">
+                                <div class="card-total-value"><span id="totalReprovados">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="indicator-card rejected-percent-card">
+                        <div class="card-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="card-content">
+                            <div class="card-title">% REPROVADOS</div>
+                            <div class="card-values">
+                                <div class="card-total-value"><span id="percentReprovados">0</span>%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oee-section">
+                    <h2 class="section-title">Produção Hora a Hora</h2>
+                    <div class="chart-container">
+                        <canvas id="productionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tela2" class="tela">
+             <div class="dashboard-content">
+                <div class="project-list-header">
+                    <h2>Projetos Ativos</h2>
+                    <div class="stepper-text">
+                        <strong>Progresso por Etapa:</strong>
+                    </div>
+                    <div id="dashboardAlertContainer" class="dashboard-alerts"></div>
+                    <div class="action-buttons">
+                        <input type="text" id="projectSearchInput" placeholder="Buscar projeto por nome...">
+                        <button id="searchProjectsBtn" class="action-button primary">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                        
+                        <!-- BOTÃO MOVIDO PARA CÁ -->
+                        <button id="openNewProjectModalBtn" class="action-button success">
+                            <i class="fas fa-plus-circle"></i> Projeto Novo
+                        </button>
+                        
+                        <button id="refreshProjects" class="action-button info">
+                            <i class="fas fa-sync-alt"></i> Atualizar Projetos
+                        </button>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showEncerradosCheckbox" role="switch">
+                            <label class="form-check-label" for="showEncerradosCheckbox">Mostrar Projetos Encerrados</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="projects-container" id="projectsContainer"></div>
+            </div>
+        </div>
+
+
+        <!-- ================================================================= -->
+        <!-- MODAL DE CADASTRO DE PROJETO (ANTIGA TELA 3)                     -->
+        <!-- ================================================================= -->
+        <div id="projectRegistrationModal" class="modal">
+            <div class="modal-content">
+                <div class="form-container">
+                    <div class="header-modal-open">
+                        <h1>Cadastro de Novo Projeto</h1>
+                        <button class="close-modal" onclick="window.closeModal('projectRegistrationModal')">&times;</button>
+                    </div>        
+                    <form id="cadastroProjetoForm">
+                        <div class="form-section">
+                            <h3>Informações do Projeto</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="projetoNome">Nome do Projeto:</label>
+                                    <input type="text" id="projetoNome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="projetoCoordenador">Coordenador/Gerente:</label>
+                                    <input type="text" id="projetoCoordenador" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="projetoLider">Líder do Projeto:</label>
+                                    <input type="text" id="projetoLider" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="projetoEquipe">Equipe (separar por vírgulas):</label>
+                                    <input type="text" id="projetoEquipe" placeholder="Ex: João, Maria, Pedro">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="projetoDataInicio">Data de Início:</label>
+                                    <input type="date" id="projetoDataInicio">
+                                </div>
+                                <div class="form-group">
+                                    <label for="projetoDataFim">Data de Entrega:</label>
+                                    <input type="date" id="projetoDataFim">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Etapas do Projeto</h3>
+                            <p class="form-info">Defina o nome e as datas para cada etapa. Arraste e solte para reordenar as etapas.</p>
+                            <div id="etapasContainer" class="etapas-grid drag-container"></div>
+                            <button type="button" id="addEtapaBtn" class="action-button secondary">
+                                <i class="fas fa-plus"></i> Adicionar Etapa
+                            </button>
+                        </div>
+                       <div class="modal-buttons">
+                            <button type="submit" class="action-button primary">Cadastrar Projeto</button>
+                            <button type="button" class="action-button secondary" onclick="window.closeModal('projectRegistrationModal')">Fechar</button>                    
+                        </div>
+                    </form>
+                    <div id="statusMsg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tela4" class="tela">
+             <div class="tooling-container">
+                <h1>🛠️ Ferramentaria</h1>
+                <div class="form-section">
+                    <h3>Cadastrar Nova Ferramenta</h3>
+                    <form id="addToolForm">
+                        <div class="form-group">
+                            <label for="toolName">Nome da Ferramenta:</label>
+                            <input type="text" id="toolName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="toolDescription">Descrição:</label>
+                            <textarea id="toolDescription"></textarea>
+                        </div>
+                        <button type="submit" class="action-button primary">Adicionar Ferramenta</button>
+                    </form>
+                </div>
+                <div class="tool-list-section">
+                    <h3>Ferramentas Cadastradas</h3>
+                    <button id="generateToolingReportBtn" class="action-button info" style="margin-bottom: 20px;">
+                        <i class="fas fa-file-alt"></i> Gerar Relatório de Sub-etapas
+                    </button>
+                    <div id="toolList" class="tool-list">
+                        <p class="no-tools">Carregando ferramentas...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tela5" class="tela">
+             <div class="producao-container">
+                <div class="producao-header">
+                    <h1>📊 Produção Ferramentaria</h1>
+                </div>
+                <div id="ferramentaDetailsDisplay" class="producao-details-panel">
+                    <div class="loading-indicator">Carregando ferramentas...</div>
+                </div>
+            </div>
+            <div id="fullscreenTimerDisplay" class="timer-section-fullscreen"></div>
+        </div>
+
+        <div id="tela6" class="tela">
+             <div class="tablet-mode-container">
+                <h1>Modo Tablet - Menu Principal</h1>
+                <div class="tablet-buttons-grid">
+                    <button class="tablet-action-button primary" onclick="window.openModal('registerModal');">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Registrar Produção</span>
+                    </button>
+                    <button class="tablet-action-button info" onclick="switchScreen('tela4');">
+                        <i class="fas fa-wrench"></i>
+                        <span>Gerenciar Ferramentaria</span>
+                    </button>
+                    <button class="tablet-action-button success" onclick="switchScreen('tela5');">
+                        <i class="fas fa-industry"></i>
+                        <span>Produção Ferramentaria</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tela7" class="tela">
+             <div class="management-activities-container">
+                <h1>🧑‍💼 Atividades do Colaborador</h1>
+                <div class="tool-list-section">
+                    <h3>Funcionários Cadastrados</h3>
+                    <div class="search-container">
+                        <input type="text" id="employeeSearchInput" placeholder="Buscar funcionário por nome...">
+                        <button id="searchEmployeesBtn" class="action-button primary">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                    </div>
+                    <div id="employeeList" class="tool-list">
+                        <p class="no-tools">Carregando funcionários...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tela8" class="tela">
+            <div class="management-activities-container">
+                <h1>📑 Consultar Atividades</h1>
+                
+                <div class="dashboard-search-bar">
+                    <input type="text" id="consultarAtividadesSearchInput" placeholder="Buscar funcionário por nome...">
+                    <button id="consultarAtividadesSearchBtn" class="action-button primary"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+        
+                <div id="activitiesDetailsDisplay">
+                    <p class="no-tools">Carregando atividades dos funcionários...</p>
+                </div>
+        
+                <div id="paginationControls" class="pagination-controls"></div>
+            </div>
+        </div>
+
+        <div id="telaAprovacao" class="tela">
+            <div class="dashboard-content">
+                <h2><i class="fas fa-tasks"></i> Painel de Aprovação de Compras</h2>
+                <p>Itens aguardando aprovação para serem enviados ao setor de Aquisições.</p>
+                
+                <div class="solicitacoes-controls" style="display: none;">
+                    <div class="select-all-container">
+                        <input type="checkbox" id="selectAllSolicitacoes" checked>
+                        <label for="selectAllSolicitacoes">Selecionar Todos</label>
+                    </div>
+                    <div class="bulk-actions-container">
+                        <button onclick="window.massApprovalAction('approve')" class="action-button success small">
+                            <i class="fas fa-check-double"></i> Aprovar Selecionados
+                        </button>
+                        <button onclick="window.massApprovalAction('reprove')" class="action-button danger small">
+                            <i class="fas fa-times-circle"></i> Reprovar Selecionados
+                        </button>
+                    </div>
+                </div>
+                <div id="listaDeAprovacaoContainer" class="solicitacoes-list">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">            
+            <div class="register-modal-body">
+                <div class="form-section">
+                    <div class="header-modal-open">
+                        <button class="close-modal">&times;</button>
+                                <h2>Registrar Produção</h2>
+                    </div>
+                    <h3>Meta de Peças Diária</h3>
+                    <div class="form-group">
+                        <label for="pecasEstimadasInput">Quantidade de Caixas Estimadas (Meta):</label>
+                        <input type="number" id="pecasEstimadasInput" min="0" placeholder="Insira a meta de caixas estimadas">
+                    </div>
+                    <div class="form-group">
+                        <label for="dataHoraMetaInput">Data da Meta:</label>
+                        <input type="date" id="dataHoraMetaInput" required>
+                    </div>
+                    <button type="button" id="updateMetaBtn" class="action-button info">
+                        <i class="fas fa-edit"></i> Atualizar Meta
+                    </button>
+                </div>
+                <div class="form-section">
+                    <h3>Registro de Produção</h3>
+                    <form id="registerProductionForm">
+                        <div class="form-group">
+                            <label for="qtdDadosInput">Quantidade de Caixas Produzidas:</label>
+                            <input type="number" id="qtdDadosInput" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="pecasReprovadaInput">Quantidade de Peças Reprovadas:</label>
+                            <input type="number" id="pecasReprovadaInput" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="dataHoraProducaoInput">Data e Hora (Automático):</label>
+                            <input type="datetime-local" id="dataHoraProducaoInput" required>
+                        </div>
+                        <button type="submit" class="action-button primary">Registrar Produção</button>
+                    </form>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Gerar Relatório de Produção</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <div class="date-filter-group">
+                <div class="date-filter">
+                    <label for="reportStartDate">De:</label>
+                    <input type="date" id="reportStartDate" class="date-input">
+                </div>
+                <div class="date-filter">
+                    <label for="reportEndDate">Até:</label>
+                    <input type="date" id="reportEndDate" class="date-input">
+                </div>
+                <button id="generateReportBtn" class="action-button primary">Gerar Relatório</button>
+            </div>
+            <div id="reportResult" style="display: none;">
+                <div id="pdfViewerContainer" style="display: none; margin-top: 20px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; height: 500px;">
+                    <iframe id="pdfViewerFrame" style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
+            </div>
+            <div id="downloadOptions" style="display: none;" class="download-buttons">
+                <h3>Baixar Relatório</h3>
+                <div class="download-buttons">
+                    <button id="downloadTxt" class="btn btn-download txt">TXT</button>
+                    <button id="downloadExcel" class="btn btn-download excel">Excel</button>
+                    <button id="printReport" class="btn btn-download print">Imprimir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editProjectModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Editar Projeto</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editProjectForm">
+                <input type="hidden" id="editProjectId">
+                <div class="form-section">
+                    <h3>Informações Básicas</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editProjetoNome">Nome do Projeto:</label>
+                            <input type="text" id="editProjetoNome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProjetoCoordenador">Coordenador/Gerente:</label>
+                            <input type="text" id="editProjetoCoordenador" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editProjetoLider">Líder do Projeto:</label>
+                            <input type="text" id="editProjetoLider" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProjetoEquipe">Equipe (separar por vírgulas):</label>
+                            <input type="text" id="editProjetoEquipe" placeholder="Ex: João, Maria, Pedro">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editProjetoDataInicio">Data de Início:</label>
+                            <input type="date" id="editProjetoDataInicio">
+                        </div>
+                        <div class="form-group">
+                            <label for="editProjetoDataFim">Data de Entrega:</label>
+                            <input type="date" id="editProjetoDataFim">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3>Etapas do Projeto</h3>
+                    <p class="form-info">Defina o nome e as datas de início/término para cada etapa. Arraste e solte para reordenar as etapas.</p>
+                    <div id="editEtapasContainer" class="etapas-grid drag-container"></div>
+                    <button type="button" id="editAddEtapaBtn" class="action-button secondary">
+                        <i class="fas fa-plus"></i> Adicionar Etapa
+                    </button>
+                    <div class="buttons-edit-project-modal">
+                      <button type="submit" class="action-button primary">Salvar</button>
+                      <button class="action-button secondary" onclick="window.closeModal(this.closest('.modal').id)">Fechar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="projectDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Detalhes do Projeto</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <div id="projectDetailsContent"></div>
+            <div class="modal-buttons">
+                <button class="action-button secondary close-modal-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="subEtapasModal" class="modal">
+        <div class="modal-content">       
+            <div id="subEtapasContent" class="modal-scrollable-content">
+                <div class="sub-etapas-header">
+                    <div class="header-modal-open">
+                        <h3 id="subEtapasTitulo">Nome da Etapa</h3>
+                        <button class="close-modal" onclick="window.closeModal('subEtapasModal')">&times;</button>
+                    </div>
+                    <input type="hidden" id="subEtapasProjetoId">
+                    <input type="hidden" id="subEtapasEtapaId">
+                </div>
+                 <div class="parts-filter-container">
+                    <div class="filter-group-subetapas">
+                        <label for="partStatusFilterSubEtapas">Filtrar por Status:</label>
+                    </div>
+                    <div class="filter-group checkboxes">
+                        <label>
+                            <input type="checkbox" id="showPendingParts" checked> Pendentes
+                        </label>
+                        <label>
+                            <input type="checkbox" id="showCompletedParts"> Concluídas
+                        </label>
+                </div>
+                </div>
+                <div id="setoresContainer" class="setores-container"></div>
+                <div class="sub-etapas-form add-setor-form-container">
+                    <h4>Adicionar Novo Setor</h4>
+                    <form id="addSetorForm" class="inline-form">
+                        <input type="text" id="newSetorName" class="form-control" placeholder="Nome do novo setor (ex: Software)" required>
+                        <button type="submit" class="action-button primary small">
+                            <i class="fas fa-plus"></i> Adicionar Setor
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="action-button secondary" onclick="window.closeAndRefreshProjects()">Fechar</button>
+            </div>
+        </div>
+    </div>
+   
+
+    <div id="confirmDeleteModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Confirmar Exclusão</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <p>Tem certeza que deseja excluir o projeto "<strong id="deleteProjectName"></strong>"?</p>
+            <div class="modal-buttons">
+                <button id="confirmDeleteBtn" class="action-button danger">Excluir</button>
+                <button class="action-button secondary close-modal-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editSubEtapaModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h3 id="editSubEtapaTitulo">Editar Sub-Etapa</h3>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editSubEtapaForm" class="modal-form">
+                <input type="hidden" id="editSubEtapaId">
+                <input type="hidden" id="editSubEtapaProjetoId">
+                <input type="hidden" id="editSubEtapaEtapaId">
+                <div class="form-group">
+                    <label for="editSubEtapaDescricao">Descrição</label>
+                    <input type="text" id="editSubEtapaDescricao" required>
+                </div>
+                <div class="form-group">
+                    <label for="editSubEtapaDueDate">Data Limite</label>
+                    <input type="date" id="editSubEtapaDueDate">
+                </div>
+                <div class="form-group">
+                    <label for="editSubEtapaHoursPerDay">Horas Trabalhadas por Dia</label>
+                    <input type="text" id="editSubEtapaHoursPerDay" placeholder="Ex: 8.50 para 8h50min; 0.10 para 10min.">
+                    <small>Ex: 8.50 para 8h50min; 0.10 para 10min.</small>
+                </div>
+                <div class="form-group">
+                    <label for="editSubEtapaPlannedHours">Horas Previstas para Conclusão</label>
+                    <input type="text" id="editSubEtapaPlannedHours" placeholder="Ex: 8.50 para 8h50min; 0.10 para 10min.">
+                    <small>Ex: 8.50 para 8h50min; 0.10 para 10min.</small>
+                </div>
+                <div class="form-group">
+                    <label for="editSubEtapaDate">Dia da Sub-Etapa</label>
+                    <input type="date" id="editSubEtapaDate">
+                </div>
+                <div class="form-group">
+                    <label for="editSubEtapaProject">Vincular ao Projeto</label>
+                    <select id="editSubEtapaProject"><option value="">Nenhum Projeto</option></select>
+                </div>
+                <div class="form-group">
+                    <label for="editSubEtapaOperator">Operador</label>
+                    <input type="text" id="editSubEtapaOperator" placeholder="Nome do Operador">
+                </div>
+                <div class="form-group">
+                    <label for="editSubEtapaEndTime">Hora Fim Turno</label>
+                    <input type="time" id="editSubEtapaEndTime">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toolSubStagesModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Sub-etapas de Produção da Ferramentaria:</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <span id="toolSubStagesToolName"></span>
+            <input type="hidden" id="toolSubStagesToolId">
+            <div id="toolSubStagesList" class="sub-etapas-list"></div>
+            <div class="select-part-for-production-section">
+                <h4>Escolher Peça para Produção</h4>
+                <div class="form-group search-parts-container">
+                    <input type="text" id="searchProjectPartsInput" placeholder="Buscar peça por nome...">
+                    <button id="searchProjectPartsBtn" class="action-button primary small"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+                <div id="partsToSelectList" class="parts-to-select-list">
+                    <p class="no-parts-available">Carregando peças disponíveis...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editToolModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Editar Ferramenta</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editToolForm">
+                <input type="hidden" id="editToolId">
+                <div class="form-group">
+                    <label for="editToolName">Nome da Ferramenta:</label>
+                    <input type="text" id="editToolName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editToolDescription">Descrição:</label>
+                    <textarea id="editToolDescription"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editToolOperator">Operador Principal:</label>
+                    <input type="text" id="editToolOperator" placeholder="Nome do Operador Principal da Ferramenta">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar Alterações</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editToolSubStageModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h3 id="editToolSubStageTitle">Editar Sub-Etapa de Produção</h3>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editToolSubStageForm" class="modal-form">
+                <input type="hidden" id="editToolSubStageId">
+                <input type="hidden" id="editToolSubStageToolId">
+                <div class="form-group full-width">
+                    <label for="editToolSubStageDescription">Descrição</label>
+                    <input type="text" id="editToolSubStageDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="editToolSubStageDueDate">Data Limite</label>
+                    <input type="date" id="editToolSubStageDueDate">
+                </div>
+                <div class="form-group">
+                    <label for="editToolSubStageHoursPerDay">Horas Trabalhadas por Dia</label>
+                    <input type="text" id="editToolSubStageHoursPerDay" placeholder="Ex: 8.50 para 8h50min; 0.10 para 10min.">
+                    <small>Ex: 8.50 para 8h50min; 0.10 para 10min.</small>
+                </div>
+                <div class="form-group">
+                    <label for="editToolSubStagePlannedHours">Horas Previstas para Conclusão</label>
+                    <input type="text" id="editToolSubStagePlannedHours" placeholder="Ex: 8.50 para 8h50min; 0.10 para 10min.">
+                    <small>Ex: 8.50 para 8h50min; 0.10 para 10min.</small>
+                </div>
+                <div class="form-group">
+                    <label for="editToolSubStageDate">Dia da Sub-Etapa</label>
+                    <input type="date" id="editToolSubStageDate">
+                </div>
+                <div class="form-group">
+                    <label for="editToolSubStageProject">Vincular ao Projeto</label>
+                    <select id="editToolSubStageProject"><option value="">Nenhum Projeto</option></select>
+                </div>
+                <div class="form-group">
+                    <label for="editToolSubStageOperator">Operador</label>
+                    <input type="text" id="editToolSubStageOperator" placeholder="Nome do Operador">
+                </div>
+                <div class="form-group">
+                    <label for="editToolSubStageStartTime">Hora Início Turno</label>
+                    <input type="time" id="editToolSubStageStartTime">
+                </div>
+                <div class="form-group">
+                    <label for="editToolSubStageEndTime">Hora Fim Turno</label>
+                    <input type="time" id="editToolSubStageEndTime">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirmDeleteToolModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Confirmar Exclusão</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <p>Tem certeza que deseja excluir a ferramenta "<strong id="deleteToolName"></strong>"? Todas as sub-etapas de produção vinculadas também serão excluídas.</p>
+            <div class="modal-buttons">
+                <button id="confirmDeleteToolBtn" class="action-button danger">Excluir</button>
+                <button class="action-button secondary close-modal-btn" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toolDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Detalhes da Ferramenta</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <div id="toolDetailsContent"></div>
+            <div class="modal-buttons">
+                <button class="action-button secondary close-modal-btn" onclick="window.closeModal(this.closest('.modal').id)">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-wrapper"></div>
+
+    <div id="toolingReportModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Gerar Relatório de Sub-etapas de Ferramentaria</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <div class="date-filter-group">
+                <div class="date-filter">
+                    <label for="toolingReportStartDate">De:</label>
+                    <input type="date" id="toolingReportStartDate" class="date-input">
+                </div>
+                <div class="date-filter">
+                    <label for="toolingReportEndDate">Até:</label>
+                    <input type="date" id="toolingReportEndDate" class="date-input">
+                </div>
+                <button id="generateToolingReportSubmitBtn" class="action-button primary">Gerar Relatório</button>
+            </div>
+            <div id="toolingReportResult" style="display: none;"></div>
+            <div id="toolingDownloadOptions" style="display: none;" class="download-buttons">
+                <h3>Baixar Relatório</h3>
+                <div class="download-buttons">
+                    <button id="downloadToolingTxt" class="btn btn-download txt">TXT</button>
+                    <button id="downloadToolingExcel" class="btn btn-download excel">Excel</button>
+                    <button id="printToolingReport" class="btn btn-download print">Imprimir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="projectPartsModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Peças do Projeto: <span id="projectPartsProjectName"></span></h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <input type="hidden" id="projectPartsProjectId">
+            <div class="parts-list-section">
+                <h3>Peças Cadastradas</h3>
+                <div class="parts-filter-container">
+                    <div class="filter-group">
+                        <label for="partStatusFilter">Filtrar por Status:</label>
+                        <select id="partStatusFilter">
+                            <option value="todos">Todos</option>
+                            <option value="Aguardando Análise">Aguardando Análise</option>
+                            <option value="Falta B.O.M">Falta B.O.M</option>
+                            <option value="Disponivel">Disponível</option>
+                            <option value="Em Processo">Em Processo</option>
+                            <option value="Na fila para Produção">Na Fila para Produção</option>
+                            <option value="Atrasado">Atrasado</option>
+                        </select>
+                    </div>
+                    <div class="filter-group checkboxes">
+                        <label>
+                            <input type="checkbox" id="showPendingParts" checked> Pendentes
+                        </label>
+                        <label>
+                            <input type="checkbox" id="showCompletedParts"> Concluídas
+                        </label>
+                    </div>
+                </div>
+                <div id="projectPartsList" class="parts-list">
+                    <p class="no-parts">Carregando peças...</p>
+                </div>
+            </div>
+           <div class="add-part-form-section">
+                <h4>Adicionar Nova Peça</h4>
+                <form id="addProjectPartForm">
+                    <div class="form-group">
+                        <label for="partName">Nome da Peça:</label>
+                        <input type="text" id="partName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="partQuantity">Quantidade:</label>
+                        <input type="number" id="partQuantity" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="partStatus">Status:</label>
+                        <select id="partStatus" required>
+                            <option value="Aguardando Análise">Aguardando Análise</option>
+                            <option value="Falta B.O.M">Falta B.O.M</option>
+                            <option value="Disponivel">Disponível</option>
+                            <option value="Concluído">Concluído</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="action-button primary small">Adicionar Peça</button>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button class="action-button secondary close-modal-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editProjectPartModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h3 id="editProjectPartTitle">Editar Peça</h3>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editProjectPartForm" class="modal-form">
+                <input type="hidden" id="editProjectPartId">
+                <input type="hidden" id="editProjectPartProjectId">
+                <div class="form-group">
+                    <label for="editPartName">Nome da Peça:</label>
+                    <input type="text" id="editPartName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPartQuantity">Quantidade:</label>
+                    <input type="number" id="editPartQuantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPartStatus">Status:</label>
+                    <select id="editPartStatus" required>
+                        <option value="Falta B.O.M">Falta B.O.M</option>
+                        <option value="Disponivel">Disponível</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="attachmentsModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Anexos da Peça: <span id="attachmentsModalPartName"></span></h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <input type="hidden" id="attachmentsModalPartId">
+            <div class="attachments-section">
+                <h4>Anexos com Miniatura</h4>
+                <div id="attachmentsListInModal" class="attachments-list">
+                    <p class="no-attachments">Carregando anexos...</p>
+                </div>
+            </div>
+            <div class="attachments-section other-attachments-section">
+                <h4>Outros Anexos (Arquivos Técnicos)</h4>
+                <div id="otherAttachmentsListInModal" class="attachments-list">
+                    <p class="no-attachments">Nenhum outro anexo para esta peça.</p>
+                </div>
+            </div>
+            <div class="upload-attachment-form">
+                <div class="form-group flex-grow">
+                    <label for="fileAttachmentInput" class="custom-file-upload">
+                        <i class="fas fa-upload"></i> Selecionar Arquivo
+                    </label>
+                    <input type="file" id="fileAttachmentInput" name="anexo" accept=".pdf,.dwg,.dxf,.ipt,.idw,.iam,.ipn,.stp,.zip,.rar,.jpg,.jpeg,.png">
+                    <span id="file-name-display" class="file-name-display">Nenhum arquivo selecionado</span>
+                </div>
+                <div class="form-group">
+                    <label for="tipoAnexoExibicao">Tipo de Anexo:</label>
+                    <select id="tipoAnexoExibicao" required>
+                        <option value="miniatura">Com Miniatura (PDF/Imagem)</option>
+                        <option value="anexo">Sem Miniatura (Outros)</option>
+                    </select>
+                </div>
+                <button id="uploadAttachmentBtn" class="action-button primary small">
+                    <i class="fas fa-file-upload"></i> Upload
+                </button>
+            </div>
+            <div class="modal-buttons">
+                <button class="action-button secondary close-modal-btn" onclick="window.closeModal(this.closest('.modal').id)">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h2>Login</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Usuário:</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Senha:</label>
+                    <div class="password-input-container">
+                        <input type="password" id="loginPassword" required>
+                        <button type="button" class="toggle-password" onclick="window.togglePasswordVisibility('loginPassword', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="action-button primary">Entrar</button>
+                <div id="loginStatusMessage" class="status-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="manageUsersModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Gerenciar Usuários e Permissões</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <div class="manage-users-layout">
+                <div class="left-panel">
+                    <div id="registerUserSection" class="form-section collapsible-section">
+                        <div class="collapsible-header">
+                            <h3>Cadastrar Novo Usuário</h3>
+                            <button type="button" class="toggle-collapse-btn"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="collapsible-content">
+                            <form id="registerUserForm">
+                                <div class="form-group">
+                                    <label for="registerUsername">Usuário:</label>
+                                    <input type="text" id="registerUsername" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerPassword">Senha:</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="registerPassword" required>
+                                        <button type="button" class="toggle-password" onclick="window.togglePasswordVisibility('registerPassword', this)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerName">Nome Completo:</label>
+                                    <input type="text" id="registerName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerRole">Nível de Acesso:</label>
+                                    <select id="registerRole" required></select>
+                                </div>
+                                <button type="submit" class="action-button success">Registrar Usuário</button>
+                                <div id="registerStatusMessage" class="status-message" style="display: none;"></div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="userListSection" class="tool-list-section collapsible-section">
+                        <div class="collapsible-header">
+                            <h3>Usuários Cadastrados</h3>
+                            <button type="button" class="toggle-collapse-btn"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="search-container">
+                                <input type="text" id="userSearchInput" placeholder="Buscar usuário por nome...">
+                                <button id="userSearchBtn" class="action-button primary small">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
+                            <div id="userList" class="tool-list">
+                                <p class="no-users">Carregando usuários...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-panel">
+                    <div id="createRoleSection" class="form-section collapsible-section">
+                        <div class="collapsible-header">
+                            <h3>Criar Novo Nível de Acesso</h3>
+                            <button type="button" class="toggle-collapse-btn"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="collapsible-content">
+                            <form id="createRoleForm">
+                                <div class="form-group">
+                                    <label for="newRoleName">Nome do Novo Nível:</label>
+                                    <input type="text" id="newRoleName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Permissões:</label>
+                                    <div id="permissionsCheckboxContainer" class="permissions-grid">
+                                        <p>Carregando permissões...</p>
+                                    </div>
+                                </div>
+                                <button type="submit" class="action-button success">Criar Nível</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="rolesListSection" class="tool-list-section collapsible-section">
+                        <div class="collapsible-header">
+                            <h3>Níveis de Acesso Existentes</h3>
+                            <button type="button" class="toggle-collapse-btn"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="collapsible-content">
+                            <div id="rolesList" class="roles-list">
+                                <p class="no-roles">Carregando níveis de acesso...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="editRoleModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Editar Nível de Acesso</h2>
+                <button class="close-modal" onclick="window.closeModal('editRoleModal')">&times;</button>
+            </div>
+            <form id="editRoleForm">
+                <input type="hidden" id="editRoleId">
+                <div class="form-group">
+                    <label for="editRoleName">Nome do Nível:</label>
+                    <input type="text" id="editRoleName" required>
+                </div>
+                <div class="form-group">
+                    <label>Permissões:</label>
+                    <div class="permissions-search-container">
+                        <input type="text" id="editPermissionsSearchInput" placeholder="Buscar permissão...">
+                    </div>
+                    <div id="editPermissionsCheckboxContainer" class="permissions-grid">
+                        <p>Carregando permissões...</p>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="action-button secondary" onclick="window.closeModal('editRoleModal')">Cancelar</button>
+                    <button type="submit" class="action-button primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Editar Usuário</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editUserForm">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label for="editUsername">Usuário:</label>
+                    <input type="text" id="editUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPassword">Nova Senha (opcional):</label>
+                    <div class="password-input-container">
+                        <input type="password" id="editPassword">
+                        <button type="button" class="toggle-password" onclick="window.togglePasswordVisibility('editPassword', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <small>Deixe em branco para manter a senha atual.</small>
+                </div>
+                <div class="form-group">
+                    <label for="editName">Nome Completo:</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editRole">Nível de Acesso:</label>
+                    <select id="editRole" required>
+                    </select>
+                </div>
+                <div id="projectAccessSection" class="form-section permissions-section">
+                    <h4>Acesso a Projetos Específicos</h4>
+                    <p class="form-info">Marque os projetos que este usuário poderá visualizar e interagir.</p>
+                    <div id="editUserProjectsList" class="permissions-grid">
+                        <p>Carregando projetos...</p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar Alterações</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editMyProfileModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h2>Meu Perfil</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editMyProfileForm">
+                <input type="hidden" id="editMyProfileId">
+                <div class="form-group">
+                    <label for="editMyProfileUsername">Usuário:</label>
+                    <input type="text" id="editMyProfileUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMyProfilePassword">Nova Senha (opcional):</label>
+                    <div class="password-input-container">
+                        <input type="password" id="editMyProfilePassword">
+                        <button type="button" class="toggle-password" onclick="window.togglePasswordVisibility('editMyProfilePassword', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <small>Deixe em branco para manter a senha atual.</small>
+                </div>
+                <div class="form-group">
+                    <label for="editMyProfileName">Nome Completo:</label>
+                    <input type="text" id="editMyProfileName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMyProfileRole">Nível de Acesso:</label>
+                    <input type="text" id="editMyProfileRole" disabled>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar Alterações</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirmDeleteUserModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h2>Confirmar Exclusão de Usuário</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <p>Tem certeza que deseja excluir o usuário "<strong id="deleteUserName"></strong>"? Esta ação não pode ser desfeita.</p>
+            <div class="modal-buttons">
+                <button id="confirmDeleteUserBtn" class="action-button danger">Excluir</button>
+                <button class="action-button secondary close-modal-btn" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div id="shoppingModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Gestão de Compras: <span id="shoppingProjectName"></span></h2>
+                <button class="close-modal" onclick="window.closeModal('shoppingModal')">&times;</button>
+            </div>
+            <input type="hidden" id="shoppingProjectId">
+
+            <div class="shopping-panel-tabs">
+                <button id="myShoppingPanelTabButton" class="tab-button active" onclick="window.switchShoppingPanel('myShoppingPanel')">
+                    <i class="fas fa-list-alt"></i> Lista de Pedido de Compra
+                </button>
+
+                <button id="liderApprovalPanelTabButton" class="tab-button" onclick="window.switchShoppingPanel('liderApprovalPanel')">
+                    <i class="fas fa-user-check"></i> Painel Aprovação Líder
+                    <span id="liderApprovalCountBadge" style="margin-left: 5px;">0</span>
+                </button>
+                
+                <button id="approvalPanelTabButton" class="tab-button" onclick="window.switchShoppingPanel('approvalPanel')">
+                    <i class="fas fa-vote-yea"></i> Painel de Aprovação Gestores
+                    <span id="solicitacoesCountBadge" style="margin-left: 5px;">0</span>
+                </button>
+
+                <button id="cotacoesPanelTabButton" class="tab-button" onclick="window.switchShoppingPanel('cotacoesPanel')">
+                    <i class="fas fa-hand-holding-usd"></i> Cotações/Compras
+                </button>
+
+                <button id="directorApprovalPanelTabButton" class="tab-button" onclick="window.switchShoppingPanel('directorApprovalPanel')">
+                    <i class="fas fa-user-tie"></i> Painel de Aprovação Diretoria
+                    <span id="directorApprovalCountBadge" style="margin-left: 5px;">0</span>
+                </button>
+                
+                <button id="financialApprovalPanelTabButton" class="tab-button" onclick="window.switchShoppingPanel('financialApprovalPanel')">
+                    <i class="fas fa-dollar-sign"></i> Painel de Aprovação Financeiro
+                    <span id="financialApprovalCountBadge" style="margin-left: 5px;">0</span>
+                </button>
+                <button id="finalItemsPanelTabButton" class="tab-button" onclick="window.switchShoppingPanel('finalItemsPanel')">
+                    <i class="fas fa-check-double"></i> Aprovação Final
+                    <span id="finalItemsCountBadge" style="margin-left: 5px;">0</span>
+                </button>
+                <button id="sentItemsPanelTabButton" class="tab-button" onclick="window.switchShoppingPanel('sentItemsPanel')">
+                    <i class="fas fa-check-square"></i> Status dos Pedidos
+                </button>
+            </div>
+
+        <div class="shopping-panel-wrapper">
+            
+            <div class="shopping-panel-wrapper">
+            
+                <div id="myShoppingPanel" class="tab-content active">
+                    
+                    <div class="form-section collapsible-section open">
+                        <div class="collapsible-header" onclick="window.toggleAddItemSection(this)">
+                            <h3><i class="fas fa-plus-circle"></i> Adicionar Novo Item</h3>
+                            <button type="button" class="toggle-collapse-btn"><i class="fas fa-chevron-up"></i></button>
+                        </div>
+                        <div class="collapsible-content">
+                            <form id="addBomItemForm">
+                                <div class="form-row">
+                                    <div class="form-group" style="flex: 2;">
+                                        <label for="bomItemDescricao">Material ou Produto:</label>
+                                        <input type="text" id="bomItemDescricao" required>
+                                    </div>
+                                    <div class="form-group" style="flex: 1;">
+                                        <label for="bomItemSetor">Setor:</label>
+                                        <input type="text" id="bomItemSetor" required>
+                                    </div>
+                                    <div class="form-group" style="flex-basis: 100px;">
+                                        <label for="bomItemQtd">Qtd.:</label>
+                                        <input type="number" id="bomItemQtd" required min="1">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bomItemJustificativa">Justificativa:</label>
+                                    <textarea id="bomItemJustificativa" rows="2"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bomItemUrlImagem">URL da Imagem:</label>
+                                    <input type="text" id="bomItemUrlImagem" placeholder="https://...">
+                                </div>
+                                <h4>Primeiro Orçamento (Sugestão do Solicitante)</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="bomItemFornecedor">Fornecedor:</label>
+                                        <input type="text" id="bomItemFornecedor" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bomItemValor">Valor Unitário (R$):</label>
+                                        <input type="number" id="bomItemValor" required step="0.01" min="0">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="bomItemCnpj">CNPJ:</label>
+                                        <input type="text" id="bomItemCnpj">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bomItemContato">Contato (Telefone):</label>
+                                        <input type="text" id="bomItemContato">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bomItemEmail">Email:</label>
+                                    <input type="email" id="bomItemEmail">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bomItemEndereco">Endereço:</label>
+                                    <input type="text" id="bomItemEndereco">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bomItemDataEntrega">Previsão de Entrega:</label>
+                                    <input type="date" id="bomItemDataEntrega" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bomItemLink">Link do Produto (Opcional):</label>
+                                    <input type="text" id="bomItemLink" placeholder="https://...">
+                                </div>
+                                <div class="modal-buttons" style="justify-content: flex-end;">
+                                    <button type="submit" class="action-button success">
+                                        <i class="fas fa-plus"></i> Adicionar Item à Lista
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+    
+                    
+    
+                    <div class="bom-items-list-section">
+                        <h3><i class="fas fa-edit"></i> Itens da Lista de Compras (Em Elaboração)</h3>
+                        <div id="bomItemsListContainer">
+                            <p class="no-items-message">Nenhum item em elaboração.</p>
+                        </div>
+                    </div>
+    
+                </div>
+
+                <div id="liderApprovalPanel" class="tab-content">
+                    <div class="approval-header-info">
+                        <h3>
+                            Itens Aguardando Aprovação do Líder (<span id="liderSolicitacoesCount">0</span>)
+                        </h3>
+                        <div class="solicitacoes-controls" style="display: none;">
+                            <div class="select-all-container">
+                                <input type="checkbox" id="selectAllSolicitacoesLider" checked>
+                                <label for="selectAllSolicitacoesLider">Selecionar Todos</label>
+                            </div>
+                            <div class="bulk-actions-container">
+                                <button onclick="window.massApprovalAction('approve', 'liderApprovalPanel')" class="action-button success small" data-permission="project.shopping.approve">
+                                    <i class="fas fa-check-double"></i> Aprovar Selecionados
+                                </button>
+                                <button onclick="window.massApprovalAction('reprove', 'liderApprovalPanel')" class="action-button danger small" data-permission="project.shopping.approve">
+                                    <i class="fas fa-times-circle"></i> Reprovar Selecionados
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="liderApprovalPanelContent" class="solicitacoes-list-container">
+                        <p class="loading-message">Carregando solicitações...</p>
+                    </div>
+                </div>
+                <div id="approvalPanel" class="tab-content">
+                    <div class="approval-header-info">
+                        <h3>
+                            Itens Aguardando Aprovação (<span id="solicitacoesCount">0</span>)
+                        </h3>
+                        <div class="solicitacoes-controls" style="display: none;">
+                            <div class="select-all-container">
+                                <input type="checkbox" id="selectAllSolicitacoes" checked>
+                                <label for="selectAllSolicitacoes">Selecionar Todos</label>
+                            </div>
+                            <div class="bulk-actions-container">
+                                <button onclick="window.massApprovalAction('approve', 'approvalPanel')" class="action-button success small" data-permission="project.shopping.approve">
+                                    <i class="fas fa-check-double"></i> Aprovar Selecionados
+                                </button>
+                                <button onclick="window.massApprovalAction('reprove', 'approvalPanel')" class="action-button danger small" data-permission="project.shopping.approve">
+                                    <i class="fas fa-times-circle"></i> Reprovar Selecionados
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="approvalPanelContent" class="solicitacoes-list-container">
+                        <p class="loading-message">Carregando solicitações...</p>
+                    </div>
+                </div>
+                <div id="cotacoesPanel" class="tab-content">
+                    <div class="cotacoes-header-info">
+                        <h3>
+                            Itens Aprovados para Cotação
+                        </h3>
+                    </div>
+                    
+                    <div id="cotacoesListContainer" class="solicitacoes-list-container">
+                        <p class="loading-message">Carregando itens para cotação...</p>
+                    </div>
+                </div>
+    
+                <div id="directorApprovalPanel" class="tab-content">
+                    <div class="approval-header-info">
+                        <h3>
+                            <i class="fas fa-user-tie"></i> 
+                            Itens Aguardando Aprovação da Diretoria (<span id="directorApprovalCount">0</span>)
+                        </h3>
+                        
+                        <div class="solicitacoes-controls" data-permission="bom.approve.diretoria">
+                            <div class="select-all-container">
+                                <input type="checkbox" id="selectAllDiretor" class="solicitacao-select-all" data-panel-id="directorApprovalPanelContent">
+                                <label for="selectAllDiretor">Selecionar Todos</label>
+                            </div>
+                            <div class="bulk-actions-container">
+                                <button id="bulkApproveDiretorBtn" class="action-button success small">
+                                    <i class="fas fa-check-double"></i> Aprovar Selecionados
+                                </button>
+                                <button id="bulkReproveDiretorBtn" class="action-button danger small">
+                                    <i class="fas fa-times-circle"></i> Reprovar Selecionados
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                    <div id="directorApprovalPanelContent" class="solicitacoes-list-container">
+                        <p class="loading-message">Carregando itens para aprovação final...</p>
+                    </div>
+                </div>
+
+                <div id="financialApprovalPanel" class="tab-content">
+                    <div class="approval-header-info">
+                        <h3>
+                            Itens Aguardando Aprovação do Financeiro (<span id="financialApprovalCount">0</span>)
+                        </h3>
+                         <div class="solicitacoes-controls" style="display: none;">
+                            <div class="select-all-container">
+                                <input type="checkbox" id="selectAllSolicitacoesFinanceiro" checked>
+                                <label for="selectAllSolicitacoesFinanceiro">Selecionar Todos</label>
+                            </div>
+                            <div class="bulk-actions-container">
+                                <button onclick="window.handleBulkBOMAction('financialApprovalPanelContent', 'approve-financial')" class="action-button success small" data-permission="bom.approve.financeiro">
+                                    <i class="fas fa-check-double"></i> Aprovar Selecionados
+                                </button>
+                                <button onclick="window.handleBulkBOMAction('financialApprovalPanelContent', 'reprove')" class="action-button danger small" data-permission="bom.approve.financeiro">
+                                    <i class="fas fa-times-circle"></i> Reprovar Selecionados
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="financialApprovalPanelContent" class="solicitacoes-list-container">
+                        <p class="loading-message">Carregando itens para aprovação financeira...</p>
+                    </div>
+                </div>
+                <div id="finalItemsPanel" class="tab-content">                    <div class="approval-header-info">
+                        <h3>
+                            <i class="fas fa-check-double"></i> Itens com Aprovação Final (Status: Comprado)
+                        </h3>
+                        
+                        <div class="header-action-group" style="margin-left: auto; display: flex; gap: 10px;">
+                            <button id="downloadFinalItemsPdfBtn" class="action-button info small" style="display: none;">
+                                <i class="fas fa-file-pdf"></i> Imprimir (PDF)
+                            </button>
+                            <button id="downloadFinalItemsXlsxBtn" class="action-button success small" style="display: none;">
+                                <i class="fas fa-file-excel"></i> Baixar (XLSX)
+                            </button>
+                        </div>
+                        </div>
+                    <div class="bom-items-list-section">
+                        <div id="finalItemsListContainer" class="solicitacoes-list-container">
+                            <p class="loading-message">Carregando itens comprados...</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="sentItemsPanel" class="tab-content">
+                    <div class="bom-items-list-section sent-items-section">
+                        <h3><i class="fas fa-check-square"></i> Histórico de Status dos Pedidos</h3>
+                        <div id="sentBomItemsListContainer">
+                            <p class="no-items-message">Nenhum item foi enviado anteriormente.</p>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+
+        <div class="modal-buttons">
+            <button class="action-button secondary" onclick="window.closeModal('shoppingModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+    <div id="editBomItemModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="window.closeModal('editBomItemModal')">&times;</span>
+        <h3>Editar Item da Lista de Compras</h3>
+        <form id="editBomItemForm">
+            <input type="hidden" id="editBomItemId">
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <label for="editBomItemDescricao">Material ou Produto:</label>
+                        <input type="text" id="editBomItemDescricao" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="editBomItemSetor">Setor:</label>
+                        <input type="text" id="editBomItemSetor" required>
+                    </div>
+                    <div class="form-group" style="flex-basis: 100px;">
+                        <label for="editBomItemQtd">Qtd.:</label>
+                        <input type="number" id="editBomItemQtd" required min="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editBomItemJustificativa">Justificativa:</label>
+                    <textarea id="editBomItemJustificativa" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editBomItemUrlImagem">URL da Imagem:</label>
+                    <input type="text" id="editBomItemUrlImagem" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="editBomItemDataEntrega">Previsão de Entrega (Primeiro Orçamento):</label>
+                    <input type="date" id="editBomItemDataEntrega" class="form-control">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="action-button secondary" onclick="window.closeModal('editBomItemModal')">Cancelar</button>
+                    <button type="submit" class="action-button primary">
+                        <i class="fas fa-save"></i> Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    
+    <div id="projectActivitiesModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Atividades do Projeto: <span id="projectActivitiesProjectName"></span></h2>
+                <button class="close-modal" onclick="window.closeModal('projectActivitiesModal')">&times;</button>
+            </div>
+            <input type="hidden" id="projectActivitiesProjectId">
+            <div class="activities-list-section">
+                <h3>Atividades Cadastradas</h3>
+                <div id="projectActivitiesList" class="activities-list">
+                    <p class="no-activities">Carregando atividades...</p>
+                </div>
+            </div>
+            <div class="add-activity-form-section">
+                <h4>Adicionar Nova Atividade</h4>
+                <form id="addProjectActivityForm">
+                    <div class="form-group">
+                        <label for="activityDescription">Descrição da Atividade:</label>
+                        <input type="text" id="activityDescription" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="activityDueDate">Data Limite:</label>
+                        <input type="date" id="activityDueDate" required>
+                    </div>
+                    <button type="submit" class="action-button primary small">Adicionar Atividade</button>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button class="action-button secondary" onclick="window.closeModal('projectActivitiesModal')">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="editProjectActivityModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h3 id="editProjectActivityTitle">Editar Atividade</h3>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editProjectActivityForm" class="modal-form">
+                <input type="hidden" id="editProjectActivityId">
+                <div class="form-group">
+                    <label for="editActivityDescription">Descrição</label>
+                    <input type="text" id="editActivityDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="editActivityDueDate">Data Limite</label>
+                    <input type="date" id="editActivityDueDate" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="addManagementActivityModal" class="modal">
+    <!-- CORREÇÃO: Removida a classe "small" para que o modal seja maior -->
+    <div class="modal-content"> 
+        <div class="header-modal-open">
+            <h3 id="addManagementActivityTitle">Atribuir Atividade para <span id="employeeNameInModal"></span></h3>
+            <button class="close-modal" onclick="window.closeModal('addManagementActivityModal')">&times;</button>
+        </div>
+        <form id="assignManagementActivityForm" class="modal-form">
+            <input type="hidden" id="employeeIdForActivity">
+            
+            <!-- Seção 1: Seleção da Atividade -->
+            <div class="form-section">
+                <h4>1. Selecione a Atividade do Projeto</h4>
+                <div class="form-group">
+                    <label for="activityProjectSelect">Projeto:</label>
+                    <select id="activityProjectSelect" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="activityEtapaSelect">Etapa:</label>
+                    <select id="activityEtapaSelect" required disabled>
+                        <option value="">Selecione um projeto primeiro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="activitySetorSelect">Setor:</label>
+                    <select id="activitySetorSelect" required disabled>
+                        <option value="">Selecione uma etapa primeiro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sub-etapas Disponíveis (selecione uma ou mais):</label>
+                    <div id="subEtapasListContainer" class="multi-select-list">
+                        <p class="no-tools">Selecione um setor para ver as sub-etapas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção 2: Seleção de Colaboradores -->
+            <div class="form-section">
+                <h4>2. Selecione os Colaboradores</h4>
+                <div class="multi-select-wrapper">
+                    <div class="employee-select-controls">
+                        <input type="text" id="employeeSearchAssignInput" placeholder="Buscar colaborador por nome...">
+                    </div>
+                    <div id="employeeListContainer" class="multi-select-list">
+                        <!-- A lista de colaboradores será preenchida pelo JavaScript -->
+                    </div>
+                    <div id="employeePaginationControls" class="employee-pagination-controls"></div>
+                </div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="modal-actions">
+                <button type="submit" class="action-button primary">Atribuir Atividade(s)</button>
+                <button type="button" class="action-button secondary" onclick="window.closeModal('addManagementActivityModal')">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+    
+    <div id="editManagementActivityModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h3 id="editManagementActivityTitle">Editar Atividade</h3>
+                <button class="close-modal" onclick="window.closeModal('editManagementActivityModal')">&times;</button>
+            </div>
+            <form id="editManagementActivityForm" class="modal-form">
+                <input type="hidden" id="editManagementActivityId">
+                <div class="form-group">
+                    <label for="editManagementActivityDescription">Descrição da Atividade:</label>
+                    <textarea id="editManagementActivityDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editManagementActivityDueDate">Data Limite:</label>
+                    <input type="date" id="editManagementActivityDueDate" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal('editManagementActivityModal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="confirmDeleteEmployeeModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h2>Confirmar Exclusão</h2>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <p>Tem certeza que deseja excluir o funcionário "<strong id="deleteEmployeeName"></strong>"? Todas as atividades atribuídas também serão excluídas.</p>
+            <div class="modal-buttons">
+                <button id="confirmDeleteEmployeeBtn" class="action-button danger">Excluir</button>
+                <button class="action-button secondary close-modal-btn" onclick="window.closeModal(this.closest('.modal').id)">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editEmployeeModal" class="modal">
+        <div class="modal-content small">
+            <div class="header-modal-open">
+                <h3>Editar Funcionário</h3>
+                <button class="close-modal" onclick="window.closeModal(this.closest('.modal').id)">&times;</button>
+            </div>
+            <form id="editEmployeeForm" class="modal-form">
+                <input type="hidden" id="editEmployeeId">
+                <div class="form-group">
+                    <label for="editEmployeeName">Nome do Funcionário</label>
+                    <input type="text" id="editEmployeeName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmployeeRole">Cargo</label>
+                    <input type="text" id="editEmployeeRole" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="action-button primary">Salvar</button>
+                    <button type="button" class="action-button secondary" onclick="window.closeModal('editEmployeeModal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="notification-wrapper"></div>
+
+    <div id="npsFormModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Pesquisa de Satisfação (NPS)</h2>
+                <button class="close-modal" onclick="window.closeModal('npsFormModal')">&times;</button>
+            </div>
+            <p><strong>Projeto:</strong> <span id="npsProjectName"></span></p>
+
+            <div class="nps-tabs">
+                <button class="nps-tab-button active" onclick="switchNpsTab('npsForm1', this)">Para Encomendante</button>
+                <button class="nps-tab-button" onclick="switchNpsTab('npsForm2', this)">Para Usuário Final</button>
+            </div>
+
+            <div id="npsForm1" class="nps-tab-content active">
+                <form id="npsFormEncomendante" class="nps-form">
+                    <div class="nps-form-header">
+                        <h3>Formulário 1 – NPS para Encomendante</h3>
+                        <p><strong>Objetivo:</strong> Avaliar a experiência comercial e estratégica com a Delta Soluções Industriais.</p>
+                    </div>
+                    </form>
+            </div>
+
+            <div id="npsForm2" class="nps-tab-content">
+                <form id="npsFormUsuarioFinal" class="nps-form">
+                       <div class="nps-form-header">
+                        <h3>Formulário 2 – NPS para Usuário Final</h3>
+                        <p><strong>Objetivo:</strong> Avaliar a experiência prática, usabilidade e ergonomia da solução utilizada.</p>
+                    </div>
+                    </form>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="action-button secondary" onclick="window.closeModal('npsFormModal')">Fechar</button>
+                <button type="button" class="action-button danger" id="deleteNpsFormBtn" style="display: none;"><i class="fas fa-trash-alt"></i> Excluir Resposta</button>
+                <button type="submit" class="action-button success" id="submitNpsFormBtn"><i class="fas fa-paper-plane"></i> Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="fileViewerModal" class="modal">
+        <div class="modal-content">
+            <div class="header-modal-open">
+                <h2>Visualizando: <span id="fileViewerTitle"></span></h2>
+                <button class="close-modal" onclick="window.closeModal('fileViewerModal')">&times;</button>
+            </div>
+            <div id="fileViewerContent" class="file-viewer-content">
+            </div>
+            <div class="modal-buttons">
+                <button class="action-button secondary" onclick="window.closeModal('fileViewerModal')">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editQuoteModal" class="modal">
+    <div class="modal-content small">
+        <div class="header-modal-open">
+            <h3>Editar Orçamento</h3>
+            <button class="close-modal" onclick="window.closeModal('editQuoteModal')">&times;</button>
+        </div>
+        <form id="editQuoteForm">
+            <input type="hidden" id="editQuoteItemId">
+            <input type="hidden" id="editQuoteIndex">
+            <div class="form-group">
+                <label for="editQuoteFornecedor">Fornecedor:</label>
+                <input type="text" id="editQuoteFornecedor" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="editQuoteCnpj">CNPJ:</label>
+                <input type="text" id="editQuoteCnpj">
+            </div>
+            <div class="form-group">
+                <label for="editQuoteEndereco">Endereço:</label>
+                <input type="text" id="editQuoteEndereco">
+            </div>
+            <div class="form-group">
+                <label for="editQuoteContato">Contato (Telefone):</label>
+                <input type="text" id="editQuoteContato">
+            </div>
+            <div class="form-group">
+                <label for="editQuoteEmail">Email:</label>
+                <input type="email" id="editQuoteEmail">
+            </div>
+            <div class="form-group">
+                <label for="editQuoteValor">Valor Unitário (R$):</label>
+                <input type="number" id="editQuoteValor" required step="0.01" min="0">
+            </div>
+            <div class="form-group">
+                <label for="editQuoteDataEntrega">Previsão de Entrega:</label>
+                <input type="date" id="editQuoteDataEntrega">
+            </div>
+            <div class="form-group">
+                <label for="editQuoteLink">Link do Produto (Opcional):</label>
+                <input type="text" id="editQuoteLink" placeholder="https://...">
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="action-button secondary" onclick="window.closeModal('editQuoteModal')">Cancelar</button>
+                <button type="submit" class="action-button primary">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+            
+    <script src="js/script.js?v=1.1" defer></script> 
+    <script src="js/permissions-ui.js?v=1.1" defer></script>
+    <script src="js/auth.js?v=1.1" defer></script>
+    <script src="js/user-management.js?v=1.1" defer></script>
+    <script src="js/dashboard.js?v=1.2" defer></script>
+    <script src="js/project-status.js?v=1.2" defer></script>
+    <script src="js/project-registration.js?v=1.1" defer></script>
+    <script src="js/tooling.js?v=1.1" defer></script>
+    <script src="js/producao.js?v=1.1" defer></script>
+    <script src="js/tablet-mode.js?v=1.1" defer></script>
+    <script src="js/activity-management.js?v=1.1" defer></script>
+    <script src="js/management-activities.js?v=1.1" defer></script>
+</body>
+</html>
